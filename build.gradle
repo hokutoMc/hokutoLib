@@ -1,0 +1,105 @@
+// a gradle plugin is added
+buildscript {
+	repositories {
+		mavenCentral()
+		maven {
+			name = "forge"
+			url = "http://files.minecraftforge.net/maven"
+		}
+		maven {
+			name = "sonatype"
+			url = "https://oss.sonatype.org/content/repositories/snapshots/"
+		}
+		// repo where my gradle plugin exists
+		maven {
+			name = "hokuto"
+			url = "https://hokutomc.github.io/maven-repo/"
+		}
+	}
+	dependencies {
+		classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+		classpath 'com.github.hokutomc:ht_gradle:0.23' // my gradle plugin
+	}
+
+}
+
+
+
+apply plugin: 'forge'
+apply plugin: 'maven'
+
+minecraft {
+	version = "1.7.10-10.13.2.1230"
+}
+
+apply plugin: 'ht.mod'
+
+ht_mod {
+	completeId = 'hokutomc.lib'
+	prefix = 'alpha'
+	major = '0'
+	minor = '0'
+	revision = '0'
+	build = '0'
+}
+
+
+
+group = "com.github.hokutomc" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "hokutoLib"
+sourceCompatibility = targetCompatibility = 1.7
+
+compileApiJava.dependsOn organizeVersion
+
+processResources{
+
+	// this will ensure that this task is redone when the versions change.
+	inputs.property "version", project.version
+	inputs.property "mcversion", project.minecraft.version
+
+	// replace stuff in mcmod.info, nothing else
+	from(sourceSets.main.resources.srcDirs) {
+		include 'mcmod.info'
+		// replace version and mcversion
+		expand 'version': project.version, 'mcversion': project.minecraft.version
+	}
+		// copy everything else, thats not the mcmod.info
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'mcmod.info'
+	}
+
+
+}
+
+task devJar(type : Jar) {
+	dependsOn javadoc, classes
+	classifier = 'dev'
+	from sourceSets.main.allJava
+	from sourceSets.main.output
+	from javadoc.destinationDir
+}
+
+
+
+build.dependsOn devJar
+
+artifacts {
+	archives devJar
+}
+
+uploadArchives {
+	repositories{
+		mavenDeployer{
+			repository(url: 'file:/mcmodding/maven-repo')
+			pom {
+				groupId =  project.group
+				artifactId = project.archivesBaseName
+				project {
+					name project.archivesBaseName
+					packaging 'jar'
+					description 'A minecraft mod that makes modding much easier'
+				}
+			}
+		}
+	}
+}

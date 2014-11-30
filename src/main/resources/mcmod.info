@@ -1,0 +1,16 @@
+[
+{
+  "modid": "hokutomc.lib",
+  "name": "Hokuto Lib",
+  "description": "This is a library that makes modding faster.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://hokutomc.github.io",
+  "updateUrl": "",
+  "authors": ["Hokuto"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
