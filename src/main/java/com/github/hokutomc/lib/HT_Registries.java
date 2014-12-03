@@ -1,7 +1,7 @@
 package com.github.hokutomc.lib;
 
 
-import com.github.hokutomc.lib.block.HT_AbstractBlock;
+import com.github.hokutomc.lib.block.HT_Block;
 import com.github.hokutomc.lib.block.HT_MultiItemBlock;
 import com.github.hokutomc.lib.item.HT_AbstractItem;
 import cpw.mods.fml.common.IWorldGenerator;
@@ -27,12 +27,12 @@ public final class HT_Registries {
         return null;
     }
 
-    public static <T extends HT_AbstractBlock> T registerBlock (T block) {
+    public static <T extends HT_Block> T registerBlock (T block) {
         GameRegistry.registerBlock(block, block.HT_getShortName());
         return block;
     }
 
-    public static <T extends HT_AbstractBlock> T registerMultiBlock (T block) {
+    public static <T extends HT_Block> T registerMultiBlock (T block) {
         GameRegistry.registerBlock(block, HT_MultiItemBlock.class, block.HT_getShortName());
         return block;
     }

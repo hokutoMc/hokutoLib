@@ -16,13 +16,13 @@ import java.util.List;
 /**
  * Created by user on 2014/09/23.
  */
-public class HT_MultiBlock extends HT_AbstractBlock<HT_MultiBlock> {
+public class HT_MultiBlock extends HT_Block<HT_MultiBlock> {
     private final ImmutableSet<String> multiNames;
 
     @SideOnly(Side.CLIENT)
     private IIcon[] multiIcons;
 
-    public HT_MultiBlock (String modid, Material material, String innerName, String[] subNameList) {
+    public HT_MultiBlock (String modid, Material material, String innerName, String... subNameList) {
         super(modid, material, innerName);
         this.multiNames = ImmutableSet.copyOf(subNameList);
         this.multiIcons = new IIcon[subNameList.length];

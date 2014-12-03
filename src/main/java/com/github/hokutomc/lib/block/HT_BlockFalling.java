@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Created by user on 2014/11/03.
  */
-public class HT_BlockFalling extends HT_AbstractBlock<HT_BlockFalling> {
+public class HT_BlockFalling extends HT_Block<HT_BlockFalling> {
     public HT_BlockFalling (String modid, Material material, String innerName) {
         super(modid, material, innerName);
     }

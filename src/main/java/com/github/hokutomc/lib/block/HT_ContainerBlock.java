@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 /**
  * Created by user on 2014/10/11.
  */
-public abstract class HT_ContainerBlock extends HT_AbstractBlock<HT_ContainerBlock> implements ITileEntityProvider {
+public abstract class HT_ContainerBlock extends HT_Block<HT_ContainerBlock> implements ITileEntityProvider {
     public HT_ContainerBlock (String modid, Material material, String innerName) {
         super(modid, material, innerName);
         this.isBlockContainer = true;

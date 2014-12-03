@@ -1,7 +1,7 @@
 package com.github.hokutomc.lib.main;
 
 import com.github.hokutomc.lib.HT_Registries;
-import com.github.hokutomc.lib.block.HT_AbstractBlock;
+import com.github.hokutomc.lib.block.HT_Block;
 import com.github.hokutomc.lib.block.HT_BlockFalling;
 import com.github.hokutomc.lib.block.HT_ContainerBlock;
 import com.github.hokutomc.lib.block.HT_MultiBlock;
@@ -33,7 +33,7 @@ public class Debug {
     public static HT_ItemDurable itemDurable;
     public static HT_AbstractItem itemMulti;
     public static HT_MultiBlock blockMulti;
-    public static HT_AbstractBlock blockTE;
+    public static HT_Block blockTE;
     public static CreativeTabs tabHTLib = HT_CreativeTabsUtil.create("hokutoLib", "test", Items.iron_sword);
     public static HT_ItemDurable itemArmor;
     private static HT_BlockFalling blockFall;
