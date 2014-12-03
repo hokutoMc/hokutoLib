@@ -56,3 +56,12 @@ unlocalized name : "item.modid.itemid.{black.white.red}"
 
 1. create a class that extends HT_ItemArmor.
 2. register a block from that class.
+
+##Add creativeTab
+
+`HT_CreativeTabsUtil.create("modid", "name", block or item);`
+
+###Gui registration
+
+1. `new HT_GuiHandler(mod : Object);` creates a Gui handler for your mod.
+2. `HT_GuiHandler.addGui(id : int, serverAction : GuiAction, clientAction : GuiAction)`
