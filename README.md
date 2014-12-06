@@ -61,7 +61,7 @@ unlocalized name : "item.modid.itemid.{black.white.red}"
 
 `HT_CreativeTabsUtil.create("modid", "name", block or item);`
 
-###Gui registration
+##Gui registration
 
 1. `new HT_GuiHandler(mod : Object);` creates a Gui handler for your mod.
 2. `HT_GuiHandler.addGui(id : int, serverAction : GuiAction, clientAction : GuiAction)`
