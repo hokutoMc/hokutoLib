@@ -11,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
  */
 public abstract class HT_ContainerProcessor<T extends TileEntity> extends Container {
     private final InventoryPlayer inventoryPlayer;
-    private final T tileEntity;
+    public final T tileEntity;
 
     public HT_ContainerProcessor (EntityPlayer player, T tileEntity) {
         this.tileEntity = tileEntity;

@@ -1,5 +1,7 @@
 package com.github.hokutomc.lib.main;
 
+import com.github.hokutomc.lib.data.HT_BasicObjectData;
+import com.github.hokutomc.lib.data.HT_BasicObjectProperties;
 import com.github.hokutomc.lib.process.HT_ItemStackRecipe;
 import com.github.hokutomc.lib.process.HT_Process;
 import com.github.hokutomc.lib.tileentity.HT_ProcessTile;
@@ -8,19 +10,35 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.EnumSet;
 import java.util.List;
 
-import static com.github.hokutomc.lib.item.HT_ItemStackUtil.*;
+import static com.github.hokutomc.lib.item.HT_ItemStackUtil.createItemStack;
 
 /**
  * Created by user on 2014/11/26.
  */
 public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
 
+    public enum Flags {
+        A, B, C
+    }
 
+
+
+    private final HT_BasicObjectProperties<HT_BasicObjectData<?>> props;
+    final HT_BasicObjectData<EnumSet<Flags>> save_flags;
+
+
+    @SuppressWarnings("unchecked")
     public TestTE () {
         super(new TestTEProcess());
+        this.props = new HT_BasicObjectProperties<>();
+        this.save_flags = HT_BasicObjectData.createEnumSetData("flagsTE");
+        this.save_flags.update(this, EnumSet.noneOf(Flags.class));
+        this.props.addProperty(save_flags);
     }
 
     @Override
@@ -61,6 +79,19 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
     @Override
     public boolean HT_isItemValidForSlot (int slot, ItemStack itemStack) {
         return true;
+    }
+
+    @Override
+    public void HT_readFromNBT (NBTTagCompound nbtTagCompound) {
+        super.HT_readFromNBT(nbtTagCompound);
+        this.props.HT_readFromNBT(nbtTagCompound, this);
+    }
+
+    @Override
+    public void HT_writeToNBT (NBTTagCompound nbtTagCompound) {
+        super.HT_writeToNBT(nbtTagCompound);
+        this.props.HT_writeToNBT(nbtTagCompound, this);
+        NBTTagCompound nbtTagCompound1 = nbtTagCompound;
     }
 
     public static class TestTEProcess extends HT_Process<FurnaceLikeRecipe> {

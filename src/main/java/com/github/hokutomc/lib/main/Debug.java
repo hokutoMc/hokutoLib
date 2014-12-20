@@ -135,24 +135,22 @@ public class Debug {
 
         blockMulti = new HT_MultiBlock("hokutoLib", Material.wood, "multiblock", new String[]{"one", "two"}).HT_setCreativeTab(tabHTLib).HT_register();
         blockFall = new HT_BlockFalling("hokutoLib", Material.sand, "falling").HT_setCreativeTab(tabHTLib).HT_register();
-        blockTE = new HT_ContainerBlock("hokutoLib", Material.iron, "te"){
+        blockTE = new TestContainerBlock().HT_setCreativeTab(tabHTLib).HT_register();
+        new HT_ContainerBlock("hokutoLib", Material.iron, "dummy") {
 
             @Override
             public TileEntity createNewTileEntity (World p_149915_1_, int p_149915_2_) {
-                return new TestTE();
-            }
-
-            @Override
-            public boolean HT_onBlockActivated (World world, int x, int y, int z, EntityPlayer player, int side, float playerX, float playerY, float playerZ) {
-                if (!world.isRemote & !player.isSneaking()) { player.openGui(Mod_HTLib.INSTANCE, 0, world, x, y, z); return true; }
-                return false;
+                return new DummyTE();
             }
         }.HT_setCreativeTab(tabHTLib).HT_register();
 
-        HT_Registries.registerCommonTileEntity(TestTE.class, "htTest");
     }
 
     public static void init () {
+
+        HT_Registries.registerCommonTileEntity(TestTE.class, "htTest");
+        HT_Registries.registerCommonTileEntity(DummyTE.class, "ht_dummy");
+
         new HT_GuiHandler().HT_register(Mod_HTLib.INSTANCE).HT_addGui(0,
                 new HT_GuiAction<ContainerSampleTE>() {
                     @Override
@@ -167,6 +165,8 @@ public class Debug {
                     }
                 }
         );
+
+
     }
 
 

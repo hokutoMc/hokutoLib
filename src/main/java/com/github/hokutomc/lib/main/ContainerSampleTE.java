@@ -1,7 +1,7 @@
 package com.github.hokutomc.lib.main;
 
+import com.github.hokutomc.lib.client.gui.HT_GuiContainer;
 import com.github.hokutomc.lib.inventory.HT_ContainerProcessor;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
@@ -29,7 +29,7 @@ public class ContainerSampleTE extends HT_ContainerProcessor<TestTE> {
         return true;
     }
 
-    public static class GuiSampleTE extends GuiContainer{
+    public static class GuiSampleTE extends HT_GuiContainer<TestTE>{
 
         private static ResourceLocation texture = new ResourceLocation("textures/gui/container/furnace.png");
 
@@ -44,6 +44,12 @@ public class ContainerSampleTE extends HT_ContainerProcessor<TestTE> {
             int k = (this.width - this.xSize) / 2;
             int l = (this.height - this.ySize) / 2;
             this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
+        }
+
+        @Override
+        protected void drawGuiContainerForegroundLayer (int p_146979_1_, int p_146979_2_) {
+            super.drawGuiContainerForegroundLayer(p_146979_1_, p_146979_2_);
+            this.drawString(this.fontRendererObj, this.HT_getTileEntity().save_flags.get(null).toString(), 10, 64, 16);
         }
     }
 }
