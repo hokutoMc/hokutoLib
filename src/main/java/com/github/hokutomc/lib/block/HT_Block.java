@@ -33,9 +33,11 @@ public class HT_Block<T extends HT_Block> extends Block {
     private String shortName;
     private String innerName;
     protected boolean HT_fallInstantly;
+    public String modid;
 
     public HT_Block (String modid, Material material, String innerName) {
         super(material);
+        this.modid = modid;
         this.shortName = innerName;
         this.HT_setInnerName(modid, innerName);
         this.HT_setTextureName(modid, innerName);
@@ -122,6 +124,10 @@ public class HT_Block<T extends HT_Block> extends Block {
     private void HT_fallAnvil (EntityFallingBlock entityfallingblock) {
     }
 
+    @Override
+    public String toString () {
+        return this.HT_getShortName();
+    }
 
     // Wrapping ===
 
@@ -1073,4 +1079,7 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
 
+    public void HT_setBlockBounds (float xMin, float yMin, float zMin, float xMax, float yMax, float zMax) {
+        this.setBlockBounds(xMin, yMin, zMin, xMax, yMax, zMax);
+    }
 }

@@ -13,6 +13,7 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -69,5 +70,9 @@ public final class HT_Registries {
 
     public static void registerDispencerBehavior (Item item, IBehaviorDispenseItem behavior) {
         BlockDispenser.dispenseBehaviorRegistry.putObject(item, behavior);
+    }
+
+    public static void registerBlock (HT_Block block, Class<? extends ItemBlock> itemBlockClass) {
+        GameRegistry.registerBlock(block, itemBlockClass, block.HT_getShortName());
     }
 }

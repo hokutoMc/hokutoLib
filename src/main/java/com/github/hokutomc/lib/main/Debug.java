@@ -1,10 +1,7 @@
 package com.github.hokutomc.lib.main;
 
 import com.github.hokutomc.lib.HT_Registries;
-import com.github.hokutomc.lib.block.HT_Block;
-import com.github.hokutomc.lib.block.HT_BlockFalling;
-import com.github.hokutomc.lib.block.HT_ContainerBlock;
-import com.github.hokutomc.lib.block.HT_MultiBlock;
+import com.github.hokutomc.lib.block.*;
 import com.github.hokutomc.lib.client.gui.HT_GuiAction;
 import com.github.hokutomc.lib.client.gui.HT_GuiHandler;
 import com.github.hokutomc.lib.item.*;
@@ -39,6 +36,7 @@ public class Debug {
     private static HT_BlockFalling blockFall;
 
     public static void preinit () {
+
         itemDurable = new HT_ItemTool("hokutoLib", "tool") {
 
             @Override
@@ -143,6 +141,8 @@ public class Debug {
                 return new DummyTE();
             }
         }.HT_setCreativeTab(tabHTLib).HT_register();
+
+        new HT_BlockDoubleSlab("hokutoLib", Material.cloth, "slab", "a", "b").HT_setCreativeTab(tabHTLib).HT_register();
 
     }
 
