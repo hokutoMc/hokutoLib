@@ -1,11 +1,14 @@
 package com.github.hokutomc.lib.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Facing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -102,5 +105,20 @@ public class HT_BlockSingleSlab extends HT_MultiBlock {
         }
     }
 
+    @Override
+    public boolean HT_shouldSideBeRendered (IBlockAccess world, int x, int y, int z, int side) {
+        if (side != 1 && side != 0 && !super.HT_shouldSideBeRendered(world, x, y, z, side)) {
+            return false;
+        } else {
+            int i1 = x + Facing.offsetsXForSide[Facing.oppositeSide[side]];
+            int j1 = y + Facing.offsetsYForSide[Facing.oppositeSide[side]];
+            int k1 = z + Facing.offsetsZForSide[Facing.oppositeSide[side]];
+            boolean flag = ((HT_BlockSingleSlab) world.getBlock(i1, j1, k1)).isUpper;
+            return flag ? (side == 0 || (side == 1 && super.HT_shouldSideBeRendered(world, x, y, z, side) || !isHalfSlab(world.getBlock(x, y, z)) || (world.getBlockMetadata(x, y, z) & 8) == 0)) : (side == 1 || (side == 0 && super.HT_shouldSideBeRendered(world, x, y, z, side) || !isHalfSlab(world.getBlock(x, y, z)) || (world.getBlockMetadata(x, y, z) & 8) != 0));
+        }
+    }
 
+    private boolean isHalfSlab (Block block) {
+        return block instanceof HT_BlockSingleSlab || block == Blocks.stone_slab || block == Blocks.wooden_slab;
+    }
 }
