@@ -1,7 +1,6 @@
 package com.github.hokutomc.lib.nbt;
 
 import com.github.hokutomc.lib.reflect.HT_Reflections;
-import com.sun.istack.internal.NotNull;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.EnumSet;
@@ -55,7 +54,7 @@ public final class HT_NBTUtil {
         return enumSet;
     }
 
-    public static <E extends Enum<E>> EnumSet<E> readEnumSetFromNBT (String key, NBTTagCompound nbtTagCompound, @NotNull E... enumClass) {
+    public static <E extends Enum<E>> EnumSet<E> readEnumSetFromNBT (String key, NBTTagCompound nbtTagCompound, E... enumClass) {
         return readEnumSetFromNBT(key, nbtTagCompound, HT_Reflections.getClass(enumClass));
     }
 
@@ -67,7 +66,7 @@ public final class HT_NBTUtil {
      * @param enumClass
      * @param <E>
      */
-    public static <E extends Enum<E>> void writeEnumSetToNBT (String key, NBTTagCompound nbtTagCompound, @NotNull EnumSet<E> enumSet, @NotNull Class<E> enumClass) {
+    public static <E extends Enum<E>> void writeEnumSetToNBT (String key, NBTTagCompound nbtTagCompound, EnumSet<E> enumSet, Class<E> enumClass) {
         int length = enumClass.getEnumConstants().length / 32 + 1;
         int[] intArray = new int[length];
         for (int index = 0; index < length; index++) {
@@ -92,12 +91,12 @@ public final class HT_NBTUtil {
     }
 
     @SafeVarargs
-    public static <E extends Enum<E>> void writeEnumSetToNBT (String key, NBTTagCompound nbtTagCompound, EnumSet<E> enumSet, @NotNull E... enumClass) {
+    public static <E extends Enum<E>> void writeEnumSetToNBT (String key, NBTTagCompound nbtTagCompound, EnumSet<E> enumSet, E... enumClass) {
         writeEnumSetToNBT(key, nbtTagCompound, enumSet, HT_Reflections.getClass(enumClass));
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> Class<T> readClassFromNBT (String key, NBTTagCompound nbtTagCompound, @NotNull T... empty) {
+    public static <T> Class<T> readClassFromNBT (String key, NBTTagCompound nbtTagCompound, T... empty) {
         try {
             Class clazz = Class.forName(nbtTagCompound.getString(key));
             if (HT_Reflections.getClass(empty).isAssignableFrom(clazz)){

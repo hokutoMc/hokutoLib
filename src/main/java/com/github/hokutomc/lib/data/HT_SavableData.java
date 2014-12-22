@@ -1,9 +1,8 @@
 package com.github.hokutomc.lib.data;
 
 import com.github.hokutomc.lib.nbt.HT_I_NBTData;
-import com.github.hokutomc.lib.reflect.HT_Reflections;
 import com.github.hokutomc.lib.nbt.HT_NBTUtil;
-import com.sun.istack.internal.NotNull;
+import com.github.hokutomc.lib.reflect.HT_Reflections;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +22,7 @@ public abstract class HT_SavableData<E, P, S extends HT_SavableData<E, P, S>>
     private Object data;
 
     @SafeVarargs
-    public HT_SavableData (String nbtKey, @NotNull P... empty) {
+    public HT_SavableData (String nbtKey, P... empty) {
         this.nbtKey = nbtKey;
         this.type = HT_Reflections.getClass(empty);
     }

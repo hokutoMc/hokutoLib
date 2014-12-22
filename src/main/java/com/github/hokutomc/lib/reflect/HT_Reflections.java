@@ -1,7 +1,5 @@
 package com.github.hokutomc.lib.reflect;
 
-import com.sun.istack.internal.NotNull;
-
 import java.lang.reflect.Array;
 import java.util.EnumSet;
 
@@ -12,13 +10,13 @@ public final class HT_Reflections {
 
     @SuppressWarnings("unchecked")
     @SafeVarargs
-    public static <T> Class<T> getClass (@NotNull T... empty) {
+    public static <T> Class<T> getClass (T... empty) {
         return (Class<T>) empty.getClass().getComponentType();
     }
 
     @SuppressWarnings("unchecked")
     @SafeVarargs
-    public static <E extends Enum<E>> Class<EnumSet<E>> getEnumSetClass (@NotNull E... empty) {
+    public static <E extends Enum<E>> Class<EnumSet<E>> getEnumSetClass (E... empty) {
         return (Class<EnumSet<E>>) EnumSet.noneOf(getClass(empty)).getClass();
     }
 
