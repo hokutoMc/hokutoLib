@@ -56,6 +56,7 @@ public class HT_Block<T extends HT_Block> extends Block {
         return side == meta;
     }
 
+
     public void HT_determineMetadataByDirection (World world, int x, int y, int z) {
         if (!world.isRemote) {
             Block block = world.getBlock(x, y, z - 1);
