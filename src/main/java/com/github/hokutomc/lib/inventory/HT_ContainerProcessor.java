@@ -10,20 +10,20 @@ import net.minecraft.tileentity.TileEntity;
  * Created by user on 2014/11/28.
  */
 public abstract class HT_ContainerProcessor<T extends TileEntity> extends Container {
-    private final InventoryPlayer inventoryPlayer;
-    public final T tileEntity;
+    private final InventoryPlayer m_inventoryPlayer;
+    public final T m_tileEntity;
 
     public HT_ContainerProcessor (EntityPlayer player, T tileEntity) {
-        this.tileEntity = tileEntity;
-        this.inventoryPlayer = player.inventory;
+        this.m_tileEntity = tileEntity;
+        this.m_inventoryPlayer = player.inventory;
     }
 
-    protected abstract int HT_getInventorySize ();
+    protected abstract int getInventorySize ();
 
-    protected HT_ContainerProcessor HT_setPlayerSlotPosition(int bottomY) {
+    protected HT_ContainerProcessor setPlayerSlotPosition (int bottomY) {
         for (int i = 0; i < 3; ++i){
             for (int j = 0; j < 9; ++j){
-                this.addSlotToContainer(new Slot(inventoryPlayer,
+                this.addSlotToContainer(new Slot(m_inventoryPlayer,
                         j + i * 9 + 9,
                         8 + j * 18,
                         bottomY - 67 + i * 18));
@@ -31,7 +31,7 @@ public abstract class HT_ContainerProcessor<T extends TileEntity> extends Contai
         }
 
         for (int i = 0; i < 9; ++i){
-            this.addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, bottomY - 9));
+            this.addSlotToContainer(new Slot(m_inventoryPlayer, i, 8 + i * 18, bottomY - 9));
         }
         return this;
     }

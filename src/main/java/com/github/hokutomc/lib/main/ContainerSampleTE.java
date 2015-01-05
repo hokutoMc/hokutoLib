@@ -14,13 +14,13 @@ import org.lwjgl.opengl.GL11;
 public class ContainerSampleTE extends HT_ContainerProcessor<TestTE> {
     public ContainerSampleTE (EntityPlayer player, TestTE tileEntity) {
         super(player, tileEntity);
-        this.HT_setPlayerSlotPosition(151);
+        this.setPlayerSlotPosition(151);
         this.addSlotToContainer(new Slot(tileEntity, 0, 56, 17));
         this.addSlotToContainer(new SlotFurnace(player, tileEntity, 1, 116, 35));
     }
 
     @Override
-    protected int HT_getInventorySize () {
+    protected int getInventorySize () {
         return 2;
     }
 
@@ -49,7 +49,7 @@ public class ContainerSampleTE extends HT_ContainerProcessor<TestTE> {
         @Override
         protected void drawGuiContainerForegroundLayer (int p_146979_1_, int p_146979_2_) {
             super.drawGuiContainerForegroundLayer(p_146979_1_, p_146979_2_);
-            this.drawString(this.fontRendererObj, this.HT_getTileEntity().save_flags.get(null).toString(), 10, 64, 16);
+            this.drawString(this.fontRendererObj, this.getTileEntity().save_flags.get(null).toString(), 10, 64, 16);
         }
     }
 }

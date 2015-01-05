@@ -15,24 +15,24 @@ import java.util.ArrayList;
  */
 public class HT_GuiHandler implements IGuiHandler {
 
-    private ArrayList<HT_GuiRegistration> guiRegistrations = Lists.newArrayList();
+    private ArrayList<HT_GuiRegistration> m_listGuiRegistration = Lists.newArrayList();
 
 
-    public HT_GuiHandler HT_register (Object mod) {
+    public HT_GuiHandler register (Object mod) {
         HT_Registries.registerGUIHandler(mod, this);
         return this;
     }
 
-    public HT_GuiHandler HT_addGui (int id, HT_GuiAction<? extends Container> serverAction, HT_GuiAction<? extends Gui> clientAction) {
-        this.guiRegistrations.add(new HT_GuiRegistration(id, serverAction, clientAction));
+    public HT_GuiHandler addGui (int id, HT_GuiAction<? extends Container> serverAction, HT_GuiAction<? extends Gui> clientAction) {
+        this.m_listGuiRegistration.add(new HT_GuiRegistration(id, serverAction, clientAction));
         return this;
     }
 
     @Override
     public Object getServerGuiElement (int ID, EntityPlayer player, World world, int x, int y, int z) {
-        for (HT_GuiRegistration e : guiRegistrations) {
+        for (HT_GuiRegistration e : m_listGuiRegistration) {
             if (ID == e.id | e.container != null) {
-                return e.HT_actionServer(player, world, x, y, z);
+                return e.actionServer(player, world, x, y, z);
             }
         }
         return null;
@@ -40,9 +40,9 @@ public class HT_GuiHandler implements IGuiHandler {
 
     @Override
     public Object getClientGuiElement (int ID, EntityPlayer player, World world, int x, int y, int z) {
-        for (HT_GuiRegistration e : guiRegistrations) {
+        for (HT_GuiRegistration e : m_listGuiRegistration) {
             if (ID == e.id | e.gui != null) {
-                return e.HT_actionClient(player, world, x, y, z);
+                return e.actionClient(player, world, x, y, z);
             }
         }
         return null;
@@ -60,11 +60,11 @@ public class HT_GuiHandler implements IGuiHandler {
             this.gui = client;
         }
 
-        public Object HT_actionServer (EntityPlayer player, World world, int x, int y, int z) {
+        public Object actionServer (EntityPlayer player, World world, int x, int y, int z) {
             return this.container.get(player, world, x, y, z);
         }
 
-        public Object HT_actionClient (EntityPlayer player, World world, int x, int y, int z) {
+        public Object actionClient (EntityPlayer player, World world, int x, int y, int z) {
             return this.gui.get(player, world, x, y, z);
         }
     }

@@ -28,7 +28,7 @@ public class Debug {
 
 
     public static HT_ItemDurable itemDurable;
-    public static HT_AbstractItem itemMulti;
+    public static HT_Item itemMulti;
     public static HT_MultiBlock blockMulti;
     public static HT_Block blockTE;
     public static CreativeTabs tabHTLib = HT_CreativeTabsUtil.create("hokutoLib", "test", Items.iron_sword);
@@ -45,18 +45,18 @@ public class Debug {
             }
 
             @Override
-            public int HT_getMaxDurability (ItemStack itemStack) {
+            public int getMaxDurability (ItemStack itemStack) {
                 return 1000;
             }
 
             @Override
-            protected int HT_getBounusWithEfficency (ItemStack itemStack) {
+            protected int HT_getBonusWithEfficency (ItemStack itemStack) {
                 return 0;
             }
 
             @Override
             public void HT_registerMulti (Item item, CreativeTabs tab, List<ItemStack> list) {
-                list.add(this.HT_create(0));
+                list.add(this.create(0));
             }
 
             @Override
@@ -65,34 +65,34 @@ public class Debug {
             }
 
             @Override
-            protected int HT_getDamageBreakingBlock (ItemStack itemStack, Block block, int x, int y, int z) {
+            protected int getDamageBreakingBlock (ItemStack itemStack, Block block, int x, int y, int z) {
                 return 10;
             }
 
             @Override
-            protected int HT_getDamageHittingEntity (ItemStack itemStack, EntityLivingBase target) {
+            protected int getDamageHittingEntity (ItemStack itemStack, EntityLivingBase target) {
                 return 10;
             }
 
             @Override
-            protected ToolMaterial HT_getToolMaterial (ItemStack stack) {
+            protected ToolMaterial getToolMaterial (ItemStack stack) {
                 return ToolMaterial.IRON;
             }
 
             @Override
-            protected String HT_getToolType (ItemStack itemStack) {
+            protected String getToolType (ItemStack itemStack) {
                 return "pickaxe";
             }
 
             @Override
-            protected float HT_getMaxAttackDamage (ItemStack itemStack) {
+            protected float getMaxAttackDamage (ItemStack itemStack) {
                 return 4.0f;
             }
-        }.HT_setTextureName("iron_sword").HT_setCreativeTab(tabHTLib).HT_register();
+        }.HT_setTextureName("iron_sword").HT_setCreativeTab(tabHTLib).register();
 
         itemArmor = new HT_ItemArmor("hokutoLib", "armor") {
             @Override
-            protected ItemArmor.ArmorMaterial HT_getMaterial (ItemStack itemStack) {
+            protected ItemArmor.ArmorMaterial getArmorMaterial (ItemStack itemStack) {
                 return ItemArmor.ArmorMaterial.CHAIN;
             }
 
@@ -102,7 +102,7 @@ public class Debug {
             }
 
             @Override
-            protected float HT_getPartialDurability (ItemStack armor, Part part) {
+            protected float getPartialDurability (ItemStack armor, Part part) {
                 switch (part) {
                     case HEAD:
                         return 6.0F;
@@ -118,7 +118,7 @@ public class Debug {
             }
 
             @Override
-            public int HT_getMaxDurability (ItemStack itemStack) {
+            public int getMaxDurability (ItemStack itemStack) {
                 return 1000;
             }
 
@@ -128,21 +128,21 @@ public class Debug {
                     list.add(this.HT_create(part, 0));
                 }
             }
-        }.HT_setCreativeTab(tabHTLib).HT_register();
-        itemMulti = new HT_MultiItem("hokutoLib", "multi", new String[]{"a", "b"}).HT_setCreativeTab(tabHTLib).HT_register();
+        }.HT_setCreativeTab(tabHTLib).register();
+        itemMulti = new HT_MultiItem("hokutoLib", "multi", new String[]{"a", "b"}).HT_setCreativeTab(tabHTLib).register();
 
-        blockMulti = new HT_MultiBlock("hokutoLib", Material.wood, "multiblock", new String[]{"one", "two"}).HT_setCreativeTab(tabHTLib).HT_register();
-        blockFall = new HT_BlockFalling("hokutoLib", Material.sand, "falling").HT_setCreativeTab(tabHTLib).HT_register();
-        blockTE = new TestContainerBlock().HT_setCreativeTab(tabHTLib).HT_register();
+        blockMulti = new HT_MultiBlock("hokutoLib", Material.wood, "multiblock", new String[]{"one", "two"}).HT_setCreativeTab(tabHTLib).register();
+        blockFall = new HT_BlockFalling("hokutoLib", Material.sand, "falling").HT_setCreativeTab(tabHTLib).register();
+        blockTE = new TestContainerBlock().HT_setCreativeTab(tabHTLib).register();
         new HT_ContainerBlock("hokutoLib", Material.iron, "dummy") {
 
             @Override
             public TileEntity createNewTileEntity (World p_149915_1_, int p_149915_2_) {
                 return new DummyTE();
             }
-        }.HT_setCreativeTab(tabHTLib).HT_register();
+        }.HT_setCreativeTab(tabHTLib).register();
 
-        new HT_BlockDoubleSlab("hokutoLib", Material.cloth, "slab", "a", "b").HT_setCreativeTab(tabHTLib).HT_register();
+        new HT_BlockDoubleSlab("hokutoLib", Material.cloth, "slab", "a", "b").HT_setCreativeTab(tabHTLib).register();
 
     }
 
@@ -151,7 +151,7 @@ public class Debug {
         HT_Registries.registerCommonTileEntity(TestTE.class, "htTest");
         HT_Registries.registerCommonTileEntity(DummyTE.class, "ht_dummy");
 
-        new HT_GuiHandler().HT_register(Mod_HTLib.INSTANCE).HT_addGui(0,
+        new HT_GuiHandler().register(Mod_HTLib.INSTANCE).addGui(0,
                 new HT_GuiAction<ContainerSampleTE>() {
                     @Override
                     public ContainerSampleTE get (EntityPlayer player, World world, int x, int y, int z) {

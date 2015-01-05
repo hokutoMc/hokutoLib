@@ -16,14 +16,14 @@ import java.util.EnumSet;
 public abstract class HT_SavableData<E, P, S extends HT_SavableData<E, P, S>>
         implements HT_I_NBTData<HT_SavableData>{
 
-    protected final String nbtKey;
+    protected final String m_nbtKey;
     protected Class<P> type;
-    protected Class<? extends Enum> flagType;
-    private Object data;
+    protected Class<? extends Enum> m_flagType;
+    private Object m_data;
 
     @SafeVarargs
     public HT_SavableData (String nbtKey, P... empty) {
-        this.nbtKey = nbtKey;
+        this.m_nbtKey = nbtKey;
         this.type = HT_Reflections.getClass(empty);
     }
 
@@ -42,43 +42,43 @@ public abstract class HT_SavableData<E, P, S extends HT_SavableData<E, P, S>>
     @SuppressWarnings("unchecked")
     protected void HT_writeToNBT (NBTTagCompound nbtTagCompound, E obj) {
         if (type.isEnum()) {
-            HT_NBTUtil.writeEnumToNBT(nbtKey, nbtTagCompound, ((Enum) get(obj)));
+            HT_NBTUtil.writeEnumToNBT(m_nbtKey, nbtTagCompound, ((Enum) get(obj)));
         }
         if (type == Integer.class) {
-            nbtTagCompound.setInteger(nbtKey, (Integer) get(obj));
+            nbtTagCompound.setInteger(m_nbtKey, (Integer) get(obj));
         }
         if (type == Byte.class) {
-            nbtTagCompound.setByte(nbtKey, (Byte) get(obj));
+            nbtTagCompound.setByte(m_nbtKey, (Byte) get(obj));
         }
         if (type == Float.class) {
-            nbtTagCompound.setFloat(nbtKey, (Float) get(obj));
+            nbtTagCompound.setFloat(m_nbtKey, (Float) get(obj));
         }
         if (type == Short.class) {
-            nbtTagCompound.setShort(nbtKey, (Short) get(obj));
+            nbtTagCompound.setShort(m_nbtKey, (Short) get(obj));
         }
         if (type == String.class) {
-            nbtTagCompound.setString(nbtKey, (String) get(obj));
+            nbtTagCompound.setString(m_nbtKey, (String) get(obj));
         }
         if (type == int[].class) {
-            nbtTagCompound.setIntArray(nbtKey, (int[]) get(obj));
+            nbtTagCompound.setIntArray(m_nbtKey, (int[]) get(obj));
         }
         if (type == byte[].class) {
-            nbtTagCompound.setByteArray(nbtKey, (byte[]) get(obj));
+            nbtTagCompound.setByteArray(m_nbtKey, (byte[]) get(obj));
         }
         if (type == Boolean.class) {
-            nbtTagCompound.setBoolean(nbtKey, (Boolean) get(obj));
+            nbtTagCompound.setBoolean(m_nbtKey, (Boolean) get(obj));
         }
         if (type == Double.class) {
-            nbtTagCompound.setDouble(nbtKey, (Double) get(obj));
+            nbtTagCompound.setDouble(m_nbtKey, (Double) get(obj));
         }
         if (type == Long.class) {
-            nbtTagCompound.setLong(nbtKey, (Long) get(obj));
+            nbtTagCompound.setLong(m_nbtKey, (Long) get(obj));
         }
         if (type == ItemStack.class) {
             ((ItemStack) get(obj)).writeToNBT(nbtTagCompound);
         }
         if (EnumSet.class.isAssignableFrom(type)) {
-            HT_NBTUtil.writeEnumSetToNBT(nbtKey, nbtTagCompound, (EnumSet) get(obj), flagType);
+            HT_NBTUtil.writeEnumSetToNBT(m_nbtKey, nbtTagCompound, (EnumSet) get(obj), m_flagType);
         }
 
     }
@@ -94,56 +94,56 @@ public abstract class HT_SavableData<E, P, S extends HT_SavableData<E, P, S>>
     protected void HT_readFromNBT (NBTTagCompound nbtTagCompound, E entity){
         if (type.isEnum()) {
             Class clazz = type;
-            update(entity, (P) HT_NBTUtil.readEnumFromNBT(nbtKey, nbtTagCompound, clazz));
+            update(entity, (P) HT_NBTUtil.readEnumFromNBT(m_nbtKey, nbtTagCompound, clazz));
         }
         if (type == Integer.class) {
-            update(entity, (P) (Integer) nbtTagCompound.getInteger(nbtKey));
+            update(entity, (P) (Integer) nbtTagCompound.getInteger(m_nbtKey));
         }
         if (type == Byte.class) {
-            update(entity, (P) (Byte) nbtTagCompound.getByte(nbtKey));
+            update(entity, (P) (Byte) nbtTagCompound.getByte(m_nbtKey));
         }
         if (type == Float.class) {
-            update(entity, (P) (Float) nbtTagCompound.getFloat(nbtKey));
+            update(entity, (P) (Float) nbtTagCompound.getFloat(m_nbtKey));
         }
         if (type == Short.class) {
-            update(entity, (P) (Short) nbtTagCompound.getShort(nbtKey));
+            update(entity, (P) (Short) nbtTagCompound.getShort(m_nbtKey));
         }
         if (type == String.class) {
-            update(entity, (P) nbtTagCompound.getString(nbtKey));
+            update(entity, (P) nbtTagCompound.getString(m_nbtKey));
         }
         if (type == int[].class) {
-            update(entity, (P) nbtTagCompound.getIntArray(nbtKey));
+            update(entity, (P) nbtTagCompound.getIntArray(m_nbtKey));
         }
         if (type == byte[].class) {
-            update(entity, (P) nbtTagCompound.getByteArray(nbtKey));
+            update(entity, (P) nbtTagCompound.getByteArray(m_nbtKey));
         }
         if (type == Boolean.class) {
-            update(entity, (P) (Boolean) nbtTagCompound.getBoolean(nbtKey));
+            update(entity, (P) (Boolean) nbtTagCompound.getBoolean(m_nbtKey));
         }
         if (type == Double.class) {
-            update(entity, (P) (Double) nbtTagCompound.getDouble(nbtKey));
+            update(entity, (P) (Double) nbtTagCompound.getDouble(m_nbtKey));
         }
         if (type == Long.class) {
-            update(entity, (P) (Long) nbtTagCompound.getLong(nbtKey));
+            update(entity, (P) (Long) nbtTagCompound.getLong(m_nbtKey));
         }
         if (type == ItemStack.class) {
             update(entity, (P) ItemStack.loadItemStackFromNBT(nbtTagCompound));
         }
         if (EnumSet.class.isAssignableFrom(type)) {
-            if (flagType == null) {
+            if (m_flagType == null) {
                 try {
                     throw new NBTException("Data of EnumSet should indicate the type of the set's elements. You can use HT_BasicObjectData.createEnumSetData()");
                 } catch (NBTException e) {
                     e.printStackTrace();
                 }
             }
-            update(entity, (P) HT_NBTUtil.readEnumSetFromNBT(nbtKey, nbtTagCompound, flagType));
+            update(entity, (P) HT_NBTUtil.readEnumSetFromNBT(m_nbtKey, nbtTagCompound, m_flagType));
         }
         update(entity, (P) ItemStack.loadItemStackFromNBT(nbtTagCompound));
     }
 
     public String getNBTKey () {
-        return nbtKey;
+        return m_nbtKey;
     }
 
 

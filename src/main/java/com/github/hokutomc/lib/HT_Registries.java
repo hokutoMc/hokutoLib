@@ -3,7 +3,7 @@ package com.github.hokutomc.lib;
 
 import com.github.hokutomc.lib.block.HT_Block;
 import com.github.hokutomc.lib.block.HT_MultiItemBlock;
-import com.github.hokutomc.lib.item.HT_AbstractItem;
+import com.github.hokutomc.lib.item.HT_Item;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -38,7 +38,7 @@ public final class HT_Registries {
         return block;
     }
 
-    public static <T extends HT_AbstractItem> T registerItem (T item) {
+    public static <T extends HT_Item> T registerItem (T item) {
         GameRegistry.registerItem(item, item.getShortName());
         return item;
     }

@@ -4,7 +4,7 @@ package com.github.hokutomc.lib.main;
 import com.github.hokutomc.lib.HT_ModVersion;
 import com.github.hokutomc.lib.common.config.HT_Config;
 import com.github.hokutomc.lib.item.HT_ItemTool;
-import com.github.hokutomc.lib.util.HT_EntityUtil;
+import com.github.hokutomc.lib.entity.HT_EntityUtil;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -36,12 +36,12 @@ public class Mod_HTLib {
         version = new HT_ModVersion(this, event).apply();
         config = new HT_Config(event) {
             @Override
-            public void HT_configure () {
+            public void configure () {
                 isDebug = 1 == this.getInt("isDebugMode", "all", 0, 0, 1, "0 : not in debug mode, 1 : debug mods");
             }
         };
 
-        config.HT_apply();
+        config.apply();
 
         if (isDebug) {
             Debug.preinit();
@@ -71,7 +71,7 @@ public class Mod_HTLib {
             }
             float damage = itemObj.HT_getAttackDamage(tool);
             float reaching = HT_EntityUtil.getReachingSpeed(event.entityPlayer, event.target);
-            float bonus = itemObj.HT_getRangeBonus(tool, event.entityPlayer.getDistanceToEntity(event.target));
+            float bonus = itemObj.getRangeBonus(tool, event.entityPlayer.getDistanceToEntity(event.target));
             damage *= bonus;
             damage *= Math.pow(2.0, reaching);
             damage *= Math.pow(1.4, event.entityPlayer.posY - event.target.posY);

@@ -118,7 +118,7 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
         @Override
         public FurnaceLikeRecipe HT_getCurrentRecipe () {
             for (FurnaceLikeRecipe e : recipeList) {
-                if (e.HT_doesMatchInput(this.HT_getInventory().getStackInSlot(0))) return e;
+                if (e.doesMatchInput(this.HT_getInventory().getStackInSlot(0))) return e;
             }
             return null;
         }
@@ -148,9 +148,9 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
             this.HT_setInventorySlotContents(2, null);
             if (this.HT_getCurrentRecipe() == null) return;
             if (this.HT_getStackInSlot(1) == null) {
-                this.HT_setInventorySlotContents(1, this.HT_getCurrentRecipe().HT_getResults()[0].copy());
+                this.HT_setInventorySlotContents(1, this.HT_getCurrentRecipe().getResults()[0].copy());
             } else {
-                this.HT_getStackInSlot(1).stackSize += this.HT_getCurrentRecipe().HT_getResults()[0].stackSize;
+                this.HT_getStackInSlot(1).stackSize += this.HT_getCurrentRecipe().getResults()[0].stackSize;
             }
         }
     }

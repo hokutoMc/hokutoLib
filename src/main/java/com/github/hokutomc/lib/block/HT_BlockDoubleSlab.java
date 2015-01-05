@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
@@ -20,25 +19,25 @@ import java.util.Random;
  * Created by user on 2014/12/21.
  */
 public class HT_BlockDoubleSlab extends HT_MultiBlock {
-    public final HT_BlockSingleSlab upper;
-    public final HT_BlockSingleSlab lower;
+    public final HT_BlockSingleSlab m_upper;
+    public final HT_BlockSingleSlab m_lower;
 
     public HT_BlockDoubleSlab (String modid, Material material, String innerName, String... subNameList) {
         super(modid, material, innerName, subNameList);
-        this.upper = this.HT_getPartialSlab(true);
-        this.lower = this.HT_getPartialSlab(false);
+        this.m_upper = this.getPartialSlab(true);
+        this.m_lower = this.getPartialSlab(false);
     }
 
     @Override
-    public HT_MultiBlock HT_register () {
+    public HT_MultiBlock register () {
         HT_Registries.registerBlock(this, HT_ItemSlab.class);
-        HT_Registries.registerBlock(this.upper);
-        HT_Registries.registerBlock(this.lower);
+        HT_Registries.registerBlock(this.m_upper);
+        HT_Registries.registerBlock(this.m_lower);
         return this;
     }
 
-    private HT_BlockSingleSlab HT_getPartialSlab (boolean isUpper) {
-        return new HT_BlockSingleSlab(this.modid, this.HT_getMaterial(), super.HT_getShortName(), isUpper, this, this.HT_getMultiNames());
+    private HT_BlockSingleSlab getPartialSlab (boolean isUpper) {
+        return new HT_BlockSingleSlab(this.m_modid, this.HT_getMaterial(), super.HT_getShortName(), isUpper, this, this.getMultiNames());
     }
 
     @Override
@@ -70,10 +69,10 @@ public class HT_BlockDoubleSlab extends HT_MultiBlock {
     //    @Override
 //    public int HT_onBlockPlaced (World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta) {
 //        if (side == 1 || (double)(hitY - y) <= 0.5D) {
-//            world.setBlock(x, y, z, this.lower, meta, 7);
+//            world.setBlock(x, y, z, this.m_lower, meta, 7);
 //            return meta;
 //        }
-//        world.setBlock(x, y, z, this.upper, meta, 7);
+//        world.setBlock(x, y, z, this.m_upper, meta, 7);
 //
 //        return meta;
 //    }
@@ -100,7 +99,7 @@ public class HT_BlockDoubleSlab extends HT_MultiBlock {
                 Block block = world.getBlock(x, y, z);
                 int i1 = world.getBlockMetadata(x, y, z);
 
-                if ((side == 1 && block == this.blockDouble.lower || side == 0 && block == this.blockDouble.upper) && i1 == itemStack.getItemDamage()) {
+                if ((side == 1 && block == this.blockDouble.m_lower || side == 0 && block == this.blockDouble.m_upper) && i1 == itemStack.getItemDamage()) {
                     if (world.checkNoEntityCollision(this.blockDouble.getCollisionBoundingBoxFromPool(world, x, y, z)) && placeDoubleBlock(world, x, y, z, i1)) {
                         playBlockSound(world, x, y, z);
                         --itemStack.stackSize;
@@ -122,7 +121,7 @@ public class HT_BlockDoubleSlab extends HT_MultiBlock {
             Block block = world.getBlock(x, y, z);
             int blockMeta = world.getBlockMetadata(x, y, z);
 
-            if ((side == 1 && block == this.blockDouble.lower || side == 0 && block == this.blockDouble.upper) && blockMeta == itemStack.getItemDamage()) {
+            if ((side == 1 && block == this.blockDouble.m_lower || side == 0 && block == this.blockDouble.m_upper) && blockMeta == itemStack.getItemDamage()) {
                 return true;
             } else {
                 switch (side) {
@@ -137,7 +136,7 @@ public class HT_BlockDoubleSlab extends HT_MultiBlock {
 
                 Block block1 = world.getBlock(x, y, z);
                 int blockMeta1 = world.getBlockMetadata(x, y, z);
-                return (block1 == this.blockDouble.lower || block1 == this.blockDouble.upper) && blockMeta1 == itemStack.getItemDamage() || super.func_150936_a(world, x0, y0, z0, side, player, itemStack);
+                return (block1 == this.blockDouble.m_lower || block1 == this.blockDouble.m_upper) && blockMeta1 == itemStack.getItemDamage() || super.func_150936_a(world, x0, y0, z0, side, player, itemStack);
             }
         }
 
@@ -174,11 +173,11 @@ public class HT_BlockDoubleSlab extends HT_MultiBlock {
                 }
 
                 return true;
-            } else if (block == this.blockDouble.lower && blockMeta == itemStack.getItemDamage() && placeDoubleBlock(world, x, y, z, blockMeta)) {
+            } else if (block == this.blockDouble.m_lower && blockMeta == itemStack.getItemDamage() && placeDoubleBlock(world, x, y, z, blockMeta)) {
                 playBlockSound(world, x, y, z);
                 --itemStack.stackSize;
                 return true;
-            } else if (block == this.blockDouble.upper && blockMeta == itemStack.getItemDamage() && placeDoubleBlock(world, x, y, z, blockMeta)) {
+            } else if (block == this.blockDouble.m_upper && blockMeta == itemStack.getItemDamage() && placeDoubleBlock(world, x, y, z, blockMeta)) {
                 playBlockSound(world, x, y, z);
                 --itemStack.stackSize;
                 return true;
@@ -196,21 +195,21 @@ public class HT_BlockDoubleSlab extends HT_MultiBlock {
         }
 
         private boolean placeUpperBlock (World world, int x, int y, int z, int meta) {
-            return world.setBlock(x, y, z, this.blockDouble.upper, meta, 3);
+            return world.setBlock(x, y, z, this.blockDouble.m_upper, meta, 3);
         }
 
         private boolean placeLowerBlock (World world, int x, int y, int z, int meta) {
-            return world.setBlock(x, y, z, this.blockDouble.lower, meta, 3);
+            return world.setBlock(x, y, z, this.blockDouble.m_lower, meta, 3);
         }
 
 //        @Override
 //        public boolean placeBlockAt (ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
-//            if (this.HT_canAddSlab(stack, world, x, y - 1, z)) {
+//            if (this.canAddSlab(stack, world, x, y - 1, z)) {
 //                world.setBlock(x, y - 1, z, this.blockDouble, stack.getItemDamage(), 7);
 //            } else if (side == 1 || (double)(hitY - y) <= 0.5D) {
-//                world.setBlock(x, y, z, this.blockDouble.lower, stack.getItemDamage(), 7);
+//                world.setBlock(x, y, z, this.blockDouble.m_lower, stack.getItemDamage(), 7);
 //            } else {
-//                world.setBlock(x, y, z, this.blockDouble.upper, stack.getItemDamage(), 7);
+//                world.setBlock(x, y, z, this.blockDouble.m_upper, stack.getItemDamage(), 7);
 //            }
 //            Block block1 = world.getBlock(x, y, z);
 //            block1.onBlockPlacedBy(world, x, y, z, player, stack);
@@ -218,10 +217,6 @@ public class HT_BlockDoubleSlab extends HT_MultiBlock {
 //            return true;
 //        }
 
-        private boolean HT_canAddSlab (ItemStack itemStack, World world, int x, int y, int z) {
-            Item item = itemStack.getItem();
-            Block block1 = world.getBlock(x, y, z);
-            return item == Item.getItemFromBlock(this.blockDouble) && (block1 == this.blockDouble.upper || block1 == this.blockDouble.lower) && itemStack.getItemDamage() == world.getBlockMetadata(x, y, z);
-        }
+
     }
 }

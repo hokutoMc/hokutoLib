@@ -23,16 +23,16 @@ public abstract class HT_ItemArmor extends HT_ItemDurable implements ISpecialArm
     }
 
     public ItemStack HT_create (Part part, int meta) {
-        ItemStack stack = this.HT_create(meta);
+        ItemStack stack = this.create(meta);
         stack.stackTagCompound.setInteger(KEY_PART, part.ordinal());
         return stack;
     }
 
-    public Part HT_getPart (ItemStack itemStack) {
+    public Part getPart (ItemStack itemStack) {
         return Part.values()[itemStack.stackTagCompound.getInteger(KEY_PART)];
     }
 
-    protected abstract ItemArmor.ArmorMaterial HT_getMaterial (ItemStack itemStack);
+    protected abstract ItemArmor.ArmorMaterial getArmorMaterial (ItemStack itemStack);
 
     @Override
     public ItemStack HT_onItemRightClick (ItemStack itemStack, World world, EntityPlayer player) {
@@ -54,20 +54,20 @@ public abstract class HT_ItemArmor extends HT_ItemDurable implements ISpecialArm
 
     @Override
     public boolean isValidArmor (ItemStack stack, int armorType, Entity entity) {
-        return Part.values()[armorType] == this.HT_getPart(stack);
+        return Part.values()[armorType] == this.getPart(stack);
     }
 
     @Override
-    protected int HT_getBounusWithEfficency (ItemStack itemStack) {
+    protected int HT_getBonusWithEfficency (ItemStack itemStack) {
         return 0;
     }
 
     @Override
-    protected void HT_onUsingBrokenItem (ItemStack itemStack) {
+    protected void onUsingBrokenItem (ItemStack itemStack) {
 
     }
 
-    protected int HT_getArmorDamage (int damage, DamageSource damageSource, Part part) {
+    protected int getArmorDamage (int damage, DamageSource damageSource, Part part) {
         return 1;
     }
 
@@ -78,19 +78,19 @@ public abstract class HT_ItemArmor extends HT_ItemDurable implements ISpecialArm
 
     @Override
     public int getArmorDisplay (EntityPlayer player, ItemStack armor, int slot) {
-        float durability = ((float) this.HT_getDurability(armor)) / ((float) this.HT_getMaxDurability(armor));
+        float durability = ((float) this.getDurability(armor)) / ((float) this.getMaxDurability(armor));
 
         for (Part part : Part.values()) {
-            if (part.isSlot(slot)) return Math.round(this.HT_getPartialDurability(armor, part) * durability + 0.5F);
+            if (part.isSlot(slot)) return Math.round(this.getPartialDurability(armor, part) * durability + 0.5F);
         }
         return 0;
     }
 
-    protected abstract float HT_getPartialDurability (ItemStack armor, Part part);
+    protected abstract float getPartialDurability (ItemStack armor, Part part);
 
     @Override
     public void damageArmor (EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
-        this.HT_decreaseDurability(stack, this.HT_getArmorDamage(damage, source, Part.getBySlot(slot)));
+        this.decreaseDurabilityBy(stack, this.getArmorDamage(damage, source, Part.getBySlot(slot)));
     }
 
     public static enum Part {

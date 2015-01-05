@@ -1,4 +1,4 @@
-package com.github.hokutomc.lib.util;
+package com.github.hokutomc.lib.entity;
 
 import net.minecraft.entity.Entity;
 

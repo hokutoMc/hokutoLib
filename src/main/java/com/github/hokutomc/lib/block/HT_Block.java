@@ -30,34 +30,34 @@ import java.util.Random;
  * Created by user on 2014/09/23.
  */
 public class HT_Block<T extends HT_Block> extends Block {
-    private String shortName;
-    private String innerName;
-    protected boolean HT_fallInstantly;
-    public String modid;
+    private String m_shortName;
+    private String m_innerName;
+    protected boolean m_fallInstantly;
+    public String m_modid;
 
     public HT_Block (String modid, Material material, String innerName) {
         super(material);
-        this.modid = modid;
-        this.shortName = innerName;
+        this.m_modid = modid;
+        this.m_shortName = innerName;
         this.HT_setInnerName(modid, innerName);
         this.HT_setTextureName(modid, innerName);
     }
 
     @SuppressWarnings("unchecked")
-    public T HT_register () {
+    public T register () {
         return (T) HT_Registries.registerBlock(this);
     }
 
-    public String[] HT_getMultiNames () {
+    public String[] getMultiNames () {
         return new String[0];
     }
 
-    public boolean HT_isFrontSide (int side, int meta) {
+    public boolean isFrontSide (int side, int meta) {
         return side == meta;
     }
 
 
-    public void HT_determineMetadataByDirection (World world, int x, int y, int z) {
+    public void setMetadataByDirection (World world, int x, int y, int z) {
         if (!world.isRemote) {
             Block block = world.getBlock(x, y, z - 1);
             Block block1 = world.getBlock(x, y, z + 1);
@@ -85,20 +85,20 @@ public class HT_Block<T extends HT_Block> extends Block {
         }
     }
 
-    public void HT_fall (World world, int x, int y, int z) {
-        if (HT_canContinueFalling(world, x, y - 1, z) && y >= 0) {
+    public void fall (World world, int x, int y, int z) {
+        if (canContinueFalling(world, x, y - 1, z) && y >= 0) {
             byte b0 = 32;
 
-            if (!HT_fallInstantly && world.checkChunksExist(x - b0, y - b0, z - b0, x + b0, y + b0, z + b0)) {
+            if (!m_fallInstantly && world.checkChunksExist(x - b0, y - b0, z - b0, x + b0, y + b0, z + b0)) {
                 if (!world.isRemote) {
                     EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, (double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), this, world.getBlockMetadata(x, y, z));
-                    this.HT_fallAnvil(entityfallingblock);
+                    this.fallAnvil(entityfallingblock);
                     world.spawnEntityInWorld(entityfallingblock);
                 }
             } else {
                 world.setBlockToAir(x, y, z);
 
-                while (HT_canContinueFalling(world, x, y - 1, z) && y > 0) {
+                while (canContinueFalling(world, x, y - 1, z) && y > 0) {
                     --y;
                 }
 
@@ -109,7 +109,7 @@ public class HT_Block<T extends HT_Block> extends Block {
         }
     }
 
-    private boolean HT_canContinueFalling (World world, int x, int y, int z) {
+    private boolean canContinueFalling (World world, int x, int y, int z) {
         Block block = world.getBlock(x, y, z);
 
         if (block.isAir(world, x, y, z)) {
@@ -122,7 +122,7 @@ public class HT_Block<T extends HT_Block> extends Block {
         }
     }
 
-    private void HT_fallAnvil (EntityFallingBlock entityfallingblock) {
+    private void fallAnvil (EntityFallingBlock entityfallingblock) {
     }
 
     @Override
@@ -187,8 +187,8 @@ public class HT_Block<T extends HT_Block> extends Block {
 
     @SuppressWarnings("unchecked")
     public T HT_setInnerName (String mod, String name) {
-        this.shortName = name;
-        this.innerName = mod + "." + name;
+        this.m_shortName = name;
+        this.m_innerName = mod + "." + name;
         return (T) this;
     }
 
@@ -207,11 +207,11 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     public String HT_getUnlocalizedName () {
-        return "tile." + this.innerName;
+        return "tile." + this.m_innerName;
     }
 
     public String HT_getShortName () {
-        return this.shortName;
+        return this.m_shortName;
     }
 
 

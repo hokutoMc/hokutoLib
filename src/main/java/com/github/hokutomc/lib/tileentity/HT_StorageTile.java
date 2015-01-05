@@ -11,11 +11,11 @@ import net.minecraftforge.common.util.Constants;
  * Created by user on 2014/10/25.
  */
 public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInventory {
-    private ItemStack[] contents;
+    private ItemStack[] m_contents;
 
     public HT_StorageTile () {
         super();
-        this.contents = new ItemStack[this.getSizeInventory()];
+        this.m_contents = new ItemStack[this.getSizeInventory()];
     }
 
 
@@ -55,24 +55,24 @@ public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInve
     }
 
     public ItemStack HT_getStackInSlot (int slot) {
-        return slot < this.contents.length ? contents[slot] : null;
+        return slot < this.m_contents.length ? m_contents[slot] : null;
     }
 
     @Override
     public final ItemStack decrStackSize (int p_70298_1_, int p_70298_2_) {
-        return this.HT_takeItemStackOut(p_70298_1_, p_70298_2_);
+        return this.takeItemStackOut(p_70298_1_, p_70298_2_);
     }
 
-    public ItemStack HT_takeItemStackOut (int slot, int size) {
-        if (this.contents[slot] != null) {
-            if (this.contents[slot].stackSize <= slot) {
-                ItemStack itemStack = this.contents[slot].copy();
-                this.contents[slot] = null;
+    public ItemStack takeItemStackOut (int slot, int size) {
+        if (this.m_contents[slot] != null) {
+            if (this.m_contents[slot].stackSize <= slot) {
+                ItemStack itemStack = this.m_contents[slot].copy();
+                this.m_contents[slot] = null;
                 return itemStack;
             }
-            ItemStack itemStack = this.contents[slot].splitStack(size);
-            if (this.contents[slot].stackSize == 0) {
-                this.contents[slot] = null;
+            ItemStack itemStack = this.m_contents[slot].splitStack(size);
+            if (this.m_contents[slot].stackSize == 0) {
+                this.m_contents[slot] = null;
             }
             return itemStack;
         }
@@ -94,8 +94,8 @@ public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInve
     }
 
     public void HT_setInventorySlotContents (int slot, ItemStack itemStack) {
-        if (slot < this.contents.length) {
-            this.contents[slot] = itemStack;
+        if (slot < this.m_contents.length) {
+            this.m_contents[slot] = itemStack;
         }
     }
 
@@ -158,15 +158,15 @@ public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInve
     public void HT_readFromNBT (NBTTagCompound nbtTagCompound) {
         super.HT_readFromNBT(nbtTagCompound);
         NBTTagList itemTagList = nbtTagCompound.getTagList("items", Constants.NBT.TAG_COMPOUND);
-        this.contents = new ItemStack[this.getSizeInventory()];
+        this.m_contents = new ItemStack[this.getSizeInventory()];
 
-        for (int i = 0; i < this.contents.length; i++) {
+        for (int i = 0; i < this.m_contents.length; i++) {
             NBTTagCompound itemTagCompound = itemTagList.getCompoundTagAt(i);
 
             int slotIndex = itemTagCompound.getInteger("slot");
 
-            if (slotIndex >= 0 && slotIndex < this.contents.length) {
-                this.contents[slotIndex] = ItemStack.loadItemStackFromNBT(itemTagCompound);
+            if (slotIndex >= 0 && slotIndex < this.m_contents.length) {
+                this.m_contents[slotIndex] = ItemStack.loadItemStackFromNBT(itemTagCompound);
             }
         }
     }
@@ -176,11 +176,11 @@ public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInve
         super.HT_writeToNBT(nbtTagCompound);
         NBTTagList tagList = new NBTTagList();
 
-        for (int i = 0; i < this.contents.length; i++) {
-            if (contents[i] != null) {
+        for (int i = 0; i < this.m_contents.length; i++) {
+            if (m_contents[i] != null) {
                 NBTTagCompound itemTagCompound = new NBTTagCompound();
                 itemTagCompound.setInteger("slot", i);
-                this.contents[i].writeToNBT(itemTagCompound);
+                this.m_contents[i].writeToNBT(itemTagCompound);
                 tagList.appendTag(itemTagCompound);
             }
         }

@@ -12,10 +12,10 @@ import java.util.ArrayList;
 @Deprecated
 public class HT_ObjectProperties<E, P extends HT_SavableData<E, ?, ?>> implements HT_I_NBTData<HT_ObjectProperties>{
 
-    protected final ArrayList<P> datas = Lists.newArrayList();
+    protected final ArrayList<P> m_listData = Lists.newArrayList();
 
     public void addProperty (P property) {
-        datas.add(property);
+        m_listData.add(property);
     }
 
     @Override
@@ -27,16 +27,16 @@ public class HT_ObjectProperties<E, P extends HT_SavableData<E, ?, ?>> implement
     public void HT_writeToNBT (NBTTagCompound nbtTagCompound, E object) {
 //        NBTTagList tagList = new NBTTagList();
 //
-//        for (int i = 0; i < this.datas.size(); i++) {
-//            if (datas.get(i) != null) {
+//        for (int i = 0; i < this.m_listData.size(); i++) {
+//            if (m_listData.get(i) != null) {
 //                NBTTagCompound itemTagCompound = new NBTTagCompound();
-//                this.datas.get(i).HT_writeToNBT(itemTagCompound);
+//                this.m_listData.get(i).HT_writeToNBT(itemTagCompound);
 //                tagList.appendTag(itemTagCompound);
 //            }
 //        }
 //
 //        nbtTagCompound.setTag("props", tagList);
-        for (P e : datas) {
+        for (P e : m_listData) {
             e.HT_writeToNBT(nbtTagCompound, object);
         }
     }
@@ -51,13 +51,13 @@ public class HT_ObjectProperties<E, P extends HT_SavableData<E, ?, ?>> implement
     public void HT_readFromNBT (NBTTagCompound nbtTagCompound, E object) {
 //        NBTTagList tagList = nbtTagCompound.getTagList("props", Constants.NBT.TAG_COMPOUND);
 //
-//        for (int i = 0; i < this.datas.size(); i++) {
+//        for (int i = 0; i < this.m_listData.size(); i++) {
 //            NBTTagCompound propTagCompound = tagList.getCompoundTagAt(i);
 //
-//            this.datas.get(i).HT_writeToNBT(propTagCompound, object);
+//            this.m_listData.get(i).HT_writeToNBT(propTagCompound, object);
 //
 //        }
-        for (P e : datas) {
+        for (P e : m_listData) {
             e.HT_readFromNBT(nbtTagCompound, object);
         }
     }

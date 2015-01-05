@@ -31,6 +31,6 @@ public class HT_BlockFalling extends HT_Block<HT_BlockFalling> {
 
     @Override
     public void HT_updateTick (World world, int x, int y, int z, Random random) {
-        if (!world.isRemote) this.HT_fall(world, x, y, z);
+        if (!world.isRemote) this.fall(world, x, y, z);
     }
 }

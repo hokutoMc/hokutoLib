@@ -17,20 +17,20 @@ import java.util.List;
  * Created by user on 2014/09/23.
  */
 public class HT_MultiBlock extends HT_Block<HT_MultiBlock> {
-    private final ImmutableSet<String> multiNames;
+    private final ImmutableSet<String> m_multiNames;
 
     @SideOnly(Side.CLIENT)
-    private IIcon[] multiIcons;
+    private IIcon[] m_multiIcons;
 
     public HT_MultiBlock (String modid, Material material, String innerName, String... subNameList) {
         super(modid, material, innerName);
-        this.multiNames = ImmutableSet.copyOf(subNameList);
-        this.multiIcons = new IIcon[subNameList.length];
+        this.m_multiNames = ImmutableSet.copyOf(subNameList);
+        this.m_multiIcons = new IIcon[subNameList.length];
     }
 
     @Override
-    public String[] HT_getMultiNames () {
-        return HT_ArrayUtil.toArray(ImmutableSet.copyOf(multiNames), String.class);
+    public String[] getMultiNames () {
+        return HT_ArrayUtil.toArray(ImmutableSet.copyOf(m_multiNames), String.class);
     }
 
     @Override
@@ -41,20 +41,20 @@ public class HT_MultiBlock extends HT_Block<HT_MultiBlock> {
 
     @Override
     public IIcon HT_getIcon (int side, int meta) {
-        return this.multiIcons[meta % multiNames.size()];
+        return this.m_multiIcons[meta % m_multiNames.size()];
     }
 
     @Override
     public void HT_registerBlockIcons (IIconRegister iconRegister) {
         super.HT_registerBlockIcons(iconRegister);
-        for (int i = 0; i < multiNames.size(); i++) {
-            this.multiIcons[i] = iconRegister.registerIcon(this.HT_getTextureName() + "_" + multiNames.toArray()[i]);
+        for (int i = 0; i < m_multiNames.size(); i++) {
+            this.m_multiIcons[i] = iconRegister.registerIcon(this.HT_getTextureName() + "_" + m_multiNames.toArray()[i]);
         }
     }
 
     @Override
     public void HT_registerMulti (Item item, CreativeTabs creativeTab, final List<ItemStack> list) {
-        for (int i = 0; i < multiNames.size(); i++) {
+        for (int i = 0; i < m_multiNames.size(); i++) {
             list.add(new ItemStack(item, 1, i));
         }
     }

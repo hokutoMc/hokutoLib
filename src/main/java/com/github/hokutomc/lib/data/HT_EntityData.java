@@ -11,82 +11,82 @@ import java.util.EnumSet;
  */
 @Deprecated
 public class HT_EntityData<P> extends HT_SavableData<Entity, P, HT_EntityData<P>> {
-    protected final boolean doSync;
-    protected final int dwId;
-    public final P initialValue;
-    private P data;
+    protected final boolean m_doSync;
+    protected final int m_dwId;
+    public final P m_initialValue;
+    private P m_data;
 
     @SuppressWarnings("unchecked")
     public HT_EntityData (int dwId, String nbtKey, P initialValue) {
         super(nbtKey, initialValue);
-        this.dwId = dwId;
-        this.data = null;
-        this.initialValue = initialValue;
-        this.doSync = true;
+        this.m_dwId = dwId;
+        this.m_data = null;
+        this.m_initialValue = initialValue;
+        this.m_doSync = true;
     }
 
     @SuppressWarnings("unchecked")
     public HT_EntityData (String nbtKey, P initialValue) {
         super(nbtKey, initialValue);
-        this.initialValue = initialValue;
-        this.data = null;
-        this.dwId = -1;
-        this.doSync = false;
+        this.m_initialValue = initialValue;
+        this.m_data = null;
+        this.m_dwId = -1;
+        this.m_doSync = false;
     }
 
     @Override
     protected void update (Entity entity, P property) {
-        if (this.doSync) {
+        if (this.m_doSync) {
             if (type.isEnum()) {
-                HT_DataWatcherUtil.updateEnum(entity, dwId, (Enum) property);
+                HT_DataWatcherUtil.updateEnum(entity, m_dwId, (Enum) property);
             } else if (property instanceof EnumSet) {
                 Class clazz = type;
-                HT_DataWatcherUtil.updateEnumSet(entity, dwId, (EnumSet) property, clazz);
+                HT_DataWatcherUtil.updateEnumSet(entity, m_dwId, (EnumSet) property, clazz);
             }
-            entity.getDataWatcher().updateObject(dwId, property);
+            entity.getDataWatcher().updateObject(m_dwId, property);
         } else {
-            this.data = property;
+            this.m_data = property;
         }
 
     }
 
     @SuppressWarnings("unchecked")
     protected P get (Entity entity) {
-        if (this.doSync) {
+        if (this.m_doSync) {
             if (type.isEnum()) {
-                return type.getEnumConstants()[entity.getDataWatcher().getWatchableObjectInt(dwId)];
+                return type.getEnumConstants()[entity.getDataWatcher().getWatchableObjectInt(m_dwId)];
             }
             if (type == Integer.class) {
-                return (P) (Integer) entity.getDataWatcher().getWatchableObjectInt(dwId);
+                return (P) (Integer) entity.getDataWatcher().getWatchableObjectInt(m_dwId);
             }
             if (type == Byte.class) {
-                return (P) (Byte) entity.getDataWatcher().getWatchableObjectByte(dwId);
+                return (P) (Byte) entity.getDataWatcher().getWatchableObjectByte(m_dwId);
             }
             if (type == Float.class) {
-                return (P) (Float) entity.getDataWatcher().getWatchableObjectFloat(dwId);
+                return (P) (Float) entity.getDataWatcher().getWatchableObjectFloat(m_dwId);
             }
             if (type == Short.class) {
-                return (P) (Short) entity.getDataWatcher().getWatchableObjectShort(dwId);
+                return (P) (Short) entity.getDataWatcher().getWatchableObjectShort(m_dwId);
             }
             if (type == String.class) {
-                return (P) entity.getDataWatcher().getWatchableObjectString(dwId);
+                return (P) entity.getDataWatcher().getWatchableObjectString(m_dwId);
             }
             if (type == ItemStack.class) {
-                return (P) entity.getDataWatcher().getWatchableObjectItemStack(dwId);
+                return (P) entity.getDataWatcher().getWatchableObjectItemStack(m_dwId);
             }
             if (EnumSet.class.isAssignableFrom(type)) {
                 Class clazz = type;
-                return (P) HT_DataWatcherUtil.getWatchableEnumSet(entity, dwId, clazz);
+                return (P) HT_DataWatcherUtil.getWatchableEnumSet(entity, m_dwId, clazz);
             }
         }
-        return data;
+        return m_data;
     }
 
     public boolean getDoSync () {
-        return this.doSync;
+        return this.m_doSync;
     }
 
     public int getDataWatchId () {
-        return dwId;
+        return m_dwId;
     }
 }

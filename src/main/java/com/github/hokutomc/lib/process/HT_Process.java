@@ -10,41 +10,41 @@ import java.util.List;
  * Created by user on 2014/11/26.
  */
 public abstract class HT_Process<T extends HT_ItemStackRecipe> {
-    private int progress;
-    private IInventory inventory;
-    private final List<T> recipeList;
+    private int m_progress;
+    private IInventory m_inventory;
+    private final List<T> m_listRecipe;
 
     public HT_Process (List<T> recipeList) {
-        this.recipeList = recipeList;
-        this.progress = 0;
+        this.m_listRecipe = recipeList;
+        this.m_progress = 0;
     }
 
     public void HT_setInventory (IInventory inventory) {
-        this.inventory = inventory;
+        this.m_inventory = inventory;
     }
 
     public void HT_proceedProgressBy(int value) {
-        this.progress += value;
+        this.m_progress += value;
     }
 
     public void HT_proceedProgress() {
-        this.progress++;
+        this.m_progress++;
     }
 
     public void HT_resetProgress() {
-        this.progress = 0;
+        this.m_progress = 0;
     }
 
     public boolean HT_isWorking () {
-        return this.progress > 0;
+        return this.m_progress > 0;
     }
 
     public void HT_updateProcess () {
-        if (this.progress <= 0 && this.HT_canStart()) {
+        if (this.m_progress <= 0 && this.HT_canStart()) {
             this.HT_onStarting();
             this.HT_resetProgress();
             this.HT_proceedProgress();
-        } else if (this.progress >= this.HT_getMaxProgress()) {
+        } else if (this.m_progress >= this.HT_getMaxProgress()) {
             this.HT_onFinish();
             this.HT_resetProgress();
         } else if (this.HT_canContinue()) {
@@ -70,23 +70,23 @@ public abstract class HT_Process<T extends HT_ItemStackRecipe> {
     protected abstract void HT_onFinish ();
 
     public void HT_writeToNBT (NBTTagCompound nbtTagCompound) {
-        nbtTagCompound.setInteger("progress", progress);
+        nbtTagCompound.setInteger("m_progress", m_progress);
     }
 
     public void HT_readFromNBT (NBTTagCompound nbtTagCompound){
-        this.progress = nbtTagCompound.getInteger("progress");
+        this.m_progress = nbtTagCompound.getInteger("m_progress");
     }
 
     public IInventory HT_getInventory () {
-        return this.inventory;
+        return this.m_inventory;
     }
 
     public ItemStack HT_getStackInSlot (int index) {
-        return this.inventory.getStackInSlot(index);
+        return this.m_inventory.getStackInSlot(index);
     }
 
     public void HT_setInventorySlotContents (int index, ItemStack itemStack) {
         if (itemStack != null && itemStack.stackSize == 0) { itemStack = null; }
-        this.inventory.setInventorySlotContents(index, itemStack);
+        this.m_inventory.setInventorySlotContents(index, itemStack);
     }
 }

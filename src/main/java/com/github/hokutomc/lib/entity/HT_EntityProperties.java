@@ -13,7 +13,7 @@ public class HT_EntityProperties extends HT_ObjectProperties<Entity, HT_EntityDa
     @Override
     public void addProperty (HT_EntityData property) {
         if (property.getDoSync()) {
-            for (HT_EntityData e : this.datas) {
+            for (HT_EntityData e : this.m_listData) {
                 if (property.getDataWatchId() == e.getDataWatchId()){
                     throw new IllegalArgumentException("conflicting of data-watching id ( key : " + property.getNBTKey() + ", id : " + property.getDataWatchId());
                 }
@@ -23,8 +23,8 @@ public class HT_EntityProperties extends HT_ObjectProperties<Entity, HT_EntityDa
     }
 
     public void init(Entity entity) {
-        for (HT_EntityData e : this.datas) {
-            if (e.getDoSync()) entity.getDataWatcher().addObject(e.getDataWatchId(), e.initialValue);
+        for (HT_EntityData e : this.m_listData) {
+            if (e.getDoSync()) entity.getDataWatcher().addObject(e.getDataWatchId(), e.m_initialValue);
         }
     }
 

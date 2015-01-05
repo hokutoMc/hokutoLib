@@ -8,16 +8,16 @@ import net.minecraft.item.ItemStack;
  * Created by user on 2014/09/23.
  */
 public class HT_MultiItemBlock extends ItemBlock {
-    private final int variety;
-    private String[] subNames;
+    private final int m_variety;
+    private String[] m_subNames;
 
     public HT_MultiItemBlock (Block block) {
         super(block);
         if (block instanceof HT_MultiBlock) {
-            subNames = ((HT_MultiBlock) block).HT_getMultiNames();
-            variety = subNames.length;
+            m_subNames = ((HT_MultiBlock) block).getMultiNames();
+            m_variety = m_subNames.length;
         } else {
-            variety = 0;
+            m_variety = 0;
         }
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
@@ -30,6 +30,6 @@ public class HT_MultiItemBlock extends ItemBlock {
 
     @Override
     public String getUnlocalizedName (ItemStack itemStack) {
-        return super.getUnlocalizedName() + "." + subNames[itemStack.getItemDamage() % variety];
+        return super.getUnlocalizedName() + "." + m_subNames[itemStack.getItemDamage() % m_variety];
     }
 }

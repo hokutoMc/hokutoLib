@@ -27,7 +27,7 @@ public final class HT_ArrayUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T[] HT_split (T[] stacks, int start, int size) {
+    public static <T> T[] split (T[] stacks, int start, int size) {
         Object[] objects = new Object[size];
         System.arraycopy(stacks, start, objects, 0, size);
         return (T[]) objects;

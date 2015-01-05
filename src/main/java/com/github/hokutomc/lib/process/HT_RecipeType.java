@@ -6,17 +6,17 @@ package com.github.hokutomc.lib.process;
 public class HT_RecipeType {
     private static HT_RecipeType[] cache = new HT_RecipeType[64];
 
-    private final int input;
-    private final int output;
+    public final int m_input;
+    public final int m_output;
 
     private HT_RecipeType (int input, int output) {
-        this.input = input;
-        this.output = output;
+        this.m_input = input;
+        this.m_output = output;
     }
 
-    public static HT_RecipeType HT_newRecipeType (int input, int output) {
+    public static HT_RecipeType newRecipeType (int input, int output) {
         for (HT_RecipeType e : cache) {
-            if (input == e.input && output == e.output) {
+            if (input == e.m_input && output == e.m_output) {
                 return e;
             }
         }
@@ -30,16 +30,9 @@ public class HT_RecipeType {
         }
         if (obj instanceof HT_RecipeType) {
             HT_RecipeType type = (HT_RecipeType) obj;
-            return this.input == type.input && this.output == type.output;
+            return this.m_input == type.m_input && this.m_output == type.m_output;
         }
         return false;
     }
 
-    public int HT_getInputSize () {
-        return this.input;
-    }
-
-    public int HT_getOutputSize () {
-        return this.output;
-    }
 }

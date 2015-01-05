@@ -35,10 +35,10 @@ public abstract class HT_Config extends Configuration {
         super(file, caseSensitiveCustomCategories);
     }
 
-    public HT_Config HT_apply () {
+    public final HT_Config apply () {
         try {
             this.load();
-            this.HT_configure();
+            this.configure();
         } catch (Exception e) {
             FMLLog.log(Level.WARN, e, "Error!");
         } finally {
@@ -47,5 +47,5 @@ public abstract class HT_Config extends Configuration {
         return this;
     }
 
-    public abstract void HT_configure ();
+    protected abstract void configure ();
 }
