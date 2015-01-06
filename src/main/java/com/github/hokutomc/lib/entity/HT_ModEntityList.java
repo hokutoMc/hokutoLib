@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * Created by user on 2015/01/06.
+ * This contains entity classes with spawn egg colors and inner name.
+ * This adds mob eggs of each entity classes registered in this.
+ * 2015/01/06.
  */
 public class HT_ModEntityList implements Iterable<Class<? extends Entity>>{
 

@@ -8,7 +8,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 
 /**
- * Created by user on 2014/10/25.
+ * This class allows you to create TileEntity with inventory easily.
+ *
+ * 2014/10/25.
  */
 public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInventory {
     private ItemStack[] m_contents;

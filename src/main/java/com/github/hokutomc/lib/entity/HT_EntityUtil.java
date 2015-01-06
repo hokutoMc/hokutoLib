@@ -5,7 +5,7 @@ import net.minecraft.entity.Entity;
 import static java.lang.Math.sqrt;
 
 /**
- * Created by user on 2014/10/26.
+ * 2014/10/26.
  */
 public final class HT_EntityUtil {
     private HT_EntityUtil () {

@@ -19,7 +19,9 @@ import net.minecraft.world.World;
 import java.util.List;
 
 /**
- * Created by user on 2014/10/09.
+ * This class wraps Items.class.
+ *
+ * 2014/10/09.
  */
 public abstract class HT_Item<T extends HT_Item> extends Item {
     private String m_shortName;

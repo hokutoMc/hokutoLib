@@ -8,7 +8,9 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import java.util.Properties;
 
 /**
- * Created by user on 2014/09/27.
+ * This class is easy way to read version from version.properties file.
+ *
+ * 2014/09/27.
  */
 public class HT_ModVersion {
     private final Mod mod;

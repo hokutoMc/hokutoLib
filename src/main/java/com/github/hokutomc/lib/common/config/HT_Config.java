@@ -8,12 +8,13 @@ import org.apache.logging.log4j.Level;
 import java.io.File;
 
 /**
- * Created by user on 2014/11/10.
+ * Advanced configuration.
+ * 2014/11/10.
  */
 public abstract class HT_Config extends Configuration {
     /**
-     * ForgeModLoaderの標準の場所に、modのidを用いた名前のファイルを参照する設定オブジェクトを生成します。
-     * @param event 初期化前イベントのオブジェクト
+     * Configuration file is created in suggested place.
+     * @param event event.
      */
     public HT_Config (FMLPreInitializationEvent event) {
         super(event.getSuggestedConfigurationFile());
@@ -35,6 +36,11 @@ public abstract class HT_Config extends Configuration {
         super(file, caseSensitiveCustomCategories);
     }
 
+    /**
+     * Call this method to load the configuration and you don't have to call load() or save() method.
+     * This method calls configure() where you wrote Configuration-loading methods.
+     * @return this object
+     */
     public final HT_Config apply () {
         try {
             this.load();
@@ -47,5 +53,9 @@ public abstract class HT_Config extends Configuration {
         return this;
     }
 
+    /**
+     * You must override this method and this method is called automatically from apply() method.
+     * You needn't call this method manually.
+     */
     protected abstract void configure ();
 }

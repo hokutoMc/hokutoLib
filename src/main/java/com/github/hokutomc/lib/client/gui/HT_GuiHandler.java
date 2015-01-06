@@ -11,7 +11,9 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 
 /**
- * Created by user on 2014/11/05.
+ * This class contains list of GUI-creation actions.
+ * You should call register() and you will be able to open GUI in actions that this class's instance has.
+ * 2014/11/05.
  */
 public class HT_GuiHandler implements IGuiHandler {
 

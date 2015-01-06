@@ -11,7 +11,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 
 /**
- * Created by user on 2014/10/12.
+ * This class allows you to create a wide variety of armors only in one instance.
+ *
+ * 2014/10/12.
  */
 public abstract class HT_ItemArmor extends HT_ItemDurable implements ISpecialArmor {
 

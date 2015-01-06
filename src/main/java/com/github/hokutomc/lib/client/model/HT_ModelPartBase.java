@@ -11,7 +11,9 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 
 /**
- * Created by user on 2014/12/31.
+ * Using this class is easier way to describe the hierarchy of model parts.
+ * This class has some convenient methods.
+ * 2014/12/31.
  */
 public class HT_ModelPartBase extends ModelRenderer implements HT_I_ExModelPart {
 

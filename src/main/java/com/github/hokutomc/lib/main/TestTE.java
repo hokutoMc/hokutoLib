@@ -3,7 +3,7 @@ package com.github.hokutomc.lib.main;
 import com.github.hokutomc.lib.data.HT_BasicObjectData;
 import com.github.hokutomc.lib.data.HT_BasicObjectProperties;
 import com.github.hokutomc.lib.process.HT_ItemStackRecipe;
-import com.github.hokutomc.lib.process.HT_Process;
+import com.github.hokutomc.lib.process.HT_ItemStackProcess;
 import com.github.hokutomc.lib.tileentity.HT_ProcessTile;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.player.EntityPlayer;
@@ -94,7 +94,7 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
         NBTTagCompound nbtTagCompound1 = nbtTagCompound;
     }
 
-    public static class TestTEProcess extends HT_Process<FurnaceLikeRecipe> {
+    public static class TestTEProcess extends HT_ItemStackProcess<FurnaceLikeRecipe> {
 
         private static final List<FurnaceLikeRecipe> recipeList;
 

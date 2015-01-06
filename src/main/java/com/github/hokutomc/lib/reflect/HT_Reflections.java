@@ -4,7 +4,9 @@ import java.lang.reflect.Array;
 import java.util.EnumSet;
 
 /**
- * Created by user on 2014/12/08.
+ * This class provides methods to deal with classes.
+ *
+ * 2014/12/08.
  */
 public final class HT_Reflections {
 

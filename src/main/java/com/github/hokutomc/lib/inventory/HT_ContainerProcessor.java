@@ -7,7 +7,9 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;
 
 /**
- * Created by user on 2014/11/28.
+ * This is container to deal with TileEntity.
+ *
+ * 2014/11/28.
  */
 public abstract class HT_ContainerProcessor<T extends TileEntity> extends Container {
     private final InventoryPlayer m_inventoryPlayer;
@@ -20,6 +22,11 @@ public abstract class HT_ContainerProcessor<T extends TileEntity> extends Contai
 
     protected abstract int getInventorySize ();
 
+    /**
+     * Adds slots of the player's inventory by y coordination at the bottom.
+     * @param bottomY y coordination of the bottom of slots.
+     * @return this
+     */
     protected HT_ContainerProcessor setPlayerSlotPosition (int bottomY) {
         for (int i = 0; i < 3; ++i){
             for (int j = 0; j < 9; ++j){

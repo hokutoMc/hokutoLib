@@ -16,7 +16,11 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * Created by user on 2014/10/12.
+ * This class can be used to make tool.
+ * The tool doesn't use metadata.
+ * You can make a wide variety of tools using this class only in one instance.
+ *
+ * 2014/10/12.
  */
 public abstract class HT_ItemTool extends HT_ItemDurable {
     protected float efficiencyOnProperMaterial = 4.0F;

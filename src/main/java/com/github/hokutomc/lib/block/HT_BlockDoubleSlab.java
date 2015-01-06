@@ -16,7 +16,11 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by user on 2014/12/21.
+ * This class is easy way to create slab blocks.
+ * This class is the base to create half slab and slab item.
+ * This class contains instances of upper slab and lower slab.
+ *
+ * 2014/12/21.
  */
 public class HT_BlockDoubleSlab extends HT_MultiBlock {
     public final HT_BlockSingleSlab m_upper;

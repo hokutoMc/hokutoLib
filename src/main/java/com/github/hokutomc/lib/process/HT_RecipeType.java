@@ -1,7 +1,9 @@
 package com.github.hokutomc.lib.process;
 
 /**
- * Created by user on 2014/11/08.
+ * This class expresses abstract recipe type.
+ *
+ * on 2014/11/08.
  */
 public class HT_RecipeType {
     private static HT_RecipeType[] cache = new HT_RecipeType[64];

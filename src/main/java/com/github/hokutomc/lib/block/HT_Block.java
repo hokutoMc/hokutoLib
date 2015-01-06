@@ -27,7 +27,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by user on 2014/09/23.
+ * This class wraps Block.class.
+ *
+ * 2014/09/23.
  */
 public class HT_Block<T extends HT_Block> extends Block {
     private String m_shortName;

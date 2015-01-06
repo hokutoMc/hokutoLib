@@ -9,7 +9,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 /**
- * Created by user on 2014/10/25.
+ * This class wraps TileEntity.class.
+ *
+ * 2014/10/25.
  */
 public class HT_TileEntity extends TileEntity {
     public HT_TileEntity () {

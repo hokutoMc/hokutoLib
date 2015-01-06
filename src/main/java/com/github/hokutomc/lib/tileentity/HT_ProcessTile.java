@@ -1,17 +1,19 @@
 package com.github.hokutomc.lib.tileentity;
 
 import com.github.hokutomc.lib.process.HT_ItemStackRecipe;
-import com.github.hokutomc.lib.process.HT_Process;
+import com.github.hokutomc.lib.process.HT_ItemStackProcess;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
- * Created by user on 2014/11/08.
+ * This class allows you to create TileEntity to do some process.
+ *
+ * 2014/11/08.
  */
 public abstract class HT_ProcessTile<T extends HT_ItemStackRecipe> extends HT_StorageTile {
 
-    private HT_Process<T> m_process;
+    private HT_ItemStackProcess<T> m_process;
 
-    public HT_ProcessTile (HT_Process<T> process) {
+    public HT_ProcessTile (HT_ItemStackProcess<T> process) {
         this.m_process = process;
         this.m_process.HT_setInventory(this);
     }

@@ -3,7 +3,8 @@ package com.github.hokutomc.lib.client.model;
 import net.minecraft.client.model.ModelRenderer;
 
 /**
- * Created by user on 2014/12/31.
+ * This is util class.
+ * 2014/12/31.
  */
 public final class HT_ModelUtil {
     public static void syncRotateAngleX (ModelRenderer self, ModelRenderer renderer) {

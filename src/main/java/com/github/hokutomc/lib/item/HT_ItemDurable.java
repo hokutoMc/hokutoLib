@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by user on 2014/10/11.
+ * This classes adds data of item durability without using damage value.
+ *
+ * 2014/10/11.
  */
 public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
     public static final String KEY_DURABILITY = "durability";

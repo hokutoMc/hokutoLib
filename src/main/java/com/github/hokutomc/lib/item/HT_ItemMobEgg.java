@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 /**
- * Created by user on 2015/01/06.
+ * 2015/01/06.
  */
 public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
     private HT_ModEntityList m_listEntity;

@@ -7,14 +7,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.List;
 
 /**
- * Created by user on 2014/11/26.
+ * This class expresses precess of a TileEntity or Entity.
+ * With recipe using ItemStack.
+ *
+ * 2014/11/26.
  */
-public abstract class HT_Process<T extends HT_ItemStackRecipe> {
+public abstract class HT_ItemStackProcess<T extends HT_ItemStackRecipe> {
     private int m_progress;
     private IInventory m_inventory;
     private final List<T> m_listRecipe;
 
-    public HT_Process (List<T> recipeList) {
+    public HT_ItemStackProcess (List<T> recipeList) {
         this.m_listRecipe = recipeList;
         this.m_progress = 0;
     }

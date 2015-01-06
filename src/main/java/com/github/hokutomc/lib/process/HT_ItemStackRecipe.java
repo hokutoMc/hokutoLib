@@ -4,7 +4,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
- * Created by user on 2014/11/08.
+ * This class can express recipe with some ItemStacks.
+ *
+ * 2014/11/08.
  */
 public class HT_ItemStackRecipe {
     private final ItemStack[] m_input;
