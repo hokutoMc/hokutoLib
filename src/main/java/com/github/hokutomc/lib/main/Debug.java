@@ -168,7 +168,7 @@ public class Debug {
                 }
         );
 
-        entityList.register(TestMob.class, "httestentity");
+        entityList.register(TestMob.class, "httestentity", 0x808040, 0xf0f0d0);
 
         HT_Registries.registerEntityRenderer(TestMob.class, new RenderTestEntity(new ModelTestEntity(), 0.5f));
     }

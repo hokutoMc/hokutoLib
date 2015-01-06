@@ -17,12 +17,18 @@ public class HT_ModEntityList implements Iterable<Class<? extends Entity>>{
     private class HT_EntityRegistration {
         private Class<? extends Entity> m_class;
         private String m_name;
+        public int m_colorBase;
+        public int m_colorSpot;
 
-        private HT_EntityRegistration (Class<? extends Entity> classEntity, String name) {
+        private HT_EntityRegistration (Class<? extends Entity> classEntity, String name, int colorBase, int colorSpot) {
             this.m_class = classEntity;
             this.m_name = name;
+            this.m_colorBase = colorBase;
+            this.m_colorSpot = colorSpot;
         }
     }
+
+    public HT_ItemMobEgg m_itemMobEgg;
 
     private ArrayList<HT_EntityRegistration> m_listRegistrations;
     private Object m_modObj;
@@ -30,16 +36,16 @@ public class HT_ModEntityList implements Iterable<Class<? extends Entity>>{
     public HT_ModEntityList (Object mod, String modid) {
         m_listRegistrations = new ArrayList<>();
         this.m_modObj = mod;
-        new HT_ItemMobEgg(modid, this).register();
+        m_itemMobEgg = new HT_ItemMobEgg(modid, this).register();
     }
 
-    public HT_ModEntityList register(Class<? extends Entity> classEntity, String name) {
-        HT_Registries.registerEntity(classEntity, name, add(classEntity, name), this.m_modObj);
+    public HT_ModEntityList register(Class<? extends Entity> classEntity, String name, int colorBase, int colorSpot) {
+        HT_Registries.registerEntity(classEntity, name, add(classEntity, name, colorBase, colorSpot), this.m_modObj);
         return this;
     }
 
-    private int add (Class<? extends Entity> classEntity, String name) {
-        HT_EntityRegistration registration = new HT_EntityRegistration(classEntity, name);
+    private int add (Class<? extends Entity> classEntity, String name, int colorBase, int colorSpot) {
+        HT_EntityRegistration registration = new HT_EntityRegistration(classEntity, name, colorBase, colorSpot);
         this.m_listRegistrations.add(registration);
         return this.m_listRegistrations.indexOf(registration);
     }
@@ -50,6 +56,14 @@ public class HT_ModEntityList implements Iterable<Class<? extends Entity>>{
 
     public String getNameAt (int index) {
         return this.m_listRegistrations.get(index).m_name;
+    }
+
+    public int getBaseColorAt (int index) {
+        return this.m_listRegistrations.get(index).m_colorBase;
+    }
+
+    public int getSpotColorAt (int index) {
+        return this.m_listRegistrations.get(index).m_colorSpot;
     }
 
     public Entity createEntityById (int id, World world) {

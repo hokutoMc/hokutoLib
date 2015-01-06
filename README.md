@@ -65,3 +65,9 @@ unlocalized name : "item.modid.itemid.{black.white.red}"
 
 1. `new HT_GuiHandler(mod : Object);` creates a Gui handler for your mod.
 2. `HT_GuiHandler.addGui(id : int, serverAction : GuiAction, clientAction : GuiAction)`
+
+##Entity registration with mob egg
+
+1. `new HT_ModEntityList(mod : Object, modid)` creates a Entity registration list object.
+2. `HT_ModEntityList.register(class of entity, name, base color : int, spots' color)` to register Entity with mob egg.
+3. The instance of your mods' mob egg is `HT_ModEntityList.m_itemMobEgg`.

@@ -334,8 +334,8 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
         return this.HT_getColorFromItemStack(p_82790_1_, p_82790_2_);
     }
 
-    public int HT_getColorFromItemStack (ItemStack itemStack, int i) {
-        return super.getColorFromItemStack(itemStack, i);
+    public int HT_getColorFromItemStack (ItemStack itemStack, int path) {
+        return super.getColorFromItemStack(itemStack, path);
     }
 
     @Override
