@@ -46,7 +46,7 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
     public void HT_addInformation (ItemStack itemStack, EntityPlayer player, List<String> list, boolean b) {
         super.HT_addInformation(itemStack, player, list, b);
         if (this.isBroken(itemStack)) {
-            list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("item.hokutoLib.status.broken.name").trim());
+            list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("item.hokutolib.status.broken.name").trim());
         } else {
             EnumChatFormatting red = EnumChatFormatting.RESET;
             if (this.getDurability(itemStack) * 20 < this.getMaxDurability(itemStack)) {
@@ -54,7 +54,7 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
             }
             list.add(
                     red
-                            + StatCollector.translateToLocal("item.hokutoLib.status.durability.name").trim()
+                            + StatCollector.translateToLocal("item.hokutolib.status.durability.name").trim()
                             + HT_StringUtil.blanks(6)
                             + this.getDurability(itemStack)
                             + "/"

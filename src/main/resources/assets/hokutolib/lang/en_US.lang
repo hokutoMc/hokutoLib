@@ -1,8 +1,8 @@
 
-item.hokutoLib.status.durability.name=Durability
-item.hokutoLib.status.attack.name=+%d Attack Damage
-item.hokutoLib.status.broken.name=Broken
-item.hokutoLib.mobEgg.name=Mob egg of %s
+item.hokutolib.status.durability.name=Durability
+item.hokutolib.status.attack.name=+%d Attack Damage
+item.hokutolib.status.broken.name=Broken
+item.hokutolib.mobEgg.name=Mob egg of %s
 
 
 

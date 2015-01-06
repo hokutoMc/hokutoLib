@@ -37,9 +37,11 @@ public class Debug {
     private static HT_BlockFalling blockFall;
     private static HT_ModEntityList entityList;
 
+    public static final String MODID = "hokutolib";
+
     public static void preinit () {
 
-        itemDurable = new HT_ItemTool("hokutoLib", "tool") {
+        itemDurable = new HT_ItemTool(MODID, "tool") {
 
             @Override
             public int HT_getItemEnchantability () {
@@ -92,7 +94,7 @@ public class Debug {
             }
         }.HT_setTextureName("iron_sword").HT_setCreativeTab(tabHTLib).register();
 
-        itemArmor = new HT_ItemArmor("hokutoLib", "armor") {
+        itemArmor = new HT_ItemArmor(MODID, "armor") {
             @Override
             protected ItemArmor.ArmorMaterial getArmorMaterial (ItemStack itemStack) {
                 return ItemArmor.ArmorMaterial.CHAIN;
@@ -131,12 +133,12 @@ public class Debug {
                 }
             }
         }.HT_setCreativeTab(tabHTLib).register();
-        itemMulti = new HT_MultiItem("hokutoLib", "multi", new String[]{"a", "b"}).HT_setCreativeTab(tabHTLib).register();
+        itemMulti = new HT_MultiItem(MODID, "multi", new String[]{"a", "b"}).HT_setCreativeTab(tabHTLib).register();
 
-        blockMulti = new HT_MultiBlock("hokutoLib", Material.wood, "multiblock", new String[]{"one", "two"}).HT_setCreativeTab(tabHTLib).register();
-        blockFall = new HT_BlockFalling("hokutoLib", Material.sand, "falling").HT_setCreativeTab(tabHTLib).register();
+        blockMulti = new HT_MultiBlock(MODID, Material.wood, "multiblock", new String[]{"one", "two"}).HT_setCreativeTab(tabHTLib).register();
+        blockFall = new HT_BlockFalling(MODID, Material.sand, "falling").HT_setCreativeTab(tabHTLib).register();
         blockTE = new TestContainerBlock().HT_setCreativeTab(tabHTLib).register();
-        new HT_ContainerBlock("hokutoLib", Material.iron, "dummy") {
+        new HT_ContainerBlock(MODID, Material.iron, "dummy") {
 
             @Override
             public TileEntity createNewTileEntity (World p_149915_1_, int p_149915_2_) {
@@ -144,8 +146,8 @@ public class Debug {
             }
         }.HT_setCreativeTab(tabHTLib).register();
 
-        new HT_BlockDoubleSlab("hokutoLib", Material.cloth, "slab", "a", "b").HT_setCreativeTab(tabHTLib).register();
-        entityList = new HT_ModEntityList(Mod_HTLib.INSTANCE, "hokutoLib");
+        new HT_BlockDoubleSlab(MODID, Material.cloth, "slab", "a", "b").HT_setCreativeTab(tabHTLib).register();
+        entityList = new HT_ModEntityList(Mod_HTLib.INSTANCE, MODID);
     }
 
     public static void init () {
