@@ -4,6 +4,7 @@ import com.github.hokutomc.lib.HT_Registries;
 import com.github.hokutomc.lib.block.*;
 import com.github.hokutomc.lib.client.gui.HT_GuiAction;
 import com.github.hokutomc.lib.client.gui.HT_GuiHandler;
+import com.github.hokutomc.lib.entity.HT_ModEntityList;
 import com.github.hokutomc.lib.item.*;
 import com.github.hokutomc.lib.util.HT_CreativeTabsUtil;
 import net.minecraft.block.Block;
@@ -34,6 +35,7 @@ public class Debug {
     public static CreativeTabs tabHTLib = HT_CreativeTabsUtil.create("hokutoLib", "test", Items.iron_sword);
     public static HT_ItemDurable itemArmor;
     private static HT_BlockFalling blockFall;
+    private static HT_ModEntityList entityList;
 
     public static void preinit () {
 
@@ -143,7 +145,7 @@ public class Debug {
         }.HT_setCreativeTab(tabHTLib).register();
 
         new HT_BlockDoubleSlab("hokutoLib", Material.cloth, "slab", "a", "b").HT_setCreativeTab(tabHTLib).register();
-
+        entityList = new HT_ModEntityList(Mod_HTLib.INSTANCE, "hokutoLib");
     }
 
     public static void init () {
@@ -166,7 +168,9 @@ public class Debug {
                 }
         );
 
+        entityList.register(TestMob.class, "httestentity");
 
+        HT_Registries.registerEntityRenderer(TestMob.class, new RenderTestEntity(new ModelTestEntity(), 0.5f));
     }
 
 

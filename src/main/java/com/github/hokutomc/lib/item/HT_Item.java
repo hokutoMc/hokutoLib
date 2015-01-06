@@ -92,8 +92,8 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
         return this.HT_onItemUse(p_77648_1_, p_77648_2_, p_77648_3_, p_77648_4_, p_77648_5_, p_77648_6_, p_77648_7_, p_77648_8_, p_77648_9_, p_77648_10_);
     }
 
-    public boolean HT_onItemUse (ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int meta, float hitX, float hitY, float hitZ) {
-        return super.onItemUse(itemStack, player, world, x, y, z, meta, hitX, hitY, hitZ);
+    public boolean HT_onItemUse (ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+        return super.onItemUse(itemStack, player, world, x, y, z, side, hitX, hitY, hitZ);
     }
 
     @Override

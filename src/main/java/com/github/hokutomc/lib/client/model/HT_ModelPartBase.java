@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class HT_ModelPartBase extends ModelRenderer implements HT_I_ExModelPart {
 
-    private ArrayList<HT_I_AtomicModel> m_uniqueBoxes;
+    private ArrayList<HT_I_AtomicModel> m_uniqueBoxes = new ArrayList<>();
     private int m_uniqueDisplayList;
     private boolean m_isUniqueCompiled;
 

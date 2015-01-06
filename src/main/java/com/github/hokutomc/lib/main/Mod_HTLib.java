@@ -63,7 +63,8 @@ public class Mod_HTLib {
 
     @SubscribeEvent
     public void toolHitEntityHook (AttackEntityEvent event) {
-        if (event.entityPlayer.inventory.getCurrentItem().getItem() instanceof HT_ItemTool) {
+        ItemStack currentItem = event.entityPlayer.inventory.getCurrentItem();
+        if (currentItem!= null && currentItem.getItem()!= null && currentItem.getItem() instanceof HT_ItemTool) {
             ItemStack tool = event.entityPlayer.inventory.getCurrentItem();
             HT_ItemTool itemObj = (HT_ItemTool) tool.getItem();
             if (event.target instanceof EntityLivingBase) {

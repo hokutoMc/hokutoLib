@@ -29,7 +29,7 @@ public abstract class HT_ItemTool extends HT_ItemDurable {
     @Override
     public void HT_addInformation (ItemStack itemStack, EntityPlayer player, List<String> list, boolean b) {
         super.HT_addInformation(itemStack, player, list, b);
-        list.add(EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted("item.hokutoUtil.status.attack.name", Math.round(this.getMaxAttackDamage(itemStack))));
+        list.add(EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted("item.hokutoLib.status.attack.name", Math.round(this.getMaxAttackDamage(itemStack))));
     }
 
     @Override

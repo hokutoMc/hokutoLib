@@ -4,12 +4,14 @@ package com.github.hokutomc.lib;
 import com.github.hokutomc.lib.block.HT_Block;
 import com.github.hokutomc.lib.block.HT_MultiItemBlock;
 import com.github.hokutomc.lib.item.HT_Item;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -74,5 +76,9 @@ public final class HT_Registries {
 
     public static void registerBlock (HT_Block block, Class<? extends ItemBlock> itemBlockClass) {
         GameRegistry.registerBlock(block, itemBlockClass, block.HT_getShortName());
+    }
+
+    public static void registerEntityRenderer (Class<? extends Entity> entityClass, Render render) {
+        RenderingRegistry.registerEntityRenderingHandler(entityClass, render);
     }
 }
