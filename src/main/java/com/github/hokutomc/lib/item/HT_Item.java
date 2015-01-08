@@ -26,7 +26,7 @@ import java.util.List;
 public abstract class HT_Item<T extends HT_Item> extends Item {
     private String m_shortName;
 
-    HT_Item (String modid, String innerName) {
+    public HT_Item (String modid, String innerName) {
         super();
         this.m_shortName = innerName;
         this.HT_setInnerName(modid, innerName);
