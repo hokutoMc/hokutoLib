@@ -1,11 +1,10 @@
 package com.github.hokutomc.lib.tileentity;
 
+import com.github.hokutomc.lib.nbt.HT_NBTUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.Constants;
 
 /**
  * This class allows you to create TileEntity with inventory easily.
@@ -159,35 +158,13 @@ public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInve
     @Override
     public void HT_readFromNBT (NBTTagCompound nbtTagCompound) {
         super.HT_readFromNBT(nbtTagCompound);
-        NBTTagList itemTagList = nbtTagCompound.getTagList("items", Constants.NBT.TAG_COMPOUND);
-        this.m_contents = new ItemStack[this.getSizeInventory()];
-
-        for (int i = 0; i < this.m_contents.length; i++) {
-            NBTTagCompound itemTagCompound = itemTagList.getCompoundTagAt(i);
-
-            int slotIndex = itemTagCompound.getInteger("slot");
-
-            if (slotIndex >= 0 && slotIndex < this.m_contents.length) {
-                this.m_contents[slotIndex] = ItemStack.loadItemStackFromNBT(itemTagCompound);
-            }
-        }
+        this.m_contents = HT_NBTUtil.readItemStacks(nbtTagCompound, this.getSizeInventory());
     }
 
     @Override
     public void HT_writeToNBT (NBTTagCompound nbtTagCompound) {
         super.HT_writeToNBT(nbtTagCompound);
-        NBTTagList tagList = new NBTTagList();
-
-        for (int i = 0; i < this.m_contents.length; i++) {
-            if (m_contents[i] != null) {
-                NBTTagCompound itemTagCompound = new NBTTagCompound();
-                itemTagCompound.setInteger("slot", i);
-                this.m_contents[i].writeToNBT(itemTagCompound);
-                tagList.appendTag(itemTagCompound);
-            }
-        }
-
-        nbtTagCompound.setTag("items", tagList);
+        HT_NBTUtil.writeItemStacks(nbtTagCompound, this.m_contents);
     }
 
 }

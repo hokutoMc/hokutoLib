@@ -84,14 +84,14 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
     @Override
     public void HT_readFromNBT (NBTTagCompound nbtTagCompound) {
         super.HT_readFromNBT(nbtTagCompound);
-        this.props.HT_readFromNBT(nbtTagCompound, this);
+//        this.props.HT_readFromNBT(nbtTagCompound, this);
     }
 
     @Override
     public void HT_writeToNBT (NBTTagCompound nbtTagCompound) {
         super.HT_writeToNBT(nbtTagCompound);
-        this.props.HT_writeToNBT(nbtTagCompound, this);
-        NBTTagCompound nbtTagCompound1 = nbtTagCompound;
+//        this.props.HT_writeToNBT(nbtTagCompound, this);
+//        NBTTagCompound nbtTagCompound1 = nbtTagCompound;
     }
 
     public static class TestTEProcess extends HT_ItemStackProcess<FurnaceLikeRecipe> {

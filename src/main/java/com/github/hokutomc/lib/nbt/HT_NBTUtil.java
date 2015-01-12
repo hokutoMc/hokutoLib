@@ -1,7 +1,10 @@
 package com.github.hokutomc.lib.nbt;
 
 import com.github.hokutomc.lib.reflect.HT_Reflections;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
 
 import java.util.EnumSet;
 
@@ -9,6 +12,37 @@ import java.util.EnumSet;
  * Created by user on 2014/12/06.
  */
 public final class HT_NBTUtil {
+
+    public static ItemStack[] readItemStacks (NBTTagCompound nbtTagCompound, int size) {
+        NBTTagList itemTagList = nbtTagCompound.getTagList("items", Constants.NBT.TAG_COMPOUND);
+        ItemStack[] contents = new ItemStack[size];
+
+        for (int i = 0; i < itemTagList.tagCount(); i++) {
+            NBTTagCompound itemTagCompound = itemTagList.getCompoundTagAt(i);
+
+            int slotIndex = itemTagCompound.getInteger("slot");
+
+            if (slotIndex >= 0 && slotIndex < contents.length) {
+                contents[slotIndex] = ItemStack.loadItemStackFromNBT(itemTagCompound);
+            }
+        }
+        return contents;
+    }
+
+    public static void writeItemStacks (NBTTagCompound nbtTagCompound, ItemStack[] itemStacks) {
+        NBTTagList tagList = new NBTTagList();
+
+        for (int i = 0; i < itemStacks.length; i++) {
+            if (itemStacks[i] != null) {
+                NBTTagCompound itemTagCompound = new NBTTagCompound();
+                itemTagCompound.setInteger("slot", i);
+                itemStacks[i].writeToNBT(itemTagCompound);
+                tagList.appendTag(itemTagCompound);
+            }
+        }
+
+        nbtTagCompound.setTag("items", tagList);
+    }
 
     /**
      * Read enum constant by its ordinal.
