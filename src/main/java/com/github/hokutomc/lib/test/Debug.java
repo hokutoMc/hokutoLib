@@ -1,6 +1,7 @@
-package com.github.hokutomc.lib.main;
+package com.github.hokutomc.lib.test;
 
 import com.github.hokutomc.lib.HT_Registries;
+import com.github.hokutomc.lib.Mod_HTLib;
 import com.github.hokutomc.lib.block.*;
 import com.github.hokutomc.lib.client.gui.HT_GuiAction;
 import com.github.hokutomc.lib.client.gui.HT_GuiHandler;

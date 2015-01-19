@@ -1,17 +1,13 @@
 package com.github.hokutomc.lib.block;
 
+import com.github.hokutomc.lib.item.HT_ItemStackProducer;
 import com.github.hokutomc.lib.util.HT_ArrayUtil;
 import com.google.common.collect.ImmutableSet;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-
-import java.util.List;
 
 /**
  * Created by user on 2014/09/23.
@@ -26,6 +22,9 @@ public class HT_MultiBlock extends HT_Block<HT_MultiBlock> {
         super(modid, material, innerName);
         this.m_multiNames = ImmutableSet.copyOf(subNameList);
         this.m_multiIcons = new IIcon[subNameList.length];
+        for (int i = 1; i < m_multiIcons.length; i++) {
+            m_subItems.add(new HT_ItemStackProducer(this, i));
+        }
     }
 
     @Override
@@ -51,12 +50,4 @@ public class HT_MultiBlock extends HT_Block<HT_MultiBlock> {
             this.m_multiIcons[i] = iconRegister.registerIcon(this.HT_getTextureName() + "_" + m_multiNames.toArray()[i]);
         }
     }
-
-    @Override
-    public void HT_registerMulti (Item item, CreativeTabs creativeTab, final List<ItemStack> list) {
-        for (int i = 0; i < m_multiNames.size(); i++) {
-            list.add(new ItemStack(item, 1, i));
-        }
-    }
-
 }

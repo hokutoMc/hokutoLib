@@ -1,4 +1,4 @@
-package com.github.hokutomc.lib.main;
+package com.github.hokutomc.lib.test;
 
 import com.github.hokutomc.lib.client.model.HT_ModelPartBase;
 import net.minecraft.client.model.ModelBase;

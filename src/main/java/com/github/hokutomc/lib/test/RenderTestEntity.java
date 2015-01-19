@@ -1,4 +1,4 @@
-package com.github.hokutomc.lib.main;
+package com.github.hokutomc.lib.test;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;

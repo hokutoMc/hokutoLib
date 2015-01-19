@@ -1,5 +1,6 @@
-package com.github.hokutomc.lib.main;
+package com.github.hokutomc.lib.test;
 
+import com.github.hokutomc.lib.Mod_HTLib;
 import com.github.hokutomc.lib.block.HT_ContainerBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;

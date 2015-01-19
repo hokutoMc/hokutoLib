@@ -1,4 +1,4 @@
-package com.github.hokutomc.lib.main;
+package com.github.hokutomc.lib.test;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;

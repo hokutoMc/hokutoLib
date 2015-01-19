@@ -1,4 +1,4 @@
-package com.github.hokutomc.lib.main;
+package com.github.hokutomc.lib.test;
 
 import com.github.hokutomc.lib.client.gui.HT_GuiContainer;
 import com.github.hokutomc.lib.inventory.HT_ContainerProcessor;

@@ -70,20 +70,6 @@ public class HT_BlockDoubleSlab extends HT_MultiBlock {
         this.HT_setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    //    @Override
-//    public int HT_onBlockPlaced (World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta) {
-//        if (side == 1 || (double)(hitY - y) <= 0.5D) {
-//            world.setBlock(x, y, z, this.m_lower, meta, 7);
-//            return meta;
-//        }
-//        world.setBlock(x, y, z, this.m_upper, meta, 7);
-//
-//        return meta;
-//    }
-
-
-
-
 
     public static class HT_ItemSlab extends HT_MultiItemBlock {
 
@@ -205,22 +191,6 @@ public class HT_BlockDoubleSlab extends HT_MultiBlock {
         private boolean placeLowerBlock (World world, int x, int y, int z, int meta) {
             return world.setBlock(x, y, z, this.blockDouble.m_lower, meta, 3);
         }
-
-//        @Override
-//        public boolean placeBlockAt (ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
-//            if (this.canAddSlab(stack, world, x, y - 1, z)) {
-//                world.setBlock(x, y - 1, z, this.blockDouble, stack.getItemDamage(), 7);
-//            } else if (side == 1 || (double)(hitY - y) <= 0.5D) {
-//                world.setBlock(x, y, z, this.blockDouble.m_lower, stack.getItemDamage(), 7);
-//            } else {
-//                world.setBlock(x, y, z, this.blockDouble.m_upper, stack.getItemDamage(), 7);
-//            }
-//            Block block1 = world.getBlock(x, y, z);
-//            block1.onBlockPlacedBy(world, x, y, z, player, stack);
-//            block1.onPostBlockPlaced(world, x, y, z, world.getBlockMetadata(x, y, z));
-//            return true;
-//        }
-
 
     }
 }

@@ -16,6 +16,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +26,15 @@ import java.util.List;
  */
 public abstract class HT_Item<T extends HT_Item> extends Item {
     private String m_shortName;
+    protected List<HT_ItemStackProducer> m_subItems;
 
     public HT_Item (String modid, String innerName) {
         super();
         this.m_shortName = innerName;
         this.HT_setInnerName(modid, innerName);
         this.HT_setTextureName(modid, innerName);
+        m_subItems = new ArrayList<>();
+        m_subItems.add(new HT_ItemStackProducer(this, 0));
     }
 
     @SuppressWarnings("unchecked")
@@ -507,7 +511,9 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
     }
 
     public void HT_registerMulti (Item item, CreativeTabs tab, final List<ItemStack> list) {
-        super.getSubItems(item, tab, list);
+        for (HT_ItemStackProducer e : m_subItems) {
+            list.add(e.produce(1));
+        }
     }
 
     @Override

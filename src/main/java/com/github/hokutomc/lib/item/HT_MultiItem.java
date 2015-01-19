@@ -5,12 +5,8 @@ import com.google.common.collect.ImmutableSet;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-
-import java.util.List;
 
 /**
  * Created by user on 2014/10/11.
@@ -27,6 +23,9 @@ public class HT_MultiItem extends HT_Item<HT_MultiItem> {
         this.HT_setMaxDamage(0);
         this.HT_setHasSubtypes(true);
         this.m_multiIcons = new IIcon[subNameList.length];
+        for (int i = 1; i < subNameList.length; i++) {
+            m_subItems.add(new HT_ItemStackProducer(this, i));
+        }
     }
 
     @Override
@@ -44,13 +43,6 @@ public class HT_MultiItem extends HT_Item<HT_MultiItem> {
         super.HT_registerIcons(iconRegister);
         for (int i = 0; i < m_multiNames.size(); i++) {
             this.m_multiIcons[i] = iconRegister.registerIcon(this.HT_getIconString() + "_" + m_multiNames.toArray()[i]);
-        }
-    }
-
-    @Override
-    public void HT_registerMulti (Item item, CreativeTabs tab, final List<ItemStack> list) {
-        for (int i = 0; i < m_multiNames.size(); i++) {
-            list.add(new ItemStack(item, 1, i));
         }
     }
 

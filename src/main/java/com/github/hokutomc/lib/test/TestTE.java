@@ -1,4 +1,4 @@
-package com.github.hokutomc.lib.main;
+package com.github.hokutomc.lib.test;
 
 import com.github.hokutomc.lib.data.HT_BasicObjectData;
 import com.github.hokutomc.lib.data.HT_BasicObjectProperties;

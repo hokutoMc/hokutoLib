@@ -1,10 +1,10 @@
-package com.github.hokutomc.lib.main;
+package com.github.hokutomc.lib;
 
 
-import com.github.hokutomc.lib.HT_ModVersion;
 import com.github.hokutomc.lib.common.config.HT_Config;
 import com.github.hokutomc.lib.item.HT_ItemTool;
 import com.github.hokutomc.lib.entity.HT_EntityUtil;
+import com.github.hokutomc.lib.test.Debug;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;

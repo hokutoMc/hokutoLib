@@ -1,6 +1,7 @@
 package com.github.hokutomc.lib.block;
 
 import com.github.hokutomc.lib.HT_Registries;
+import com.github.hokutomc.lib.item.HT_ItemStackProducer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -23,6 +24,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -36,6 +38,7 @@ public class HT_Block<T extends HT_Block> extends Block {
     private String m_innerName;
     protected boolean m_fallInstantly;
     public String m_modid;
+    protected List<HT_ItemStackProducer> m_subItems = new ArrayList<>();
 
     public HT_Block (String modid, Material material, String innerName) {
         super(material);
@@ -43,6 +46,7 @@ public class HT_Block<T extends HT_Block> extends Block {
         this.m_shortName = innerName;
         this.HT_setInnerName(modid, innerName);
         this.HT_setTextureName(modid, innerName);
+        m_subItems.add(new HT_ItemStackProducer(this, 0));
     }
 
     @SuppressWarnings("unchecked")
@@ -977,8 +981,11 @@ public class HT_Block<T extends HT_Block> extends Block {
         this.HT_registerMulti(p_149666_1_, p_149666_2_, p_149666_3_);
     }
 
+
     public void HT_registerMulti (Item item, CreativeTabs tab, final List<ItemStack> list) {
-        super.getSubBlocks(item, tab, list);
+        for (HT_ItemStackProducer e : m_subItems) {
+            list.add(e.produce(1));
+        }
     }
 
     @Override

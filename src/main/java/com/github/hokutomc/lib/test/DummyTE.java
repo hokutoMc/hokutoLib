@@ -1,4 +1,4 @@
-package com.github.hokutomc.lib.main;
+package com.github.hokutomc.lib.test;
 
 import com.github.hokutomc.lib.tileentity.HT_ProcessTile;
 import net.minecraft.entity.player.EntityPlayer;

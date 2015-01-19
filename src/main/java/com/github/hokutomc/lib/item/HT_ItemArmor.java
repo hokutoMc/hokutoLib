@@ -1,5 +1,6 @@
 package com.github.hokutomc.lib.item;
 
+import com.github.hokutomc.lib.util.HT_I18nUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,6 +29,11 @@ public abstract class HT_ItemArmor extends HT_ItemDurable implements ISpecialArm
         ItemStack stack = this.create(meta);
         stack.stackTagCompound.setInteger(KEY_PART, part.ordinal());
         return stack;
+    }
+
+    @Override
+    public String HT_getItemStackDisplayName (ItemStack itemStack) {
+        return HT_I18nUtil.localize(this.getUnlocalizedName(itemStack) + "." + getPart(itemStack).toString() + ".name");
     }
 
     public Part getPart (ItemStack itemStack) {
@@ -119,6 +125,12 @@ public abstract class HT_ItemArmor extends HT_ItemDurable implements ISpecialArm
                 if (e.isSlot(slot)) return e;
             }
             return null;
+        }
+
+
+        @Override
+        public String toString () {
+            return this.name;
         }
     }
 }
