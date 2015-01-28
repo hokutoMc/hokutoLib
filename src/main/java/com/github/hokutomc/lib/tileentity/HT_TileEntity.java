@@ -4,8 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
 /**
@@ -21,6 +24,12 @@ public class HT_TileEntity extends TileEntity {
     public final double HT_getDistanceWith (Entity entity) {
         return this.getDistanceFrom(entity.posX, entity.posY, entity.posZ);
     }
+
+    public void playSoundEffect (String sound, float volume, float pitch) {
+        this.worldObj.playSoundEffect(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, sound, volume, pitch);
+    }
+
+    // wrapper methods
 
     @Override
     public final World getWorldObj () {
@@ -127,7 +136,9 @@ public class HT_TileEntity extends TileEntity {
     }
 
     public Packet HT_getDescriptionPacket () {
-        return super.getDescriptionPacket();
+        NBTTagCompound nbtTagCompound = new NBTTagCompound();
+        this.writeToNBT(nbtTagCompound);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTagCompound);
     }
 
     @Override
@@ -184,5 +195,57 @@ public class HT_TileEntity extends TileEntity {
         super.func_145828_a(crashReportCategory);
     }
 
+    @Override
+    public final boolean canUpdate () {
+        return this.HT_canUpdate();
+    }
 
+    public boolean HT_canUpdate () {
+        return super.canUpdate();
+    }
+
+    @Override
+    public final void onDataPacket (NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        this.HT_onDataPacket(net, pkt);
+    }
+
+    public void HT_onDataPacket (NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        this.readFromNBT(pkt.func_148857_g());
+    }
+
+    @Override
+    public final void onChunkUnload () {
+        this.HT_onChunkUnload();
+    }
+
+    public void HT_onChunkUnload () {
+        super.onChunkUnload();
+    }
+
+    @Override
+    public final boolean shouldRefresh (Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y, int z) {
+        return this.HT_shouldRefresh(oldBlock, newBlock, oldMeta, newMeta, world, x, y, z);
+    }
+
+    public boolean HT_shouldRefresh (Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y, int z) {
+        return super.shouldRefresh(oldBlock, newBlock, oldMeta, newMeta, world, x, y, z);
+    }
+
+    @Override
+    public final boolean shouldRenderInPass (int pass) {
+        return this.HT_shouldRenderInPass(pass);
+    }
+
+    public boolean HT_shouldRenderInPass (int pass) {
+        return super.shouldRenderInPass(pass);
+    }
+
+    @Override
+    public final AxisAlignedBB getRenderBoundingBox () {
+        return this.HT_getRenderBoundingBox();
+    }
+
+    public AxisAlignedBB HT_getRenderBoundingBox () {
+        return super.getRenderBoundingBox();
+    }
 }

@@ -56,4 +56,11 @@ public final class HT_OreUtil {
         }
         return false;
     }
+
+    public static boolean hasName (ItemStack itemStack, String name) {
+        for (String s : getNames(itemStack)) {
+            if (s.equals(name)) return true;
+        }
+        return false;
+    }
 }

@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 /**
  * Created by user on 2014/10/11.
  */
-public abstract class HT_ContainerBlock extends HT_Block<HT_ContainerBlock> implements ITileEntityProvider {
+public abstract class HT_ContainerBlock<T extends TileEntity> extends HT_Block<HT_ContainerBlock> implements ITileEntityProvider {
     public HT_ContainerBlock (String modid, Material material, String innerName) {
         super(modid, material, innerName);
         this.isBlockContainer = true;
@@ -31,5 +31,11 @@ public abstract class HT_ContainerBlock extends HT_Block<HT_ContainerBlock> impl
         super.HT_onBlockEventReceived(world, x, y, z, i1, i2);
         TileEntity tileentity = world.getTileEntity(x, y, z);
         return tileentity != null && tileentity.receiveClientEvent(i1, i2);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected T getTileEntityAt (World world, int x, int y, int z, Class<T> teClass) {
+        TileEntity te = world.getTileEntity(x, y, z);
+        return teClass.isInstance(te) ? (T) te : null;
     }
 }

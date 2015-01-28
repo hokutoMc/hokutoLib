@@ -1,6 +1,7 @@
 package com.github.hokutomc.lib.tileentity;
 
 import com.github.hokutomc.lib.nbt.HT_NBTUtil;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -12,13 +13,26 @@ import net.minecraft.nbt.NBTTagCompound;
  * 2014/10/25.
  */
 public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInventory {
-    private ItemStack[] m_contents;
+    protected ItemStack[] m_contents;
 
     public HT_StorageTile () {
         super();
         this.m_contents = new ItemStack[this.getSizeInventory()];
     }
 
+    public void dropAll () {
+        for (int i = 0; i < this.getSizeInventory(); i++) {
+            if (this.getStackInSlot(i) != null) this.drop(this.getStackInSlot(i));
+        }
+    }
+
+    public void drop (ItemStack itemStack, double yOffset) {
+        this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.xCoord, this.yCoord + yOffset, this.zCoord, itemStack));
+    }
+
+    public void drop (ItemStack itemStack) {
+        drop(itemStack, 0.0);
+    }
 
     // Wrapper====
 
@@ -27,21 +41,27 @@ public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInve
         return this.HT_getAccessibleSlotsFromSide(p_94128_1_);
     }
 
-    public abstract int[] HT_getAccessibleSlotsFromSide (int side);
+    public int[] HT_getAccessibleSlotsFromSide (int side) {
+        return new int[0];
+    }
 
     @Override
     public final boolean canInsertItem (int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
         return this.HT_canInsertItem(p_102007_1_, p_102007_2_, p_102007_3_);
     }
 
-    public abstract boolean HT_canInsertItem (int slot, ItemStack itemStack, int side);
+    public boolean HT_canInsertItem (int slot, ItemStack itemStack, int side) {
+        return false;
+    }
 
     @Override
     public final boolean canExtractItem (int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
         return this.HT_canExtractItem(p_102008_1_, p_102008_2_, p_102008_3_);
     }
 
-    public abstract boolean HT_canExtractItem (int slot, ItemStack itemStack, int side);
+    public boolean HT_canExtractItem (int slot, ItemStack itemStack, int side) {
+        return false;
+    }
 
     @Override
     public final int getSizeInventory () {
@@ -105,14 +125,18 @@ public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInve
         return this.HT_getInventoryName();
     }
 
-    public abstract String HT_getInventoryName ();
+    public String HT_getInventoryName () {
+        return "";
+    }
 
     @Override
     public final boolean hasCustomInventoryName () {
         return this.HT_hasCustomName();
     }
 
-    public abstract boolean HT_hasCustomName ();
+    public boolean HT_hasCustomName () {
+        return false;
+    }
 
     @Override
     public final int getInventoryStackLimit () {
@@ -128,25 +152,23 @@ public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInve
         return this.HT_isUsableByPlayer(p_70300_1_);
     }
 
-    protected abstract boolean HT_isUsableByPlayer (EntityPlayer entityPlayer);
+    protected boolean HT_isUsableByPlayer (EntityPlayer entityPlayer) {
+        return false;
+    }
 
     @Override
     public final void openInventory () {
         this.HT_openInventory();
     }
 
-    public void HT_openInventory () {
-
-    }
+    public void HT_openInventory () {}
 
     @Override
     public final void closeInventory () {
         this.HT_closeInventory();
     }
 
-    public void HT_closeInventory () {
-
-    }
+    public void HT_closeInventory () {}
 
     @Override
     public final boolean isItemValidForSlot (int p_94041_1_, ItemStack p_94041_2_) {
