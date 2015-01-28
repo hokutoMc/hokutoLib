@@ -1,9 +1,11 @@
 package com.github.hokutomc.lib.block;
 
+import com.github.hokutomc.lib.reflect.HT_Reflections;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
@@ -34,8 +36,8 @@ public abstract class HT_ContainerBlock<T extends TileEntity> extends HT_Block<H
     }
 
     @SuppressWarnings("unchecked")
-    protected T getTileEntityAt (World world, int x, int y, int z, Class<T> teClass) {
+    protected T getTileEntityAt (IBlockAccess world, int x, int y, int z, T... empty) {
         TileEntity te = world.getTileEntity(x, y, z);
-        return teClass.isInstance(te) ? (T) te : null;
+        return HT_Reflections.getClass(empty).isInstance(te) ? (T) te : null;
     }
 }
