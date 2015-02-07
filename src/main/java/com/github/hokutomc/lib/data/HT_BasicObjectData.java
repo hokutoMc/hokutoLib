@@ -16,6 +16,10 @@ public class HT_BasicObjectData<P> extends HT_SavableData<TileEntity, P, HT_Basi
         super(nbtKey, empty);
     }
 
+    public HT_BasicObjectData (String nbtKey, Class<P> type) {
+        super(nbtKey, type);
+    }
+
     @SafeVarargs
     public static <R extends Enum<R>> HT_BasicObjectData<EnumSet<R>> createEnumSetData (String nbtKey, R... empty) {
         return createEnumSetData(nbtKey, HT_Reflections.getClass(empty));

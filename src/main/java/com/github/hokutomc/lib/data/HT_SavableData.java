@@ -22,11 +22,13 @@ public abstract class HT_SavableData<E, P, S extends HT_SavableData<E, P, S>>
 
     @SafeVarargs
     public HT_SavableData (String nbtKey, P... empty) {
-        this.m_nbtKey = nbtKey;
-        this.type = HT_Reflections.getClass(empty);
+        this(nbtKey, HT_Reflections.getClass(empty));
     }
 
-
+    public HT_SavableData (String nbtKey, Class<P> type) {
+        this.m_nbtKey = nbtKey;
+        this.type = type;
+    }
 
     protected abstract void update (E entity, P property);
 
