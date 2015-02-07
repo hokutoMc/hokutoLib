@@ -13,6 +13,7 @@ public final class HT_Reflections {
     @SuppressWarnings("unchecked")
     @SafeVarargs
     public static <T> Class<T> getClass (T... empty) {
+        assert empty.length != 0;
         return (Class<T>) empty.getClass().getComponentType();
     }
 
@@ -21,7 +22,6 @@ public final class HT_Reflections {
     public static <E extends Enum<E>> Class<EnumSet<E>> getEnumSetClass (E... empty) {
         return (Class<EnumSet<E>>) EnumSet.noneOf(getClass(empty)).getClass();
     }
-
 
     @SuppressWarnings("unchecked")
     public static <P> P[] createDummyArray (Class<P> clazz) {

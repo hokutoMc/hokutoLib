@@ -1,6 +1,6 @@
 package com.github.hokutomc.lib.block;
 
-import com.github.hokutomc.lib.item.HT_ItemStackProducer;
+import com.github.hokutomc.lib.item.HT_ItemStackBuilder;
 import com.github.hokutomc.lib.util.HT_ArrayUtil;
 import com.google.common.collect.ImmutableSet;
 import cpw.mods.fml.relauncher.Side;
@@ -23,7 +23,7 @@ public class HT_MultiBlock extends HT_Block<HT_MultiBlock> {
         this.m_multiNames = ImmutableSet.copyOf(subNameList);
         this.m_multiIcons = new IIcon[subNameList.length];
         for (int i = 1; i < m_multiIcons.length; i++) {
-            m_subItems.add(new HT_ItemStackProducer(this, i));
+            m_subItems.add(new HT_ItemStackBuilder(this, i));
         }
     }
 

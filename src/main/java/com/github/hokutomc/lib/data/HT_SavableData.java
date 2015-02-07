@@ -42,7 +42,7 @@ public abstract class HT_SavableData<E, P, S extends HT_SavableData<E, P, S>>
     @SuppressWarnings("unchecked")
     protected void HT_writeToNBT (NBTTagCompound nbtTagCompound, E obj) {
         if (type.isEnum()) {
-            HT_NBTUtil.writeEnumToNBT(m_nbtKey, nbtTagCompound, ((Enum) get(obj)));
+            HT_NBTUtil.writeEnum(m_nbtKey, nbtTagCompound, ((Enum) get(obj)));
         }
         if (type == Integer.class) {
             nbtTagCompound.setInteger(m_nbtKey, (Integer) get(obj));
@@ -78,7 +78,7 @@ public abstract class HT_SavableData<E, P, S extends HT_SavableData<E, P, S>>
             ((ItemStack) get(obj)).writeToNBT(nbtTagCompound);
         }
         if (EnumSet.class.isAssignableFrom(type)) {
-            HT_NBTUtil.writeEnumSetToNBT(m_nbtKey, nbtTagCompound, (EnumSet) get(obj), m_flagType);
+            HT_NBTUtil.writeEnumSet(m_nbtKey, nbtTagCompound, (EnumSet) get(obj), m_flagType);
         }
 
     }
@@ -94,7 +94,7 @@ public abstract class HT_SavableData<E, P, S extends HT_SavableData<E, P, S>>
     protected void HT_readFromNBT (NBTTagCompound nbtTagCompound, E entity){
         if (type.isEnum()) {
             Class clazz = type;
-            update(entity, (P) HT_NBTUtil.readEnumFromNBT(m_nbtKey, nbtTagCompound, clazz));
+            update(entity, (P) HT_NBTUtil.readEnum(m_nbtKey, nbtTagCompound, clazz));
         }
         if (type == Integer.class) {
             update(entity, (P) (Integer) nbtTagCompound.getInteger(m_nbtKey));
@@ -137,7 +137,7 @@ public abstract class HT_SavableData<E, P, S extends HT_SavableData<E, P, S>>
                     e.printStackTrace();
                 }
             }
-            update(entity, (P) HT_NBTUtil.readEnumSetFromNBT(m_nbtKey, nbtTagCompound, m_flagType));
+            update(entity, (P) HT_NBTUtil.readEnumSet(m_nbtKey, nbtTagCompound, m_flagType));
         }
         update(entity, (P) ItemStack.loadItemStackFromNBT(nbtTagCompound));
     }
