@@ -38,9 +38,9 @@ ht_mod {
 	completeId = 'hokutomc.lib'
 	prefix = 'beta'
 	major = '1'
-	minor = '3'
-	revision = '1'
-	build = '7'
+	minor = '4'
+	revision = '0'
+	build = '8'
 }
 
 
