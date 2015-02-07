@@ -19,6 +19,7 @@ public class HT_ItemStackBuilder<T extends HT_ItemStackBuilder> {
     private int m_size;
 
     protected HT_ItemStackBuilder (ItemStack template) {
+        this.m_size = 1;
         this.m_template = template;
         this.m_isBlockEvaluated = true;
     }
