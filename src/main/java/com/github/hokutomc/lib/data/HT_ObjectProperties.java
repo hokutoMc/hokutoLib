@@ -9,7 +9,6 @@ import java.util.ArrayList;
 /**
  * Created by user on 2014/10/25.
  */
-@Deprecated
 public class HT_ObjectProperties<E, P extends HT_SavableData<E, ?, ?>> implements HT_I_NBTData<HT_ObjectProperties>{
 
     protected final ArrayList<P> m_listData = Lists.newArrayList();

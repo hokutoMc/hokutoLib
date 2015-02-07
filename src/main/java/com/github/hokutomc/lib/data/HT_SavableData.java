@@ -12,7 +12,6 @@ import java.util.EnumSet;
 /**
  * Created by user on 2014/12/08.
  */
-@Deprecated
 public abstract class HT_SavableData<E, P, S extends HT_SavableData<E, P, S>>
         implements HT_I_NBTData<HT_SavableData>{
 
