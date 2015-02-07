@@ -9,7 +9,6 @@ import java.util.EnumSet;
 /**
  * Created by user on 2014/12/07.
  */
-@Deprecated
 public class HT_EntityData<P> extends HT_SavableData<Entity, P, HT_EntityData<P>> {
     protected final boolean m_doSync;
     protected final int m_dwId;

@@ -26,7 +26,7 @@ import java.util.List;
  */
 public abstract class HT_Item<T extends HT_Item> extends Item {
     private String m_shortName;
-    protected List<HT_ItemStackProducer> m_subItems;
+    protected List<HT_ItemStackBuilder> m_subItems;
 
     public HT_Item (String modid, String innerName) {
         super();
@@ -34,7 +34,7 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
         this.HT_setInnerName(modid, innerName);
         this.HT_setTextureName(modid, innerName);
         m_subItems = new ArrayList<>();
-        m_subItems.add(new HT_ItemStackProducer(this, 0));
+        m_subItems.add(new HT_ItemStackBuilder(this, 0));
     }
 
     @SuppressWarnings("unchecked")
@@ -511,8 +511,8 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
     }
 
     public void HT_registerMulti (Item item, CreativeTabs tab, final List<ItemStack> list) {
-        for (HT_ItemStackProducer e : m_subItems) {
-            list.add(e.produce(1));
+        for (HT_ItemStackBuilder e : m_subItems) {
+            list.add(e.build(1));
         }
     }
 

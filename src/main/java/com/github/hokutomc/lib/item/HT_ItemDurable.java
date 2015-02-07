@@ -31,15 +31,15 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
         this.HT_setMaxStackSize(1);
     }
 
-    public HT_ItemStackProducer getProducer (int durability, int meta) {
-        return new HT_ItemStackProducer(this, meta).setInt(KEY_DURABILITY, durability).setBoolean(KEY_BROKEN, false);
+    public HT_ItemStackBuilder getProducer (int durability, int meta) {
+        return new HT_ItemStackBuilder(this, meta).setInt(KEY_DURABILITY, durability).setBoolean(KEY_BROKEN, false);
     }
 
-    public HT_ItemStackProducer getProducer (int meta) {
-        return new HT_ItemStackProducer(this, meta) {
+    public HT_ItemStackBuilder getProducer (int meta) {
+        return new HT_ItemStackBuilder(this, meta) {
             @Override
-            public ItemStack produce (int size) {
-                ItemStack stack = super.produce(size);
+            public ItemStack build (int size) {
+                ItemStack stack = super.build(size);
                 stack.stackTagCompound.setInteger(KEY_DURABILITY, getMaxDurability(stack));
                 return stack;
             }

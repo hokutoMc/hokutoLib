@@ -24,7 +24,7 @@ public class HT_MultiItem extends HT_Item<HT_MultiItem> {
         this.HT_setHasSubtypes(true);
         this.m_multiIcons = new IIcon[subNameList.length];
         for (int i = 1; i < subNameList.length; i++) {
-            m_subItems.add(new HT_ItemStackProducer(this, i));
+            m_subItems.add(new HT_ItemStackBuilder(this, i));
         }
     }
 

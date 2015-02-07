@@ -7,12 +7,15 @@ import com.github.hokutomc.lib.client.gui.HT_GuiAction;
 import com.github.hokutomc.lib.client.gui.HT_GuiHandler;
 import com.github.hokutomc.lib.entity.HT_ModEntityList;
 import com.github.hokutomc.lib.item.*;
+import com.github.hokutomc.lib.item.recipe.HT_CraftingRecipeBuilder;
+import com.github.hokutomc.lib.item.recipe.HT_FurnaceRecipeBuilder;
 import com.github.hokutomc.lib.util.HT_CreativeTabsUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -174,6 +177,27 @@ public class Debug {
         entityList.register(TestMob.class, "httestentity", 0x808040, 0xf0f0d0);
 
         HT_Registries.registerEntityRenderer(TestMob.class, new RenderTestEntity(new ModelTestEntity(), 0.5f));
+
+        new HT_CraftingRecipeBuilder()
+                .param('X', Blocks.dirt).endItem()
+                .grid("XXX", "XXX", "XXX")
+                .to(Blocks.wool).damage(4).size(10).endItem()
+        .paramOre('X', "ingotIron")
+                .grid("XXX")
+                .to(Items.diamond).size(2).endItem()
+        .shapeless()
+                .from(Blocks.dirt).size(2).endItem()
+                .andOre("ingotIron")
+                .to(Blocks.iron_block).size(2).endItem();
+
+        new HT_FurnaceRecipeBuilder()
+                .from(Blocks.dirt).endItem()
+                .withXp(100.0)
+                .to(Blocks.obsidian).endItem()
+                .from(Blocks.snow).endItem()
+                .withXp(1.0)
+                .to(Items.water_bucket).endItem();
+
     }
 
 

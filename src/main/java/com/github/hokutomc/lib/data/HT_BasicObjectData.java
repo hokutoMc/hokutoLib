@@ -8,7 +8,6 @@ import java.util.EnumSet;
 /**
  * Created by user on 2014/12/08.
  */
-@Deprecated
 public class HT_BasicObjectData<P> extends HT_SavableData<TileEntity, P, HT_BasicObjectData<P>> {
     private P m_value;
 
@@ -17,10 +16,18 @@ public class HT_BasicObjectData<P> extends HT_SavableData<TileEntity, P, HT_Basi
         super(nbtKey, empty);
     }
 
+    public HT_BasicObjectData (String nbtKey, Class<P> type) {
+        super(nbtKey, type);
+    }
+
     @SafeVarargs
     public static <R extends Enum<R>> HT_BasicObjectData<EnumSet<R>> createEnumSetData (String nbtKey, R... empty) {
+        return createEnumSetData(nbtKey, HT_Reflections.getClass(empty));
+    }
+
+    public static <R extends Enum<R>> HT_BasicObjectData<EnumSet<R>> createEnumSetData (String nbtKey, Class<R> enumClass) {
         HT_BasicObjectData<EnumSet<R>> data = new HT_BasicObjectData<>(nbtKey);
-        data.m_flagType = HT_Reflections.getClass(empty);
+        data.m_flagType = enumClass;
         return data;
     }
 

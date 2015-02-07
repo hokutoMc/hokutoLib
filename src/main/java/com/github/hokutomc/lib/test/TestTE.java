@@ -36,7 +36,7 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
     public TestTE () {
         super(new TestTEProcess());
         this.props = new HT_BasicObjectProperties<>();
-        this.save_flags = HT_BasicObjectData.createEnumSetData("flagsTE");
+        this.save_flags = HT_BasicObjectData.<Flags>createEnumSetData("flagsTE");
         this.save_flags.update(this, EnumSet.noneOf(Flags.class));
         this.props.addProperty(save_flags);
     }
@@ -84,14 +84,16 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
     @Override
     public void HT_readFromNBT (NBTTagCompound nbtTagCompound) {
         super.HT_readFromNBT(nbtTagCompound);
-//        this.props.HT_readFromNBT(nbtTagCompound, this);
+        this.props.HT_readFromNBT(nbtTagCompound, this);
+        this.save_flags.HT_readFromNBT(nbtTagCompound, this);
     }
 
     @Override
     public void HT_writeToNBT (NBTTagCompound nbtTagCompound) {
         super.HT_writeToNBT(nbtTagCompound);
-//        this.props.HT_writeToNBT(nbtTagCompound, this);
-//        NBTTagCompound nbtTagCompound1 = nbtTagCompound;
+        this.props.HT_writeToNBT(nbtTagCompound, this);
+        this.save_flags.HT_writeToNBT(nbtTagCompound, this);
+        NBTTagCompound nbtTagCompound1 = nbtTagCompound;
     }
 
     public static class TestTEProcess extends HT_ItemStackProcess<FurnaceLikeRecipe> {

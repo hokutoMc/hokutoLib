@@ -4,6 +4,8 @@ package com.github.hokutomc.lib;
 import com.github.hokutomc.lib.block.HT_Block;
 import com.github.hokutomc.lib.block.HT_MultiItemBlock;
 import com.github.hokutomc.lib.item.HT_Item;
+import com.github.hokutomc.lib.item.recipe.HT_CraftingRecipeBuilder;
+import com.github.hokutomc.lib.item.recipe.HT_FurnaceRecipeBuilder;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -26,9 +28,6 @@ public final class HT_Registries {
     private HT_Registries () {
     }
 
-    public static Item registerMobEgg (Object mod) {
-        return null;
-    }
 
     public static <T extends HT_Block> T registerBlock (T block) {
         GameRegistry.registerBlock(block, block.HT_getShortName());
@@ -72,6 +71,14 @@ public final class HT_Registries {
 
     public static void registerDispencerBehavior (Item item, IBehaviorDispenseItem behavior) {
         BlockDispenser.dispenseBehaviorRegistry.putObject(item, behavior);
+    }
+
+    public static HT_CraftingRecipeBuilder addRecipe () {
+        return new HT_CraftingRecipeBuilder();
+    }
+
+    public static HT_FurnaceRecipeBuilder addSmelting () {
+        return new HT_FurnaceRecipeBuilder();
     }
 
     public static void registerBlock (HT_Block block, Class<? extends ItemBlock> itemBlockClass) {
