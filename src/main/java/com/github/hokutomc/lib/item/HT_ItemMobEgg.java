@@ -40,6 +40,7 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void HT_registerMulti (Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < m_listEntity.size(); i++) {
             list.add(HT_ItemStackUtil.createItemStack(item, 1, i));
@@ -140,27 +141,27 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
         return entity;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean HT_requiresMultipleRenderPasses () {
         return true;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon HT_getIconFromDamageForRenderPass (int meta, int pass) {
         return pass > 0 ? this.m_iconOverlay : super.HT_getIconFromDamageForRenderPass(meta, pass);
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
+    @SideOnly(Side.CLIENT)
     public int HT_getColorFromItemStack (ItemStack itemStack, int path) {
         int damage = itemStack.getItemDamage();
         return path == 1 ? this.m_listEntity.getSpotColorAt(damage) : (path == 0 ? this.m_listEntity.getBaseColorAt(damage) : 0xffffff);
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
+    @SideOnly(Side.CLIENT)
     public void HT_registerIcons (IIconRegister iconRegister) {
         super.HT_registerIcons(iconRegister);
         this.m_iconOverlay = iconRegister.registerIcon(this.getIconString() + "_overlay");

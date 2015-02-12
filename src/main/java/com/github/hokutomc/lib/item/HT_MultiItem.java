@@ -34,11 +34,13 @@ public class HT_MultiItem extends HT_Item<HT_MultiItem> {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon HT_getIconFromDamage (int damage) {
         return this.m_multiIcons[damage];
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void HT_registerIcons (IIconRegister iconRegister) {
         super.HT_registerIcons(iconRegister);
         for (int i = 0; i < m_multiNames.size(); i++) {

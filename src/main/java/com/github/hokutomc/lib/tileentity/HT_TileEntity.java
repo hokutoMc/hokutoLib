@@ -1,5 +1,7 @@
 package com.github.hokutomc.lib.tileentity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
@@ -113,10 +115,12 @@ public class HT_TileEntity extends TileEntity {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final double getMaxRenderDistanceSquared () {
         return this.HT_getMaxRenderDistanceSquared();
     }
 
+    @SideOnly(Side.CLIENT)
     public double HT_getMaxRenderDistanceSquared () {
         return super.getMaxRenderDistanceSquared();
     }
@@ -241,10 +245,12 @@ public class HT_TileEntity extends TileEntity {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final AxisAlignedBB getRenderBoundingBox () {
         return this.HT_getRenderBoundingBox();
     }
 
+    @SideOnly(Side.CLIENT)
     public AxisAlignedBB HT_getRenderBoundingBox () {
         return super.getRenderBoundingBox();
     }

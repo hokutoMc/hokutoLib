@@ -1,7 +1,8 @@
 package com.github.hokutomc.lib.item;
 
 import com.github.hokutomc.lib.HT_Registries;
-import com.google.common.collect.Multimap;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -67,28 +68,34 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final int getSpriteNumber () {
         return this.HT_getSpriteNumber();
     }
 
+    @SideOnly(Side.CLIENT)
     public int HT_getSpriteNumber () {
         return super.getSpriteNumber();
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final IIcon getIconFromDamage (int p_77617_1_) {
         return this.HT_getIconFromDamage(p_77617_1_);
     }
 
+    @SideOnly(Side.CLIENT)
     public IIcon HT_getIconFromDamage (int damage) {
         return super.getIconFromDamage(damage);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final IIcon getIconIndex (ItemStack p_77650_1_) {
         return this.HT_getIconIndex(p_77650_1_);
     }
 
+    @SideOnly(Side.CLIENT)
     public IIcon HT_getIconIndex (ItemStack itemStack) {
         return this.getIconFromDamage(itemStack.getItemDamageForDisplay());
     }
@@ -127,11 +134,6 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
 
     public ItemStack HT_onEaten (ItemStack itemStack, World world, EntityPlayer player) {
         return super.onEaten(itemStack, world, player);
-    }
-
-    @Override
-    public final int getItemStackLimit () {
-        return super.getItemStackLimit();
     }
 
     @Override
@@ -246,10 +248,12 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final boolean shouldRotateAroundWhenRendering () {
         return this.HT_shouldRotateAroundWhenRendering();
     }
 
+    @SideOnly(Side.CLIENT)
     public boolean HT_shouldRotateAroundWhenRendering () {
         return super.shouldRotateAroundWhenRendering();
     }
@@ -336,10 +340,12 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
 
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final int getColorFromItemStack (ItemStack p_82790_1_, int p_82790_2_) {
         return this.HT_getColorFromItemStack(p_82790_1_, p_82790_2_);
     }
 
+    @SideOnly(Side.CLIENT)
     public int HT_getColorFromItemStack (ItemStack itemStack, int path) {
         return super.getColorFromItemStack(itemStack, path);
     }
@@ -428,10 +434,12 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
 
     @SuppressWarnings("unchecked")
     @Override
+    @SideOnly(Side.CLIENT)
     public final void addInformation (ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
         this.HT_addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_);
     }
 
+    @SideOnly(Side.CLIENT)
     public void HT_addInformation (ItemStack itemStack, EntityPlayer player, final List<String> list, boolean b) {
         super.addInformation(itemStack, player, list, b);
     }
@@ -443,11 +451,6 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
 
     public String HT_getItemStackDisplayName (ItemStack itemStack) {
         return super.getItemStackDisplayName(itemStack);
-    }
-
-    @Override
-    public final boolean hasEffect (ItemStack p_77636_1_) {
-        return super.hasEffect(p_77636_1_);
     }
 
     @Override
@@ -487,29 +490,35 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final boolean requiresMultipleRenderPasses () {
         return this.HT_requiresMultipleRenderPasses();
     }
 
+    @SideOnly(Side.CLIENT)
     public boolean HT_requiresMultipleRenderPasses () {
         return super.requiresMultipleRenderPasses();
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final IIcon getIconFromDamageForRenderPass (int p_77618_1_, int p_77618_2_) {
         return this.HT_getIconFromDamageForRenderPass(p_77618_1_, p_77618_2_);
     }
 
+    @SideOnly(Side.CLIENT)
     public IIcon HT_getIconFromDamageForRenderPass (int meta, int pass) {
         return super.getIconFromDamageForRenderPass(meta, pass);
     }
 
     @SuppressWarnings("unchecked")
     @Override
+    @SideOnly(Side.CLIENT)
     public final void getSubItems (Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_) {
         this.HT_registerMulti(p_150895_1_, p_150895_2_, p_150895_3_);
     }
 
+    @SideOnly(Side.CLIENT)
     public void HT_registerMulti (Item item, CreativeTabs tab, final List<ItemStack> list) {
         for (HT_ItemStackBuilder e : m_subItems) {
             list.add(e.build(1));
@@ -527,10 +536,12 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final CreativeTabs getCreativeTab () {
         return this.HT_getCreativeTab();
     }
 
+    @SideOnly(Side.CLIENT)
     public CreativeTabs HT_getCreativeTab () {
         return super.getCreativeTab();
     }
@@ -554,17 +565,14 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final void registerIcons (IIconRegister p_94581_1_) {
         this.HT_registerIcons(p_94581_1_);
     }
 
+    @SideOnly(Side.CLIENT)
     public void HT_registerIcons (IIconRegister iconRegister) {
         super.registerIcons(iconRegister);
-    }
-
-    @Override
-    public final Multimap getItemAttributeModifiers () {
-        return super.getItemAttributeModifiers();
     }
 
     @Override
@@ -578,10 +586,12 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     protected String getIconString () {
         return this.HT_getIconString();
     }
 
+    @SideOnly(Side.CLIENT)
     protected String HT_getIconString () {
         return super.getIconString();
     }

@@ -80,6 +80,14 @@ public enum  HT_Color implements HT_I_International {
         return names;
     }
 
+    public static String[] colorNamesForBlock () {
+       String[] names = new String[16];
+        for (HT_Color color : values()) {
+            names[color.toColoredBlockMeta()] = color.getName();
+        }
+        return names;
+    }
+
     public static HT_Color get (int ordinal) {
         return ordinal < 16 ? values()[ordinal] : WHITE;
     }

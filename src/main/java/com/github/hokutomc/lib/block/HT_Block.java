@@ -150,37 +150,45 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final String getTextureName () {
         return this.HT_getTextureName();
     }
 
+    @SideOnly(Side.CLIENT)
     public String HT_getTextureName () {
         return super.getTextureName();
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final IIcon func_149735_b (int p_149735_1_, int p_149735_2_) {
         return this.HT_func_149735_b(p_149735_1_, p_149735_2_);
     }
 
+    @SideOnly(Side.CLIENT)
     public IIcon HT_func_149735_b (int side, int meta) {
         return super.func_149735_b(side, meta);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final void registerBlockIcons (IIconRegister p_149651_1_) {
         this.HT_registerBlockIcons(p_149651_1_);
     }
 
+    @SideOnly(Side.CLIENT)
     public void HT_registerBlockIcons (IIconRegister iconRegister) {
         super.registerBlockIcons(iconRegister);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final String getItemIconName () {
         return this.HT_getItemIconName();
     }
 
+    @SideOnly(Side.CLIENT)
     public String HT_getItemIconName () {
         return super.getItemIconName();
     }
@@ -240,6 +248,7 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final boolean getCanBlockGrass () {
         return this.HT_getCanBlockGrass();
     }
@@ -295,6 +304,7 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final boolean isBlockNormalCube () {
         return this.HT_isBlockNormalCube();
     }
@@ -420,24 +430,23 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @Override
-    public final boolean hasTileEntity () {
-        return super.hasTileEntity();
-    }
-
-    @Override
+    @SideOnly(Side.CLIENT)
     public final int getMixedBrightnessForBlock (IBlockAccess p_149677_1_, int p_149677_2_, int p_149677_3_, int p_149677_4_) {
         return this.HT_getMixedBrightnessForBlock(p_149677_1_, p_149677_2_, p_149677_3_, p_149677_4_);
     }
 
+    @SideOnly(Side.CLIENT)
     public int HT_getMixedBrightnessForBlock (IBlockAccess world, int x, int y, int z) {
         return super.getMixedBrightnessForBlock(world, x, y, z);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final boolean shouldSideBeRendered (IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
         return this.HT_shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_);
     }
 
+    @SideOnly(Side.CLIENT)
     public boolean HT_shouldSideBeRendered (IBlockAccess world, int x, int y, int z, int side) {
         return super.shouldSideBeRendered(world, x, y, z, side);
     }
@@ -452,19 +461,23 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final IIcon getIcon (IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_) {
         return this.HT_getIcon(p_149673_1_, p_149673_2_, p_149673_3_, p_149673_4_, p_149673_5_);
     }
 
+    @SideOnly(Side.CLIENT)
     public IIcon HT_getIcon (IBlockAccess world, int x, int y, int z, int meta) {
         return super.getIcon(world, x, y, z, meta);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final IIcon getIcon (int p_149691_1_, int p_149691_2_) {
         return this.HT_getIcon(p_149691_1_, p_149691_2_);
     }
 
+    @SideOnly(Side.CLIENT)
     public IIcon HT_getIcon (int side, int meta) {
         return super.getIcon(side, meta);
     }
@@ -488,10 +501,12 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final AxisAlignedBB getSelectedBoundingBoxFromPool (World p_149633_1_, int p_149633_2_, int p_149633_3_, int p_149633_4_) {
         return this.HT_getSelectedBoundingBoxFromPool(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
     }
 
+    @SideOnly(Side.CLIENT)
     public AxisAlignedBB HT_getSelectedBoundingBoxFromPool (World world, int x, int y, int z) {
         return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
@@ -533,10 +548,12 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final void randomDisplayTick (World p_149734_1_, int p_149734_2_, int p_149734_3_, int p_149734_4_, Random p_149734_5_) {
         this.HT_randomDisplayTick(p_149734_1_, p_149734_2_, p_149734_3_, p_149734_4_, p_149734_5_);
     }
 
+    @SideOnly(Side.CLIENT)
     public void HT_randomDisplayTick (World world, int x, int y, int z, Random random) {
         super.randomDisplayTick(world, x, y, z, random);
     }
@@ -686,10 +703,12 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final int getRenderBlockPass () {
         return this.HT_getRenderBlockPass();
     }
 
+    @SideOnly(Side.CLIENT)
     public int HT_getRenderBlockPass () {
         return super.getRenderBlockPass();
     }
@@ -767,28 +786,34 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final int getBlockColor () {
         return this.HT_getBlockColor();
     }
 
+    @SideOnly(Side.CLIENT)
     public int HT_getBlockColor () {
         return super.getBlockColor();
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final int getRenderColor (int p_149741_1_) {
         return this.HT_getRenderColor(p_149741_1_);
     }
 
+    @SideOnly(Side.CLIENT)
     public int HT_getRenderColor (int meta) {
         return super.getRenderColor(meta);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final int colorMultiplier (IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_) {
         return this.HT_colorMultiplier(p_149720_1_, p_149720_2_, p_149720_3_, p_149720_4_);
     }
 
+    @SideOnly(Side.CLIENT)
     public int HT_colorMultiplier (IBlockAccess world, int x, int y, int z) {
         return super.colorMultiplier(world, x, y, z);
     }
@@ -940,10 +965,12 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final float getAmbientOcclusionLightValue () {
         return this.HT_getAmbientOcclusionLightValue();
     }
 
+    @SideOnly(Side.CLIENT)
     public float HT_getAmbientOcclusionLightValue () {
         return super.getAmbientOcclusionLightValue();
     }
@@ -958,10 +985,12 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final Item getItem (World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_) {
         return this.HT_getItem(p_149694_1_, p_149694_2_, p_149694_3_, p_149694_4_);
     }
 
+    @SideOnly(Side.CLIENT)
     public Item HT_getItem (World world, int x, int y, int z) {
         return super.getItem(world, x, y, z);
     }
@@ -977,11 +1006,12 @@ public class HT_Block<T extends HT_Block> extends Block {
 
     @SuppressWarnings("unchecked")
     @Override
+    @SideOnly(Side.CLIENT)
     public final void getSubBlocks (Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_) {
         this.HT_registerMulti(p_149666_1_, p_149666_2_, p_149666_3_);
     }
 
-
+    @SideOnly(Side.CLIENT)
     public void HT_registerMulti (Item item, CreativeTabs tab, final List<ItemStack> list) {
         for (HT_ItemStackBuilder e : m_subItems) {
             list.add(e.build(1));
@@ -1008,10 +1038,12 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final CreativeTabs getCreativeTabToDisplayOn () {
         return this.HT_getCreativeTabToDisplayOn();
     }
 
+    @SideOnly(Side.CLIENT)
     public CreativeTabs HT_getCreativeTabToDisplayOn () {
         return super.getCreativeTabToDisplayOn();
     }
@@ -1035,6 +1067,7 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public final boolean isFlowerPot () {
         return this.HT_isFlowerPot();
     }

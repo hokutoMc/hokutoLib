@@ -1,5 +1,7 @@
 package com.github.hokutomc.lib.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -76,16 +78,6 @@ public class HT_BlockSingleSlab extends HT_MultiBlock {
         return meta;
     }
 
-    //    @Override
-//    public void HT_onBlockClicked (World world, int x, int y, int z, EntityPlayer player) {
-//        if (this.HT_canAddSlab(player.getCurrentEquippedItem(), world, x, y, z)) {
-//            world.setBlock(x, y, z, this.m_parent, player.getCurrentEquippedItem().getItemDamage(), 9);
-//            return;
-//        }
-//        super.HT_onBlockClicked(world, x, y, z, player);
-//    }
-
-
     @Override
     public void HT_addCollisionBoxesToList (World world, int x, int y, int z, AxisAlignedBB axisAlignedBB, List list, Entity entity) {
         this.HT_setBlockBoundsBasedOnState(world, x, y, z);
@@ -102,6 +94,7 @@ public class HT_BlockSingleSlab extends HT_MultiBlock {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean HT_shouldSideBeRendered (IBlockAccess world, int x, int y, int z, int side) {
         if (side != 1 && side != 0 && !super.HT_shouldSideBeRendered(world, x, y, z, side)) {
             return false;
