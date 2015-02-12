@@ -56,18 +56,9 @@ public enum  HT_Color implements HT_I_International {
         return this.dye;
     }
 
-    public static String[] colorNames () {
-        String[] names = new String[16];
-        for (int i = 0; i < values().length; i++) {
-            names[i] = values()[i].getName();
-        }
-        return names;
+    public int toColoredBlockMeta () {
+        return ~this.ordinal() & 15;
     }
-
-    public static HT_Color get (int ordinal) {
-        return ordinal < 16 ? values()[ordinal] : BLACK;
-    }
-
 
     @Override
     public String getUnlocalizedName () {
@@ -79,5 +70,25 @@ public enum  HT_Color implements HT_I_International {
         return HT_I18nUtil.localize(this.getUnlocalizedName());
     }
 
+
+
+    public static String[] colorNames () {
+        String[] names = new String[16];
+        for (int i = 0; i < values().length; i++) {
+            names[i] = values()[i].getName();
+        }
+        return names;
+    }
+
+    public static HT_Color get (int ordinal) {
+        return ordinal < 16 ? values()[ordinal] : WHITE;
+    }
+
+    public static HT_Color getByColoredBlockMeta (int meta) {
+        for (HT_Color c : values()) {
+            if (meta == c.toColoredBlockMeta()) return c;
+        }
+        return WHITE;
+    }
 
 }
