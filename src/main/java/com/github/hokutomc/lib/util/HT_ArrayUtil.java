@@ -1,5 +1,7 @@
 package com.github.hokutomc.lib.util;
 
+import com.github.hokutomc.lib.reflect.HT_Reflections;
+
 import java.lang.reflect.Array;
 import java.util.Collection;
 
@@ -8,6 +10,15 @@ import java.util.Collection;
  */
 public final class HT_ArrayUtil {
     private HT_ArrayUtil () {
+    }
+
+    public static <T> T getWithNoEx (T[] array, int index) {
+        return array[index % array.length];
+    }
+
+    @SafeVarargs
+    public static <T> T getWithNoEx (Collection<T> collection, int index, T... empty) {
+        return getWithNoEx(toArray(collection, empty), index);
     }
 
     @SuppressWarnings("unchecked")
@@ -24,6 +35,11 @@ public final class HT_ArrayUtil {
     @SuppressWarnings("unchecked")
     public static <T> T[] toArray (Collection<T> collection, Class<T> clazz) {
         return collection.toArray((T[]) Array.newInstance(clazz, collection.size()));
+    }
+
+    @SafeVarargs
+    public static <T> T[] toArray (Collection<T> collection, T... empty) {
+        return toArray(collection, HT_Reflections.getClass(empty));
     }
 
     @SuppressWarnings("unchecked")

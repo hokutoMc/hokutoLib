@@ -34,7 +34,7 @@ public class Debug {
 
     public static HT_ItemDurable itemDurable;
     public static HT_Item itemMulti;
-    public static HT_MultiBlock blockMulti;
+    public static HT_Block blockMulti;
     public static HT_Block blockTE;
     public static CreativeTabs tabHTLib = HT_CreativeTabsUtil.create("hokutoLib", "test", Items.iron_sword);
     public static HT_ItemDurable itemArmor;
@@ -60,11 +60,6 @@ public class Debug {
             @Override
             protected int HT_getBonusWithEfficency (ItemStack itemStack) {
                 return 0;
-            }
-
-            @Override
-            public void HT_registerMulti (Item item, CreativeTabs tab, List<ItemStack> list) {
-                list.add(this.create(0));
             }
 
             @Override
@@ -137,9 +132,9 @@ public class Debug {
                 }
             }
         }.HT_setCreativeTab(tabHTLib).register();
-        itemMulti = new HT_MultiItem(MODID, "multi", new String[]{"a", "b"}).HT_setCreativeTab(tabHTLib).register();
+        itemMulti = new HT_Item(MODID, "multi").multi("a", "b").HT_setCreativeTab(tabHTLib).register();
 
-        blockMulti = new HT_MultiBlock(MODID, Material.wood, "multiblock", new String[]{"one", "two"}).HT_setCreativeTab(tabHTLib).register();
+        blockMulti = new HT_Block(MODID, Material.wood, "multiblock").multi("a", "b").HT_setCreativeTab(tabHTLib).register();
         blockFall = new HT_BlockFalling(MODID, Material.sand, "falling").HT_setCreativeTab(tabHTLib).register();
         blockTE = new TestContainerBlock().HT_setCreativeTab(tabHTLib).register();
         new HT_ContainerBlock(MODID, Material.iron, "dummy") {
@@ -179,7 +174,7 @@ public class Debug {
         HT_Registries.registerEntityRenderer(TestMob.class, new RenderTestEntity(new ModelTestEntity(), 0.5f));
 
         new HT_CraftingRecipeBuilder()
-                .param('X', Blocks.dirt).endItem()
+                .param('X', Items.string).endItem()
                 .grid("XXX", "XXX", "XXX")
                 .to(Blocks.wool).damage(4).size(10).endItem()
         .paramOre('X', "ingotIron")

@@ -2,12 +2,10 @@ package com.github.hokutomc.lib.item;
 
 
 import com.github.hokutomc.lib.util.HT_StringUtil;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentDurability;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -31,11 +29,11 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
         this.HT_setMaxStackSize(1);
     }
 
-    public HT_ItemStackBuilder getProducer (int durability, int meta) {
+    public HT_ItemStackBuilder getBuilder (int durability, int meta) {
         return new HT_ItemStackBuilder(this, meta).setInt(KEY_DURABILITY, durability).setBoolean(KEY_BROKEN, false);
     }
 
-    public HT_ItemStackBuilder getProducer (int meta) {
+    public HT_ItemStackBuilder getBuilder (int meta) {
         return new HT_ItemStackBuilder(this, meta) {
             @Override
             public ItemStack build (int size) {
@@ -44,19 +42,6 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
                 return stack;
             }
         }.setBoolean(KEY_BROKEN, false);
-    }
-
-    public ItemStack create (int meta) {
-        ItemStack stack = this.create(10, meta);
-        this.updateDurability(stack, this.getMaxDurability(stack));
-        return stack;
-    }
-
-    public ItemStack create (final int durability, int meta) {
-        ItemStack stack = HT_ItemStackUtil.createItemStack(this, 1, meta);
-        stack.stackTagCompound.setBoolean(KEY_BROKEN, false);
-        stack.stackTagCompound.setInteger(KEY_DURABILITY, durability);
-        return stack;
     }
 
     @Override
@@ -131,8 +116,5 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
 
 
     protected abstract int HT_getBonusWithEfficency (ItemStack itemStack);
-
-    @Override
-    public abstract void HT_registerMulti (Item item, CreativeTabs tab, List<ItemStack> list);
 
 }

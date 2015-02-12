@@ -1,6 +1,8 @@
 package com.github.hokutomc.lib.item;
 
 import com.github.hokutomc.lib.HT_Registries;
+import com.github.hokutomc.lib.util.HT_ArrayUtil;
+import com.google.common.collect.ImmutableSet;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -25,9 +27,14 @@ import java.util.List;
  *
  * 2014/10/09.
  */
-public abstract class HT_Item<T extends HT_Item> extends Item {
+public class HT_Item<T extends HT_Item> extends Item {
     private String m_shortName;
     protected List<HT_ItemStackBuilder> m_subItems;
+
+    private ImmutableSet<String> m_multiNames;
+
+    @SideOnly(Side.CLIENT)
+    private IIcon[] m_multiIcons;
 
     public HT_Item (String modid, String innerName) {
         super();
@@ -39,12 +46,24 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
     }
 
     @SuppressWarnings("unchecked")
+    public T multi(String... subNames) {
+        this.m_multiNames = ImmutableSet.copyOf(subNames);
+        this.HT_setMaxDamage(0);
+        this.HT_setHasSubtypes(true);
+        this.m_multiIcons = new IIcon[subNames.length];
+        for (int i = 1; i < subNames.length; i++) {
+            m_subItems.add(new HT_ItemStackBuilder(this, i));
+        }
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
     public T register () {
         return (T) HT_Registries.registerItem(this);
     }
 
     public String[] getMultiNames () {
-        return new String[0];
+        return m_multiNames != null ? HT_ArrayUtil.toArray(m_multiNames) : new String[0];
     }
 
     // wrapping
@@ -86,7 +105,7 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
 
     @SideOnly(Side.CLIENT)
     public IIcon HT_getIconFromDamage (int damage) {
-        return super.getIconFromDamage(damage);
+        return this.HT_getHasSubtypes() ? HT_ArrayUtil.getWithNoEx(m_multiIcons, damage) : super.getIconFromDamage(damage);
     }
 
     @Override
@@ -292,7 +311,9 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
     }
 
     public String HT_getUnlocalizedName (ItemStack itemStack) {
-        return super.getUnlocalizedName(itemStack);
+        return this.HT_getHasSubtypes()
+                ? super.getUnlocalizedName() + "." + HT_ArrayUtil.getWithNoEx(m_multiNames, itemStack.getItemDamage())
+                : super.getUnlocalizedName(itemStack);
     }
 
     @Override
@@ -572,7 +593,13 @@ public abstract class HT_Item<T extends HT_Item> extends Item {
 
     @SideOnly(Side.CLIENT)
     public void HT_registerIcons (IIconRegister iconRegister) {
-        super.registerIcons(iconRegister);
+        if (this.HT_getHasSubtypes()) {
+            for (int i = 0; i < m_multiNames.size(); i++) {
+                this.m_multiIcons[i] = iconRegister.registerIcon(this.HT_getIconString() + "_" + m_multiNames.toArray()[i]);
+            }
+        } else {
+            super.registerIcons(iconRegister);
+        }
     }
 
     @Override

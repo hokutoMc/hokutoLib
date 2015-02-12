@@ -89,10 +89,11 @@ public enum  HT_Color implements HT_I_International {
     }
 
     public static HT_Color get (int ordinal) {
-        return ordinal < 16 ? values()[ordinal] : WHITE;
+        return values()[ordinal % 16];
     }
 
     public static HT_Color getByColoredBlockMeta (int meta) {
+        meta %= 16;
         for (HT_Color c : values()) {
             if (meta == c.toColoredBlockMeta()) return c;
         }

@@ -22,18 +22,19 @@ import java.util.Random;
  *
  * 2014/12/21.
  */
-public class HT_BlockDoubleSlab extends HT_MultiBlock {
+public class HT_BlockDoubleSlab extends HT_Block<HT_BlockDoubleSlab> {
     public final HT_BlockSingleSlab m_upper;
     public final HT_BlockSingleSlab m_lower;
 
     public HT_BlockDoubleSlab (String modid, Material material, String innerName, String... subNameList) {
-        super(modid, material, innerName, subNameList);
+        super(modid, material, innerName);
+        this.multi(subNameList);
         this.m_upper = this.getPartialSlab(true);
         this.m_lower = this.getPartialSlab(false);
     }
 
     @Override
-    public HT_MultiBlock register () {
+    public HT_BlockDoubleSlab register () {
         HT_Registries.registerBlock(this, HT_ItemSlab.class);
         HT_Registries.registerBlock(this.m_upper);
         HT_Registries.registerBlock(this.m_lower);

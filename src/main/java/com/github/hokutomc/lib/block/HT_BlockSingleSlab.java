@@ -20,12 +20,13 @@ import java.util.Random;
 /**
  * Created by user on 2014/12/21.
  */
-public class HT_BlockSingleSlab extends HT_MultiBlock {
+public class HT_BlockSingleSlab extends HT_Block<HT_BlockSingleSlab> {
     public final boolean m_isUpper;
     private final HT_BlockDoubleSlab m_parent;
 
     protected HT_BlockSingleSlab (String modid, Material material, String innerName, boolean isUpper, HT_BlockDoubleSlab parent, String... subNameList) {
-        super(modid, material, innerName, subNameList);
+        super(modid, material, innerName);
+        this.multi(subNameList);
         this.m_isUpper = isUpper;
         this.m_parent = parent;
         if (this.m_isUpper) {

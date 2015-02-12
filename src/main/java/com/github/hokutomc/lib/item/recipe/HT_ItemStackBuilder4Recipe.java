@@ -16,6 +16,10 @@ public class HT_ItemStackBuilder4Recipe<T extends HT_RecipeBuilder<T>> extends H
         this.m_recipeBuilder = m_recipeBuilder;
     }
 
+    HT_ItemStackBuilder4Recipe (T recipeBuilder, HT_ItemStackBuilder base) {
+        this(recipeBuilder, base.build());
+    }
+
     HT_ItemStackBuilder4Recipe (T recipeBuilder, Item item) {
         super(item);
         this.m_recipeBuilder = recipeBuilder;

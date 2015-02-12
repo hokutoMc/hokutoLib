@@ -2,6 +2,8 @@ package com.github.hokutomc.lib.block;
 
 import com.github.hokutomc.lib.HT_Registries;
 import com.github.hokutomc.lib.item.HT_ItemStackBuilder;
+import com.github.hokutomc.lib.util.HT_ArrayUtil;
+import com.google.common.collect.ImmutableSet;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -34,14 +36,21 @@ import java.util.Random;
  * 2014/09/23.
  */
 public class HT_Block<T extends HT_Block> extends Block {
+    private boolean m_hasSubTypes;
     private String m_shortName;
     private String m_innerName;
     protected boolean m_fallInstantly;
     public String m_modid;
     protected List<HT_ItemStackBuilder> m_subItems = new ArrayList<>();
 
+    private ImmutableSet<String> m_multiNames;
+
+    @SideOnly(Side.CLIENT)
+    private IIcon[] m_multiIcons;
+
     public HT_Block (String modid, Material material, String innerName) {
         super(material);
+        this.m_hasSubTypes = false;
         this.m_modid = modid;
         this.m_shortName = innerName;
         this.HT_setInnerName(modid, innerName);
@@ -50,12 +59,32 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     @SuppressWarnings("unchecked")
+    public T multi(String... subNames) {
+        this.m_multiNames = ImmutableSet.copyOf(subNames);
+        this.m_multiIcons = new IIcon[subNames.length];
+        for (int i = 1; i < m_multiIcons.length; i++) {
+            m_subItems.add(new HT_ItemStackBuilder(this, i));
+        }
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
     public T register () {
-        return (T) HT_Registries.registerBlock(this);
+        return this.m_hasSubTypes ? (T) HT_Registries.registerMultiBlock(this) : (T) HT_Registries.registerBlock(this);
     }
 
     public String[] getMultiNames () {
-        return new String[0];
+        return this.m_hasSubTypes ? HT_ArrayUtil.toArray(this.m_multiNames) : new String[0];
+    }
+
+    public boolean getHasSubTypes () {
+        return this.m_hasSubTypes;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T setHasSubTypes (boolean b) {
+        this.m_hasSubTypes = b;
+        return (T) this;
     }
 
     public boolean isFrontSide (int side, int meta) {
@@ -479,7 +508,7 @@ public class HT_Block<T extends HT_Block> extends Block {
 
     @SideOnly(Side.CLIENT)
     public IIcon HT_getIcon (int side, int meta) {
-        return super.getIcon(side, meta);
+        return this.m_hasSubTypes ? HT_ArrayUtil.getWithNoEx(this.m_multiIcons, meta) : super.getIcon(side, meta);
     }
 
     @Override
@@ -663,7 +692,7 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     public int HT_damageDropped (int meta) {
-        return super.damageDropped(meta);
+        return this.m_hasSubTypes ? meta : super.damageDropped(meta);
     }
 
     @Override
@@ -1125,4 +1154,6 @@ public class HT_Block<T extends HT_Block> extends Block {
     public void HT_setBlockBounds (float xMin, float yMin, float zMin, float xMax, float yMax, float zMax) {
         this.setBlockBounds(xMin, yMin, zMin, xMax, yMax, zMax);
     }
+
+
 }

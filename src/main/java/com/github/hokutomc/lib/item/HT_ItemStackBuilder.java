@@ -1,12 +1,12 @@
 package com.github.hokutomc.lib.item;
 
 import com.github.hokutomc.lib.nbt.HT_NBTUtil;
-import com.github.hokutomc.lib.util.HT_GeneralUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Created by user on 2015/01/19.
@@ -80,8 +80,13 @@ public class HT_ItemStackBuilder<T extends HT_ItemStackBuilder> {
         return (T) this;
     }
 
+    public T wildCard () {
+        return this.damage(OreDictionary.WILDCARD_VALUE);
+    }
+
     public NBTTagCompound getNBTTag () {
-        return HT_GeneralUtil.nullChecked(m_template.getTagCompound(), new NBTTagCompound());
+        if (m_template.getTagCompound() == null) {m_template.stackTagCompound = new NBTTagCompound();}
+        return m_template.stackTagCompound;
     }
 
     @SuppressWarnings("unchecked")

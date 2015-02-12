@@ -34,7 +34,6 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
     public HT_ItemMobEgg (String modid, HT_ModEntityList entityList) {
         super(modid, "mobEgg");
         this.m_listEntity = entityList;
-        this.setHasSubtypes(true);
         this.HT_setCreativeTab(CreativeTabs.tabMisc);
         this.HT_setTextureName("spawn_egg");
     }
