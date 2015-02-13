@@ -2,6 +2,7 @@ package com.github.hokutomc.lib.test;
 
 import com.github.hokutomc.lib.data.HT_BasicObjectData;
 import com.github.hokutomc.lib.data.HT_BasicObjectProperties;
+import com.github.hokutomc.lib.data.enumerate.HT_I_StringOrdered;
 import com.github.hokutomc.lib.process.HT_ItemStackRecipe;
 import com.github.hokutomc.lib.process.HT_ItemStackProcess;
 import com.github.hokutomc.lib.tileentity.HT_ProcessTile;
@@ -26,7 +27,10 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
         A, B, C
     }
 
-
+    @HT_I_StringOrdered
+    private enum StrSaved {
+        X, Y
+    }
 
     private final HT_BasicObjectProperties<HT_BasicObjectData<?>> props;
     final HT_BasicObjectData<EnumSet<Flags>> save_flags;
@@ -38,7 +42,7 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
         this.props = new HT_BasicObjectProperties<>();
         this.save_flags = HT_BasicObjectData.<Flags>createEnumSetData("flagsTE");
         this.save_flags.update(this, EnumSet.noneOf(Flags.class));
-        this.props.addProperty(save_flags);
+        this.props.addProperty(save_flags).addProperty(new HT_BasicObjectData<StrSaved>("strSaved", StrSaved.X));
     }
 
     @Override
@@ -85,14 +89,12 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
     public void HT_readFromNBT (NBTTagCompound nbtTagCompound) {
         super.HT_readFromNBT(nbtTagCompound);
         this.props.HT_readFromNBT(nbtTagCompound, this);
-        this.save_flags.HT_readFromNBT(nbtTagCompound, this);
     }
 
     @Override
     public void HT_writeToNBT (NBTTagCompound nbtTagCompound) {
         super.HT_writeToNBT(nbtTagCompound);
         this.props.HT_writeToNBT(nbtTagCompound, this);
-        this.save_flags.HT_writeToNBT(nbtTagCompound, this);
         NBTTagCompound nbtTagCompound1 = nbtTagCompound;
     }
 

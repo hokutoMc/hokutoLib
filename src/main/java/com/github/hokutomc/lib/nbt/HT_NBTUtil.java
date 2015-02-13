@@ -1,5 +1,9 @@
 package com.github.hokutomc.lib.nbt;
 
+import com.github.hokutomc.lib.data.enumerate.HT_I_IntOrderEnumerator;
+import com.github.hokutomc.lib.data.enumerate.HT_I_IntOrdered;
+import com.github.hokutomc.lib.data.enumerate.HT_I_StringOrderEnumerator;
+import com.github.hokutomc.lib.data.enumerate.HT_I_StringOrdered;
 import com.github.hokutomc.lib.reflect.HT_Reflections;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -45,7 +49,7 @@ public final class HT_NBTUtil {
     }
 
     /**
-     * Read enum constant by its ordinal.
+     * Read enum constant by its getIntId.
      *
      * @param key
      * @param nbtTagCompound
@@ -58,7 +62,7 @@ public final class HT_NBTUtil {
     }
 
     /**
-     * Write enum constant by its ordinal.
+     * Write enum constant by its getIntId.
      *
      * @param key
      * @param nbtTagCompound
@@ -153,6 +157,22 @@ public final class HT_NBTUtil {
     }
 
 
+    public static <R extends HT_I_IntOrdered> R readIntOrdered (String key, NBTTagCompound nbtTagCompound, HT_I_IntOrderEnumerator<R> enumerator) {
+        return enumerator.get(nbtTagCompound.getInteger(key));
+    }
+
+    public static void writeIntOrdered (String key, NBTTagCompound nbtTagCompound, HT_I_IntOrdered intOrdered) {
+        nbtTagCompound.setInteger(key, intOrdered.getIntId());
+    }
+
+    public static <T> T readStringOrdered (String key, NBTTagCompound nbtTagCompound, HT_I_StringOrderEnumerator<T> enumerator) {
+        return enumerator.get(nbtTagCompound.getString(key));
+    }
+
+    public static void writeStringOrdered (String key, NBTTagCompound nbtTagCompound, HT_I_StringOrdered stringOrdered) {
+        nbtTagCompound.setString(key, stringOrdered.toString());
+    }
+
     public static byte getByte (String key, NBTTagCompound nbtTagCompound, byte alternate) {
         return nbtTagCompound.hasKey(key) ? nbtTagCompound.getByte(key) : alternate;
     }
@@ -207,5 +227,13 @@ public final class HT_NBTUtil {
 
     public static <E extends Enum<E>> EnumSet<E> getEnumSet (String key, NBTTagCompound nbtTagCompound, Class<E> enumClass, EnumSet<E> alternate) {
         return nbtTagCompound.hasKey("items") ? readEnumSet(key, nbtTagCompound, enumClass) : alternate;
+    }
+
+    public static <R extends HT_I_IntOrdered<R>> R getIntOrdered (String key, NBTTagCompound nbtTagCompound, R alternate) {
+        return nbtTagCompound.hasKey(key) ? readIntOrdered(key, nbtTagCompound, alternate.getEnumerator()) : alternate;
+    }
+
+    public static <R extends HT_I_StringOrdered<R>> R getStringOrdered (String key, NBTTagCompound nbtTagCompound, R alternate) {
+        return nbtTagCompound.hasKey(key) ? readStringOrdered(key, nbtTagCompound, alternate.getEnumerator()) : alternate;
     }
 }

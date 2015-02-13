@@ -11,23 +11,15 @@ import java.util.EnumSet;
 public class HT_BasicObjectData<P> extends HT_SavableData<TileEntity, P, HT_BasicObjectData<P>> {
     private P m_value;
 
-    @SafeVarargs
-    public HT_BasicObjectData (String nbtKey, P... empty) {
-        super(nbtKey, empty);
-    }
-
-    public HT_BasicObjectData (String nbtKey, Class<P> type) {
-        super(nbtKey, type);
+    public HT_BasicObjectData (TileEntity tileEntity, String nbtKey, P initial) {
+        super(tileEntity, nbtKey, initial);
+        this.update(tileEntity, initial);
     }
 
     @SafeVarargs
-    public static <R extends Enum<R>> HT_BasicObjectData<EnumSet<R>> createEnumSetData (String nbtKey, R... empty) {
-        return createEnumSetData(nbtKey, HT_Reflections.getClass(empty));
-    }
-
-    public static <R extends Enum<R>> HT_BasicObjectData<EnumSet<R>> createEnumSetData (String nbtKey, Class<R> enumClass) {
-        HT_BasicObjectData<EnumSet<R>> data = new HT_BasicObjectData<>(nbtKey);
-        data.m_flagType = enumClass;
+    public static <R extends Enum<R>> HT_BasicObjectData<EnumSet<R>> createEnumSetData (TileEntity tileEntity, String nbtKey, EnumSet<R> initial, R... empty) {
+        HT_BasicObjectData<EnumSet<R>> data = new HT_BasicObjectData<>(tileEntity, nbtKey, initial);
+        data.m_flagType = HT_Reflections.getClass(empty);
         return data;
     }
 

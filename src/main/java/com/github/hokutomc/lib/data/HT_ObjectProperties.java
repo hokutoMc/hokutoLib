@@ -13,8 +13,9 @@ public class HT_ObjectProperties<E, P extends HT_SavableData<E, ?, ?>> implement
 
     protected final ArrayList<P> m_listData = Lists.newArrayList();
 
-    public void addProperty (P property) {
+    public HT_ObjectProperties<E, P> addProperty (P property) {
         m_listData.add(property);
+        return this;
     }
 
     @Override
@@ -24,17 +25,6 @@ public class HT_ObjectProperties<E, P extends HT_SavableData<E, ?, ?>> implement
     }
 
     public void HT_writeToNBT (NBTTagCompound nbtTagCompound, E object) {
-//        NBTTagList tagList = new NBTTagList();
-//
-//        for (int i = 0; i < this.m_listData.size(); i++) {
-//            if (m_listData.get(i) != null) {
-//                NBTTagCompound itemTagCompound = new NBTTagCompound();
-//                this.m_listData.get(i).HT_writeToNBT(itemTagCompound);
-//                tagList.appendTag(itemTagCompound);
-//            }
-//        }
-//
-//        nbtTagCompound.setTag("props", tagList);
         for (P e : m_listData) {
             e.HT_writeToNBT(nbtTagCompound, object);
         }
@@ -48,14 +38,6 @@ public class HT_ObjectProperties<E, P extends HT_SavableData<E, ?, ?>> implement
     }
 
     public void HT_readFromNBT (NBTTagCompound nbtTagCompound, E object) {
-//        NBTTagList tagList = nbtTagCompound.getTagList("props", Constants.NBT.TAG_COMPOUND);
-//
-//        for (int i = 0; i < this.m_listData.size(); i++) {
-//            NBTTagCompound propTagCompound = tagList.getCompoundTagAt(i);
-//
-//            this.m_listData.get(i).HT_writeToNBT(propTagCompound, object);
-//
-//        }
         for (P e : m_listData) {
             e.HT_readFromNBT(nbtTagCompound, object);
         }

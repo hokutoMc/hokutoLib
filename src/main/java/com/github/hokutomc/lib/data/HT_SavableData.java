@@ -1,13 +1,15 @@
 package com.github.hokutomc.lib.data;
 
+import com.github.hokutomc.lib.data.enumerate.HT_I_IntOrdered;
+import com.github.hokutomc.lib.data.enumerate.HT_I_StringOrdered;
 import com.github.hokutomc.lib.nbt.HT_I_NBTData;
-import com.github.hokutomc.lib.nbt.HT_NBTUtil;
-import com.github.hokutomc.lib.reflect.HT_Reflections;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.EnumSet;
+
+import static com.github.hokutomc.lib.nbt.HT_NBTUtil.*;
 
 /**
  * Created by user on 2014/12/08.
@@ -16,18 +18,16 @@ public abstract class HT_SavableData<E, P, S extends HT_SavableData<E, P, S>>
         implements HT_I_NBTData<HT_SavableData>{
 
     protected final String m_nbtKey;
-    protected Class<P> type;
+    private final P m_initial;
+    protected Class<P> m_type;
     protected Class<? extends Enum> m_flagType;
-    private Object m_data;
 
-    @SafeVarargs
-    public HT_SavableData (String nbtKey, P... empty) {
-        this(nbtKey, HT_Reflections.getClass(empty));
-    }
-
-    public HT_SavableData (String nbtKey, Class<P> type) {
+    @SuppressWarnings("unchecked")
+    public HT_SavableData (E entity, String nbtKey, P initial) {
+        this.m_initial = initial;
         this.m_nbtKey = nbtKey;
-        this.type = type;
+        this.m_type = (Class<P>) initial.getClass();
+        this.update(entity, initial);
     }
 
     protected abstract void update (E entity, P property);
@@ -42,105 +42,108 @@ public abstract class HT_SavableData<E, P, S extends HT_SavableData<E, P, S>>
 
     @SuppressWarnings("unchecked")
     protected void HT_writeToNBT (NBTTagCompound nbtTagCompound, E obj) {
-        if (type.isEnum()) {
-            HT_NBTUtil.writeEnum(m_nbtKey, nbtTagCompound, ((Enum) get(obj)));
-        }
-        if (type == Integer.class) {
+        if (m_initial instanceof HT_I_StringOrdered) {
+            writeStringOrdered(m_nbtKey, nbtTagCompound, (HT_I_StringOrdered) get(obj));
+        } else if (m_initial instanceof HT_I_IntOrdered) {
+            writeIntOrdered(m_nbtKey, nbtTagCompound, (HT_I_IntOrdered) get(obj));
+        } else if (m_type.isEnum()) {
+            writeEnum(m_nbtKey, nbtTagCompound, (Enum) get(obj));
+        } else if (m_type == Integer.class) {
             nbtTagCompound.setInteger(m_nbtKey, (Integer) get(obj));
-        }
-        if (type == Byte.class) {
+        } else if (m_type == Byte.class) {
             nbtTagCompound.setByte(m_nbtKey, (Byte) get(obj));
-        }
-        if (type == Float.class) {
+        } else if (m_type == Float.class) {
             nbtTagCompound.setFloat(m_nbtKey, (Float) get(obj));
-        }
-        if (type == Short.class) {
+        } else if (m_type == Short.class) {
             nbtTagCompound.setShort(m_nbtKey, (Short) get(obj));
-        }
-        if (type == String.class) {
+        } else if (m_type == String.class) {
             nbtTagCompound.setString(m_nbtKey, (String) get(obj));
-        }
-        if (type == int[].class) {
+        } else if (m_type == int[].class) {
             nbtTagCompound.setIntArray(m_nbtKey, (int[]) get(obj));
-        }
-        if (type == byte[].class) {
+        } else if (m_type == byte[].class) {
             nbtTagCompound.setByteArray(m_nbtKey, (byte[]) get(obj));
-        }
-        if (type == Boolean.class) {
+        } else if (m_type == Boolean.class) {
             nbtTagCompound.setBoolean(m_nbtKey, (Boolean) get(obj));
-        }
-        if (type == Double.class) {
+        } else if (m_type == Double.class) {
             nbtTagCompound.setDouble(m_nbtKey, (Double) get(obj));
-        }
-        if (type == Long.class) {
+        } else if (m_type == Long.class) {
             nbtTagCompound.setLong(m_nbtKey, (Long) get(obj));
-        }
-        if (type == ItemStack.class) {
+        } else if (m_type == ItemStack.class) {
             ((ItemStack) get(obj)).writeToNBT(nbtTagCompound);
-        }
-        if (EnumSet.class.isAssignableFrom(type)) {
-            HT_NBTUtil.writeEnumSet(m_nbtKey, nbtTagCompound, (EnumSet) get(obj), m_flagType);
+        } else if (m_type == ItemStack[].class) {
+            writeItemStacks(nbtTagCompound, (ItemStack[]) get(obj));
+        } else if (m_initial instanceof EnumSet) {
+            writeEnumSet(m_nbtKey, nbtTagCompound, (EnumSet) get(obj), m_flagType);
         }
 
     }
 
+    /**
+     *
+     * @param nbtTagCompound
+     * @param objects 1st : entity data, 2nd : int order enumerator (if data is of HT_I_IntOrdered).
+     * @return
+     */
     @Override
     @SuppressWarnings("unchecked")
     public HT_SavableData HT_readFromNBT (NBTTagCompound nbtTagCompound, Object... objects) {
-        this.HT_readFromNBT(nbtTagCompound, (E) objects[0]);
+        if (m_initial instanceof HT_I_IntOrdered || m_initial instanceof HT_I_StringOrdered) {
+            HT_readFromNBT(nbtTagCompound, (E)objects[0], objects[1]);
+        } else {
+            this.HT_readFromNBT(nbtTagCompound, (E) objects[0]);
+        }
+
         return this;
     }
 
     @SuppressWarnings("unchecked")
-    protected void HT_readFromNBT (NBTTagCompound nbtTagCompound, E entity){
-        if (type.isEnum()) {
-            Class clazz = type;
-            update(entity, (P) HT_NBTUtil.readEnum(m_nbtKey, nbtTagCompound, clazz));
-        }
-        if (type == Integer.class) {
-            update(entity, (P) (Integer) nbtTagCompound.getInteger(m_nbtKey));
-        }
-        if (type == Byte.class) {
-            update(entity, (P) (Byte) nbtTagCompound.getByte(m_nbtKey));
-        }
-        if (type == Float.class) {
-            update(entity, (P) (Float) nbtTagCompound.getFloat(m_nbtKey));
-        }
-        if (type == Short.class) {
-            update(entity, (P) (Short) nbtTagCompound.getShort(m_nbtKey));
-        }
-        if (type == String.class) {
-            update(entity, (P) nbtTagCompound.getString(m_nbtKey));
-        }
-        if (type == int[].class) {
-            update(entity, (P) nbtTagCompound.getIntArray(m_nbtKey));
-        }
-        if (type == byte[].class) {
-            update(entity, (P) nbtTagCompound.getByteArray(m_nbtKey));
-        }
-        if (type == Boolean.class) {
-            update(entity, (P) (Boolean) nbtTagCompound.getBoolean(m_nbtKey));
-        }
-        if (type == Double.class) {
-            update(entity, (P) (Double) nbtTagCompound.getDouble(m_nbtKey));
-        }
-        if (type == Long.class) {
-            update(entity, (P) (Long) nbtTagCompound.getLong(m_nbtKey));
-        }
-        if (type == ItemStack.class) {
-            update(entity, (P) ItemStack.loadItemStackFromNBT(nbtTagCompound));
-        }
-        if (EnumSet.class.isAssignableFrom(type)) {
+    public void HT_readFromNBT (NBTTagCompound nbtTagCompound, E entity, Object object) {
+
+    }
+
+    @SuppressWarnings("unchecked")
+    public void HT_readFromNBT (NBTTagCompound nbtTagCompound, E entity){
+        if (m_initial instanceof HT_I_StringOrdered) {
+            update(entity, (P) getStringOrdered(m_nbtKey, nbtTagCompound, (HT_I_StringOrdered) m_initial));
+        } else if (m_initial instanceof HT_I_IntOrdered) {
+            update(entity, (P) getIntOrdered(m_nbtKey, nbtTagCompound, (HT_I_IntOrdered) m_initial));
+        } else if (m_type.isEnum()) {
+            update(entity, (P) getEnum(m_nbtKey, nbtTagCompound, (Enum) m_initial));
+        } else if (m_type == Integer.class) {
+            update(entity, (P) (Integer) getInteger(m_nbtKey, nbtTagCompound, (Integer) m_initial));
+        } else if (m_type == Byte.class) {
+            update(entity, (P) (Byte) getByte(m_nbtKey, nbtTagCompound, (Byte) m_initial));
+        } else if (m_type == Float.class) {
+            update(entity, (P) (Float) getFloat(m_nbtKey, nbtTagCompound, (Float) m_initial));
+        } else if (m_type == Short.class) {
+            update(entity, (P) (Short) getShort(m_nbtKey, nbtTagCompound, (Short) m_initial));
+        } else if (m_type == String.class) {
+            update(entity, (P) getString(m_nbtKey, nbtTagCompound, (String) m_initial));
+        } else if (m_type == int[].class) {
+            update(entity, (P) getIntArray(m_nbtKey, nbtTagCompound, (int[]) m_initial));
+        } else if (m_type == byte[].class) {
+            update(entity, (P) getByteArray(m_nbtKey, nbtTagCompound, (byte[]) m_initial));
+        } else if (m_type == Boolean.class) {
+            update(entity, (P) (Boolean) getBoolean(m_nbtKey, nbtTagCompound, (Boolean) m_initial));
+        } else if (m_type == Double.class) {
+            update(entity, (P) (Double) getDouble(m_nbtKey, nbtTagCompound, (Double) m_initial));
+        } else if (m_type == Long.class) {
+            update(entity, (P) (Long) getLong(m_nbtKey, nbtTagCompound, (Long) m_initial));
+        } else if (m_type == ItemStack.class) {
+            update(entity, (P) getItemStack(m_nbtKey, nbtTagCompound, (ItemStack) m_initial));
+        } else if (m_type == ItemStack[].class) {
+            update(entity, (P) getItemStackArray(nbtTagCompound, ((ItemStack[]) m_initial).length, (ItemStack[]) m_initial));
+        } else if (EnumSet.class.isAssignableFrom(m_type)) {
             if (m_flagType == null) {
                 try {
-                    throw new NBTException("Data of EnumSet should indicate the type of the set's elements. You can use HT_BasicObjectData.createEnumSetData()");
+                    throw new NBTException("Data of EnumSet should indicate the m_type of the set's elements. You can use HT_BasicObjectData.createEnumSetData()");
                 } catch (NBTException e) {
                     e.printStackTrace();
                 }
             }
-            update(entity, (P) HT_NBTUtil.readEnumSet(m_nbtKey, nbtTagCompound, m_flagType));
+            update(entity, (P) getEnumSet(m_nbtKey, nbtTagCompound, m_flagType, (EnumSet)m_initial));
         }
-        update(entity, (P) ItemStack.loadItemStackFromNBT(nbtTagCompound));
+
     }
 
     public String getNBTKey () {

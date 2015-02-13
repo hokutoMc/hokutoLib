@@ -1,7 +1,7 @@
 package com.github.hokutomc.lib.process;
 
 /**
- * This class expresses abstract recipe type.
+ * This class expresses abstract recipe m_type.
  *
  * on 2014/11/08.
  */

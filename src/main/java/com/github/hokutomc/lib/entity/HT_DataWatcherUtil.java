@@ -1,5 +1,9 @@
 package com.github.hokutomc.lib.entity;
 
+import com.github.hokutomc.lib.data.enumerate.HT_I_IntOrderEnumerator;
+import com.github.hokutomc.lib.data.enumerate.HT_I_IntOrdered;
+import com.github.hokutomc.lib.data.enumerate.HT_I_StringOrderEnumerator;
+import com.github.hokutomc.lib.data.enumerate.HT_I_StringOrdered;
 import com.github.hokutomc.lib.nbt.HT_NBTUtil;
 import net.minecraft.entity.Entity;
 
@@ -62,5 +66,21 @@ public final class HT_DataWatcherUtil {
             }
         }
         entity.getDataWatcher().updateObject(dwId, bits);
+    }
+
+    public static <T extends HT_I_StringOrdered<T>> T getWatchableStringOrdered (Entity entity, int dwId, HT_I_StringOrderEnumerator<T> enumerator) {
+        return enumerator.get(entity.getDataWatcher().getWatchableObjectString(dwId));
+    }
+
+    public static void updateStringOrdered (Entity entity, int dwId, HT_I_StringOrdered stringOrdered) {
+        entity.getDataWatcher().updateObject(dwId, stringOrdered.toString());
+    }
+
+    public static <T extends HT_I_IntOrdered<T>> T getWatchableIntOrdered (Entity entity, int dwId, HT_I_IntOrderEnumerator<T> enumerator) {
+        return enumerator.get(entity.getDataWatcher().getWatchableObjectInt(dwId));
+    }
+
+    public static void updateIntOrdered (Entity entity, int dwId, HT_I_IntOrdered intOrdered) {
+        entity.getDataWatcher().updateObject(dwId, intOrdered.getIntId());
     }
 }

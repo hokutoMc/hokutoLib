@@ -1,5 +1,6 @@
 package com.github.hokutomc.lib.reflect;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.util.EnumSet;
 
@@ -26,5 +27,9 @@ public final class HT_Reflections {
     @SuppressWarnings("unchecked")
     public static <P> P[] createDummyArray (Class<P> clazz) {
         return (P[]) Array.newInstance(clazz, 0);
+    }
+
+    public static boolean hasAnnotation (Class<?> clazz, Class<? extends Annotation> annotation) {
+        return clazz.getAnnotation(annotation) != null;
     }
 }
