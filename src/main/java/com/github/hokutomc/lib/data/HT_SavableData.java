@@ -18,7 +18,7 @@ public abstract class HT_SavableData<E, P, S extends HT_SavableData<E, P, S>>
         implements HT_I_NBTData<HT_SavableData>{
 
     protected final String m_nbtKey;
-    private final P m_initial;
+    public final P m_initial;
     protected Class<P> m_type;
     protected Class<? extends Enum> m_flagType;
 

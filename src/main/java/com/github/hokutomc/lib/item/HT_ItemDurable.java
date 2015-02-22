@@ -1,6 +1,7 @@
 package com.github.hokutomc.lib.item;
 
 
+import com.github.hokutomc.lib.nbt.HT_NBTUtil;
 import com.github.hokutomc.lib.util.HT_StringUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentDurability;
@@ -21,12 +22,14 @@ import java.util.Random;
  */
 public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
     public static final String KEY_DURABILITY = "durability";
-    private static final String KEY_BROKEN = "broken";
+    public static final String KEY_BROKEN = "broken";
     private static Random random = new Random();
 
     public HT_ItemDurable (String modid, String innerName) {
         super(modid, innerName);
         this.HT_setMaxStackSize(1);
+        this.m_subItems.clear();
+        this.m_subItems.add(new HT_ItemStackBuilder(this).fullDurability());
     }
 
     public HT_ItemStackBuilder getBuilder (int durability, int meta) {
@@ -78,7 +81,7 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
 
     public int getDurability (ItemStack itemStack) {
         NBTTagCompound tag = itemStack.stackTagCompound;
-        return tag.getInteger(KEY_DURABILITY);
+        return HT_NBTUtil.getInteger(KEY_DURABILITY, tag, 0);
     }
 
     public void updateDurability (ItemStack itemStack, int durability) {
@@ -98,7 +101,7 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
     }
 
     public boolean isBroken (ItemStack itemStack) {
-        return itemStack.stackTagCompound.getBoolean(KEY_BROKEN);
+        return HT_NBTUtil.getBoolean(KEY_BROKEN, itemStack.stackTagCompound, false);
     }
 
     protected void onUsingBrokenItem (ItemStack itemStack) {

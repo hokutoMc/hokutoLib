@@ -8,6 +8,8 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.naming.OperationNotSupportedException;
+
 /**
  * Created by user on 2015/01/19.
  */
@@ -175,6 +177,26 @@ public class HT_ItemStackBuilder<T extends HT_ItemStackBuilder> {
         HT_NBTUtil.writeItemStacks(getNBTTag(), values);
         setTag(key, tagCompound);
         return (T) this;
+    }
+
+    public T setPart (HT_ItemArmor.Part part) {
+        return setInt(HT_ItemArmor.KEY_PART, part.ordinal());
+    }
+
+    @SuppressWarnings("unchecked")
+    public T fullDurability () {
+        ItemStack stack = this.m_template.copy();
+        HT_ItemDurable itemDurable = HT_ItemStackUtil.getItemAs(stack, HT_ItemDurable.class);
+        if (itemDurable != null) {
+            setInt(HT_ItemDurable.KEY_DURABILITY, itemDurable.getMaxDurability(stack));
+            return setBoolean(HT_ItemDurable.KEY_BROKEN, false);
+        }
+        try {
+            throw new OperationNotSupportedException("invalid operation fullDurabilty() to itemStackBuilder with non-HT_ItemDurable item");
+        } catch (OperationNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return (T)this;
     }
 
     @Override

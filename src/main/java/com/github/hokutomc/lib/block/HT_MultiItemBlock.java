@@ -13,8 +13,8 @@ public class HT_MultiItemBlock extends ItemBlock {
 
     public HT_MultiItemBlock (Block block) {
         super(block);
-        if (block instanceof HT_MultiBlock) {
-            m_subNames = ((HT_MultiBlock) block).getMultiNames();
+        if (block instanceof HT_Block && ((HT_Block) block).getHasSubTypes()) {
+            m_subNames = ((HT_Block) block).getMultiNames();
             m_variety = m_subNames.length;
         } else {
             m_variety = 0;

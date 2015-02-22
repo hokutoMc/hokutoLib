@@ -1,5 +1,6 @@
-package com.github.hokutomc.lib.item;
+package com.github.hokutomc.lib.item.tool;
 
+import com.github.hokutomc.lib.item.HT_ItemDurable;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.Block;
@@ -93,6 +94,7 @@ public abstract class HT_ItemTool extends HT_ItemDurable {
         if (distance > 3.0f) return 0.0f;
         return 1.0f;
     }
+
 
     @Override
     public Set<String> getToolClasses (ItemStack stack) {

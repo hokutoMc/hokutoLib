@@ -3,17 +3,23 @@ package com.github.hokutomc.lib;
 
 import com.github.hokutomc.lib.block.HT_Block;
 import com.github.hokutomc.lib.block.HT_MultiItemBlock;
+import com.github.hokutomc.lib.client.render.HT_I_EntityRender;
+import com.github.hokutomc.lib.client.render.HT_I_TileEntityRender;
 import com.github.hokutomc.lib.item.HT_Item;
 import com.github.hokutomc.lib.item.recipe.HT_CraftingRecipeBuilder;
 import com.github.hokutomc.lib.item.recipe.HT_FurnaceRecipeBuilder;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -85,7 +91,13 @@ public final class HT_Registries {
         GameRegistry.registerBlock(block, itemBlockClass, block.HT_getShortName());
     }
 
-    public static void registerEntityRenderer (Class<? extends Entity> entityClass, Render render) {
+    @SideOnly(Side.CLIENT)
+    public static <E extends Entity, R extends Render & HT_I_EntityRender<E>> void registerEntityRenderer (Class<E> entityClass, R render) {
         RenderingRegistry.registerEntityRenderingHandler(entityClass, render);
+    }
+
+    public static <T extends TileEntity, R extends TileEntitySpecialRenderer & HT_I_TileEntityRender<T>> void bindTESR
+            (Class<T> teClass, R render) {
+        ClientRegistry.bindTileEntitySpecialRenderer(teClass, render);
     }
 }

@@ -2,7 +2,8 @@ package com.github.hokutomc.lib;
 
 
 import com.github.hokutomc.lib.common.config.HT_Config;
-import com.github.hokutomc.lib.item.HT_ItemTool;
+import com.github.hokutomc.lib.item.HT_ItemStackUtil;
+import com.github.hokutomc.lib.item.tool.HT_ItemTool;
 import com.github.hokutomc.lib.entity.HT_EntityUtil;
 import com.github.hokutomc.lib.test.Debug;
 import cpw.mods.fml.common.Mod;
@@ -63,16 +64,15 @@ public class Mod_HTLib {
 
     @SubscribeEvent
     public void toolHitEntityHook (AttackEntityEvent event) {
-        ItemStack currentItem = event.entityPlayer.inventory.getCurrentItem();
-        if (currentItem!= null && currentItem.getItem()!= null && currentItem.getItem() instanceof HT_ItemTool) {
-            ItemStack tool = event.entityPlayer.inventory.getCurrentItem();
-            HT_ItemTool itemObj = (HT_ItemTool) tool.getItem();
+        ItemStack currentItem = event.entityPlayer.getCurrentEquippedItem();
+        HT_ItemTool item = HT_ItemStackUtil.getItemAs(currentItem, HT_ItemTool.class);
+        if (item != null) {
             if (event.target instanceof EntityLivingBase) {
-                itemObj.HT_hitEntity(tool, (EntityLivingBase) event.target, event.entityPlayer);
+                item.HT_hitEntity(currentItem, (EntityLivingBase) event.target, event.entityPlayer);
             }
-            float damage = itemObj.HT_getAttackDamage(tool);
+            float damage = item.HT_getAttackDamage(currentItem);
             float reaching = HT_EntityUtil.getReachingSpeed(event.entityPlayer, event.target);
-            float bonus = itemObj.getRangeBonus(tool, event.entityPlayer.getDistanceToEntity(event.target));
+            float bonus = item.getRangeBonus(currentItem, event.entityPlayer.getDistanceToEntity(event.target));
             damage *= bonus;
             damage *= Math.pow(2.0, reaching);
             damage *= Math.pow(1.4, event.entityPlayer.posY - event.target.posY);

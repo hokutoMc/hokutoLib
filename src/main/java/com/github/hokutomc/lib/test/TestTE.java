@@ -2,21 +2,21 @@ package com.github.hokutomc.lib.test;
 
 import com.github.hokutomc.lib.data.HT_BasicObjectData;
 import com.github.hokutomc.lib.data.HT_BasicObjectProperties;
+import com.github.hokutomc.lib.data.enumerate.HT_I_StringOrderEnumerator;
 import com.github.hokutomc.lib.data.enumerate.HT_I_StringOrdered;
-import com.github.hokutomc.lib.process.HT_ItemStackRecipe;
+import com.github.hokutomc.lib.data.enumerate.HT_SimpleStringEnumerator;
+import com.github.hokutomc.lib.nbt.HT_NBTAnnotations;
+import com.github.hokutomc.lib.nbt.NBTStringOrdered;
 import com.github.hokutomc.lib.process.HT_ItemStackProcess;
+import com.github.hokutomc.lib.process.HT_ItemStackRecipe;
 import com.github.hokutomc.lib.tileentity.HT_ProcessTile;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.EnumSet;
 import java.util.List;
-
-import static com.github.hokutomc.lib.item.HT_ItemStackUtil.createItemStack;
 
 /**
  * Created by user on 2014/11/26.
@@ -27,22 +27,30 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
         A, B, C
     }
 
-    @HT_I_StringOrdered
-    private enum StrSaved {
-        X, Y
+    public enum StrSaved implements HT_I_StringOrdered<StrSaved>{
+        X, Y;
+
+        private static final HT_I_StringOrderEnumerator<StrSaved> enumerator = new HT_SimpleStringEnumerator<>(X, Y);
+
+        @Override
+        public HT_I_StringOrderEnumerator<StrSaved> getEnumerator () {
+            return enumerator;
+        }
     }
 
     private final HT_BasicObjectProperties<HT_BasicObjectData<?>> props;
     final HT_BasicObjectData<EnumSet<Flags>> save_flags;
 
+    @NBTStringOrdered(value = "strSaved", defaultString = "X")
+    public StrSaved strSaved = StrSaved.X;
 
     @SuppressWarnings("unchecked")
     public TestTE () {
         super(new TestTEProcess());
         this.props = new HT_BasicObjectProperties<>();
-        this.save_flags = HT_BasicObjectData.<Flags>createEnumSetData("flagsTE");
+        this.save_flags = HT_BasicObjectData.<Flags>createEnumSetData(this, "flagsTE", EnumSet.noneOf(Flags.class));
         this.save_flags.update(this, EnumSet.noneOf(Flags.class));
-        this.props.addProperty(save_flags).addProperty(new HT_BasicObjectData<StrSaved>("strSaved", StrSaved.X));
+        this.props.addProperty(save_flags).addProperty(new HT_BasicObjectData<>(this, "strSaved", StrSaved.X));
     }
 
     @Override
@@ -89,12 +97,14 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
     public void HT_readFromNBT (NBTTagCompound nbtTagCompound) {
         super.HT_readFromNBT(nbtTagCompound);
         this.props.HT_readFromNBT(nbtTagCompound, this);
+        HT_NBTAnnotations.readFieldsFromNBT(this, nbtTagCompound);
     }
 
     @Override
     public void HT_writeToNBT (NBTTagCompound nbtTagCompound) {
         super.HT_writeToNBT(nbtTagCompound);
         this.props.HT_writeToNBT(nbtTagCompound, this);
+        HT_NBTAnnotations.writeFieldsToNBT(this, nbtTagCompound);
         NBTTagCompound nbtTagCompound1 = nbtTagCompound;
     }
 
@@ -103,9 +113,7 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
         private static final List<FurnaceLikeRecipe> recipeList;
 
         static {
-            recipeList = Lists.newArrayList(new FurnaceLikeRecipe(
-                        new ItemStack[]{createItemStack(Blocks.dirt, 10, 0)},
-                        new ItemStack[]{createItemStack(Items.diamond, 1, 0)}));
+            recipeList = Lists.newArrayList();
         }
 
         protected TestTEProcess () {

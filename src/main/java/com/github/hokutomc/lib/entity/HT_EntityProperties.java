@@ -8,10 +8,11 @@ import net.minecraft.entity.Entity;
  * Created by user on 2014/12/07.
  */
 @Deprecated
-public class HT_EntityProperties extends HT_ObjectProperties<Entity, HT_EntityData<Entity>> {
+public class HT_EntityProperties extends HT_ObjectProperties<Entity,HT_EntityData<Entity>> {
 
     @Override
-    public void addProperty (HT_EntityData property) {
+    @SuppressWarnings("unchecked")
+    public HT_ObjectProperties<Entity, HT_EntityData<Entity>> addProperty (HT_EntityData<Entity> property) {
         if (property.getDoSync()) {
             for (HT_EntityData e : this.m_listData) {
                 if (property.getDataWatchId() == e.getDataWatchId()){
@@ -19,12 +20,12 @@ public class HT_EntityProperties extends HT_ObjectProperties<Entity, HT_EntityDa
                 }
             }
         }
-        super.addProperty(property);
+        return super.addProperty(property);
     }
 
     public void init(Entity entity) {
         for (HT_EntityData e : this.m_listData) {
-            if (e.getDoSync()) entity.getDataWatcher().addObject(e.getDataWatchId(), e.m_initialValue);
+            if (e.getDoSync()) entity.getDataWatcher().addObject(e.getDataWatchId(), e.m_initial);
         }
     }
 

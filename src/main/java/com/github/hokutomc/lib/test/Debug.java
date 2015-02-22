@@ -2,13 +2,19 @@ package com.github.hokutomc.lib.test;
 
 import com.github.hokutomc.lib.HT_Registries;
 import com.github.hokutomc.lib.Mod_HTLib;
-import com.github.hokutomc.lib.block.*;
+import com.github.hokutomc.lib.block.HT_Block;
+import com.github.hokutomc.lib.block.HT_BlockDoubleSlab;
+import com.github.hokutomc.lib.block.HT_BlockFalling;
+import com.github.hokutomc.lib.block.HT_ContainerBlock;
 import com.github.hokutomc.lib.client.gui.HT_GuiAction;
 import com.github.hokutomc.lib.client.gui.HT_GuiHandler;
 import com.github.hokutomc.lib.entity.HT_ModEntityList;
-import com.github.hokutomc.lib.item.*;
+import com.github.hokutomc.lib.item.HT_Item;
+import com.github.hokutomc.lib.item.HT_ItemArmor;
+import com.github.hokutomc.lib.item.HT_ItemDurable;
 import com.github.hokutomc.lib.item.recipe.HT_CraftingRecipeBuilder;
 import com.github.hokutomc.lib.item.recipe.HT_FurnaceRecipeBuilder;
+import com.github.hokutomc.lib.item.tool.HT_ItemTool;
 import com.github.hokutomc.lib.util.HT_CreativeTabsUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -17,14 +23,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 /**
  * Created by user on 2014/11/03.
@@ -125,12 +128,7 @@ public class Debug {
                 return 1000;
             }
 
-            @Override
-            public void HT_registerMulti (Item item, CreativeTabs tab, List<ItemStack> list) {
-                for (Part part : Part.values()) {
-                    list.add(this.HT_create(part, 0));
-                }
-            }
+
         }.HT_setCreativeTab(tabHTLib).register();
         itemMulti = new HT_Item(MODID, "multi").multi("a", "b").HT_setCreativeTab(tabHTLib).register();
 

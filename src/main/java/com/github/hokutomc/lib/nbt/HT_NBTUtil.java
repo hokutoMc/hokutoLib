@@ -2,7 +2,6 @@ package com.github.hokutomc.lib.nbt;
 
 import com.github.hokutomc.lib.data.enumerate.HT_I_IntOrderEnumerator;
 import com.github.hokutomc.lib.data.enumerate.HT_I_IntOrdered;
-import com.github.hokutomc.lib.data.enumerate.HT_I_StringOrderEnumerator;
 import com.github.hokutomc.lib.data.enumerate.HT_I_StringOrdered;
 import com.github.hokutomc.lib.reflect.HT_Reflections;
 import net.minecraft.item.ItemStack;
@@ -165,8 +164,8 @@ public final class HT_NBTUtil {
         nbtTagCompound.setInteger(key, intOrdered.getIntId());
     }
 
-    public static <T> T readStringOrdered (String key, NBTTagCompound nbtTagCompound, HT_I_StringOrderEnumerator<T> enumerator) {
-        return enumerator.get(nbtTagCompound.getString(key));
+    public static <T extends HT_I_StringOrdered<T>> T readStringOrdered (String key, NBTTagCompound nbtTagCompound, HT_I_StringOrdered<T> stringOrdered) {
+        return stringOrdered.getEnumerator().get(nbtTagCompound.getString(key));
     }
 
     public static void writeStringOrdered (String key, NBTTagCompound nbtTagCompound, HT_I_StringOrdered stringOrdered) {
@@ -174,66 +173,66 @@ public final class HT_NBTUtil {
     }
 
     public static byte getByte (String key, NBTTagCompound nbtTagCompound, byte alternate) {
-        return nbtTagCompound.hasKey(key) ? nbtTagCompound.getByte(key) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? nbtTagCompound.getByte(key) : alternate;
     }
 
     public static short getShort (String key, NBTTagCompound nbtTagCompound, short alternate) {
-        return nbtTagCompound.hasKey(key) ? nbtTagCompound.getShort(key) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? nbtTagCompound.getShort(key) : alternate;
     }
 
     public static int getInteger (String key, NBTTagCompound nbtTagCompound, int alternate) {
-        return nbtTagCompound.hasKey(key) ? nbtTagCompound.getInteger(key) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? nbtTagCompound.getInteger(key) : alternate;
     }
 
     public static long getLong (String key, NBTTagCompound nbtTagCompound, long alternate) {
-        return nbtTagCompound.hasKey(key) ? nbtTagCompound.getLong(key) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? nbtTagCompound.getLong(key) : alternate;
     }
 
     public static float getFloat (String key, NBTTagCompound nbtTagCompound, float alternate) {
-        return nbtTagCompound.hasKey(key) ? nbtTagCompound.getFloat(key) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? nbtTagCompound.getFloat(key) : alternate;
     }
 
     public static double getDouble (String key, NBTTagCompound nbtTagCompound, double alternate) {
-        return nbtTagCompound.hasKey(key) ? nbtTagCompound.getDouble(key) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? nbtTagCompound.getDouble(key) : alternate;
     }
 
     public static boolean getBoolean (String key, NBTTagCompound nbtTagCompound, boolean alternate) {
-        return nbtTagCompound.hasKey(key) ? nbtTagCompound.getBoolean(key) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? nbtTagCompound.getBoolean(key) : alternate;
     }
 
     public static byte[] getByteArray (String key, NBTTagCompound nbtTagCompound, byte[] alternate) {
-        return nbtTagCompound.hasKey(key) ? nbtTagCompound.getByteArray(key) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? nbtTagCompound.getByteArray(key) : alternate;
     }
 
     public static int[] getIntArray (String key, NBTTagCompound nbtTagCompound, int[] alternate) {
-        return nbtTagCompound.hasKey(key) ? nbtTagCompound.getIntArray(key) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? nbtTagCompound.getIntArray(key) : alternate;
     }
 
     public static String getString (String key, NBTTagCompound nbtTagCompound, String alternate) {
-        return nbtTagCompound.hasKey(key) ? nbtTagCompound.getString(key) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? nbtTagCompound.getString(key) : alternate;
     }
 
     public static ItemStack getItemStack (String key, NBTTagCompound nbtTagCompound, ItemStack alternate) {
-        return nbtTagCompound.hasKey(key) ? ItemStack.loadItemStackFromNBT(nbtTagCompound.getCompoundTag(key)) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? ItemStack.loadItemStackFromNBT(nbtTagCompound.getCompoundTag(key)) : alternate;
     }
 
     public static ItemStack[] getItemStackArray (NBTTagCompound nbtTagCompound, int size, ItemStack[] alternate) {
-        return nbtTagCompound.hasKey("items") ? readItemStacks(nbtTagCompound, size) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey("items") ? readItemStacks(nbtTagCompound, size) : alternate;
     }
 
     public static <E extends Enum<E>> E getEnum (String key, NBTTagCompound nbtTagCompound, E alternate) {
-        return nbtTagCompound.hasKey("items") ? readEnum(key, nbtTagCompound, alternate.getDeclaringClass()) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey("items") ? readEnum(key, nbtTagCompound, alternate.getDeclaringClass()) : alternate;
     }
 
     public static <E extends Enum<E>> EnumSet<E> getEnumSet (String key, NBTTagCompound nbtTagCompound, Class<E> enumClass, EnumSet<E> alternate) {
-        return nbtTagCompound.hasKey("items") ? readEnumSet(key, nbtTagCompound, enumClass) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey("items") ? readEnumSet(key, nbtTagCompound, enumClass) : alternate;
     }
 
     public static <R extends HT_I_IntOrdered<R>> R getIntOrdered (String key, NBTTagCompound nbtTagCompound, R alternate) {
-        return nbtTagCompound.hasKey(key) ? readIntOrdered(key, nbtTagCompound, alternate.getEnumerator()) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? readIntOrdered(key, nbtTagCompound, alternate.getEnumerator()) : alternate;
     }
 
     public static <R extends HT_I_StringOrdered<R>> R getStringOrdered (String key, NBTTagCompound nbtTagCompound, R alternate) {
-        return nbtTagCompound.hasKey(key) ? readStringOrdered(key, nbtTagCompound, alternate.getEnumerator()) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? readStringOrdered(key, nbtTagCompound, alternate) : alternate;
     }
 }
