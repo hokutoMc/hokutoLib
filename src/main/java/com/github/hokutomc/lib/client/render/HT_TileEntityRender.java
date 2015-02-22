@@ -10,7 +10,7 @@ public abstract class HT_TileEntityRender<T extends TileEntity> extends TileEnti
 
     @Override
     @SuppressWarnings("unchecked")
-    public void renderTileEntityAt (TileEntity tileEntity, double x, double y, double z, float particleTime) {
-        renderTileEntityAt((T) tileEntity, x, y, z, particleTime, null);
+    public final void renderTileEntityAt (TileEntity tileEntity, double x, double y, double z, float particleTime) {
+        this.HT_renderAt((T) tileEntity, x, y, z, particleTime);
     }
 }

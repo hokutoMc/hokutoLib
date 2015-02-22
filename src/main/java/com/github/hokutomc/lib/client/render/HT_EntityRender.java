@@ -10,13 +10,13 @@ import net.minecraft.util.ResourceLocation;
 public abstract class HT_EntityRender<E extends Entity> extends Render implements HT_I_EntityRender<E> {
     @Override
     @SuppressWarnings("unchecked")
-    public void doRender (Entity entity, double x, double y, double z, float p_76986_8_, float p_76986_9_) {
-        doRender((E) entity, x, y, z, p_76986_8_, p_76986_9_, null);
+    public final void doRender (Entity entity, double x, double y, double z, float p_76986_8_, float p_76986_9_) {
+        this.HT_doRender((E) entity, x, y, z, p_76986_8_, p_76986_9_);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    protected ResourceLocation getEntityTexture (Entity entity) {
-        return getEntityTexture((E) entity, null);
+    protected final ResourceLocation getEntityTexture (Entity entity) {
+        return this.HT_getEntityTexture((E) entity);
     }
 }

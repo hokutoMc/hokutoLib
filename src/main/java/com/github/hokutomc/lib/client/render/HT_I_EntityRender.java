@@ -7,8 +7,8 @@ import net.minecraft.util.ResourceLocation;
  * Created by user on 2015/02/22.
  */
 public interface HT_I_EntityRender<E extends Entity> {
-    void doRender(E entity, double x, double y, double z, float p_76986_8_, float p_76986_9_, Object dummy);
+    void HT_doRender (E entity, double x, double y, double z, float p_76986_8_, float p_76986_9_);
 
-    ResourceLocation getEntityTexture (E entity, Object dummy);
+    ResourceLocation HT_getEntityTexture (E entity);
 
 }

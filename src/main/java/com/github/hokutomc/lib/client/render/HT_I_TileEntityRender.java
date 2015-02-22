@@ -7,5 +7,5 @@ import net.minecraft.tileentity.TileEntity;
  */
 public interface HT_I_TileEntityRender<T extends TileEntity> {
 
-    void renderTileEntityAt (T tileEntity, double x, double y, double z, float particleTime, Object dummy);
+    void HT_renderAt (T tileEntity, double x, double y, double z, float particleTime);
 }
