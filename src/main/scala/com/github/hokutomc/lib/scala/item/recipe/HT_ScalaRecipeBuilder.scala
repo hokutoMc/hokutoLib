@@ -1,9 +1,8 @@
 package com.github.hokutomc.lib.scala.item.recipe
 
 import com.github.hokutomc.lib.item.recipe.HT_CraftingRecipeBuilder.ISB4RG
-import com.github.hokutomc.lib.item.recipe.{HT_ItemStackBuilder4Recipe => ISB4R, HT_CraftingRecipeBuilder, HT_ShapelessRecipeBuilder}
+import com.github.hokutomc.lib.item.recipe.{HT_CraftingRecipeBuilder, HT_ItemStackBuilder4Recipe => ISB4R, HT_ShapelessRecipeBuilder}
 import com.github.hokutomc.lib.util.HT_Color
-import net.minecraft.init.Items
 import net.minecraft.item.Item
 
 /**
@@ -12,12 +11,6 @@ import net.minecraft.item.Item
 class HT_ScalaRecipeBuilder extends HT_CraftingRecipeBuilder{
 
   type SELF = HT_ScalaRecipeBuilder
-
-
-  {
-    param('a', Items.apple) {_.size(10)}
-    to(Items.diamond) {_.setBoolean("a", false)}
-  }
 
   def param (char: Char, item: Item) (function: ISB4RG => ISB4R[_]): SELF = {
     function(super.param(char, item)).endItem()
@@ -29,13 +22,13 @@ class HT_ScalaRecipeBuilder extends HT_CraftingRecipeBuilder{
     this
   }
 
-  def eachColor (function: HT_Color => Unit): SELF = {
-    HT_Color.values().foreach(function)
+  def eachColor (function: (SELF, HT_Color) => Unit): SELF = {
+    HT_Color.values().foreach(function(this, _))
     this
   }
 
-  def forInt (range: Range)(function: Int => Unit): SELF = {
-    range foreach function
+  def forInt (range: Range)(function: (SELF, Int) => Unit): SELF = {
+    range foreach {function(this, _)}
     this
   }
 
