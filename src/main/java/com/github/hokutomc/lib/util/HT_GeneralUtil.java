@@ -26,5 +26,7 @@ public final class HT_GeneralUtil {
         return false;
     }
 
-
+    public static int negToZero (int num) {
+        return num < 0 ? 0 : num;
+    }
 }

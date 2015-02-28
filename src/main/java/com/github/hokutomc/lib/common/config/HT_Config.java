@@ -54,7 +54,7 @@ public abstract class HT_Config extends Configuration {
     }
 
     /**
-     * You must override this method and this method is called automatically from apply() method.
+     * You must override this method and this method is called automatically from start() method.
      * You needn't call this method manually.
      */
     protected abstract void configure ();

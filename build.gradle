@@ -24,7 +24,7 @@ buildscript {
 }
 
 
-
+apply plugin: 'scala'
 apply plugin: 'forge'
 apply plugin: 'maven'
 
@@ -70,6 +70,8 @@ processResources{
 
 
 }
+
+
 
 task devJar(type : Jar) {
 	dependsOn javadoc, classes

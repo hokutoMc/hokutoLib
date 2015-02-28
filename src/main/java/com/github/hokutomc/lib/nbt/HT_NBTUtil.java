@@ -1,6 +1,5 @@
 package com.github.hokutomc.lib.nbt;
 
-import com.github.hokutomc.lib.data.enumerate.HT_I_IntOrderEnumerator;
 import com.github.hokutomc.lib.data.enumerate.HT_I_IntOrdered;
 import com.github.hokutomc.lib.data.enumerate.HT_I_StringOrdered;
 import com.github.hokutomc.lib.reflect.HT_Reflections;
@@ -156,11 +155,11 @@ public final class HT_NBTUtil {
     }
 
 
-    public static <R extends HT_I_IntOrdered> R readIntOrdered (String key, NBTTagCompound nbtTagCompound, HT_I_IntOrderEnumerator<R> enumerator) {
-        return enumerator.get(nbtTagCompound.getInteger(key));
+    public static <R extends HT_I_IntOrdered<R>> R readIntOrdered (String key, NBTTagCompound nbtTagCompound, R intOrdered) {
+        return intOrdered.getEnumerator().get(nbtTagCompound.getInteger(key));
     }
 
-    public static void writeIntOrdered (String key, NBTTagCompound nbtTagCompound, HT_I_IntOrdered intOrdered) {
+    public static <T extends HT_I_IntOrdered<T>> void writeIntOrdered (String key, NBTTagCompound nbtTagCompound, HT_I_IntOrdered<T> intOrdered) {
         nbtTagCompound.setInteger(key, intOrdered.getIntId());
     }
 
@@ -168,7 +167,7 @@ public final class HT_NBTUtil {
         return stringOrdered.getEnumerator().get(nbtTagCompound.getString(key));
     }
 
-    public static void writeStringOrdered (String key, NBTTagCompound nbtTagCompound, HT_I_StringOrdered stringOrdered) {
+    public static <T extends HT_I_StringOrdered<T>> void writeStringOrdered (String key, NBTTagCompound nbtTagCompound, HT_I_StringOrdered<T> stringOrdered) {
         nbtTagCompound.setString(key, stringOrdered.toString());
     }
 
@@ -229,7 +228,7 @@ public final class HT_NBTUtil {
     }
 
     public static <R extends HT_I_IntOrdered<R>> R getIntOrdered (String key, NBTTagCompound nbtTagCompound, R alternate) {
-        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? readIntOrdered(key, nbtTagCompound, alternate.getEnumerator()) : alternate;
+        return nbtTagCompound != null && nbtTagCompound.hasKey(key) ? readIntOrdered(key, nbtTagCompound, alternate) : alternate;
     }
 
     public static <R extends HT_I_StringOrdered<R>> R getStringOrdered (String key, NBTTagCompound nbtTagCompound, R alternate) {

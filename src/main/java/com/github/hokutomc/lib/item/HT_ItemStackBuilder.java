@@ -47,6 +47,14 @@ public class HT_ItemStackBuilder<T extends HT_ItemStackBuilder> {
         tryToSolveItemBlock();
     }
 
+    public static HT_ItemStackBuilder start (Item item) {
+        return new HT_ItemStackBuilder(item);
+    }
+
+    public static HT_ItemStackBuilder apply (Block block) {
+        return new HT_ItemStackBuilder(block);
+    }
+
     public ItemStack build () {
         return build(this.m_size);
     }

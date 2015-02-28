@@ -1,16 +1,30 @@
 [
-{
-  "modid": "hokutomc.lib",
-  "name": "Hokuto Lib",
-  "description": "This is a library that makes modding faster.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "http://hokutomc.github.io",
-  "updateUrl": "",
-  "authors": ["Hokuto"],
-  "credits": "",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
-}
+  {
+    "modid": "hokutomc.lib",
+    "name": "Hokuto Lib",
+    "description": "This is a library that makes modding faster.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "http://hokutomc.github.io",
+    "updateUrl": "",
+    "authors": ["Hokuto"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  },
+  {
+    "modid": "hokutomc.lib.scala",
+    "name": "Hokuto Lib Scala",
+    "description": "This is a library that makes modding faster with scala.",
+    "version": "same as Hokuto Lib",
+    "mcversion": "",
+    "url": "http://hokutomc.github.io",
+    "updateUrl": "",
+    "authors": ["Hokuto"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
 ]
