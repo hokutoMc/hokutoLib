@@ -104,10 +104,6 @@ object HT_ScalaConversion {
 
   implicit class WrapOption[T] (val option: Option[T]) extends AnyVal {
     def safe (function: T => Unit) = option match {case Some(v) => function(v) case _ =>}
-
-    def safe [A](function: T => A): WrapOption[A] = option match {case Some(v) => Some(function(v)) case _ => None}
-
-    def safe [A](function: T => Option[A]): WrapOption[A] = option match {case Some(v) => function(v) case _=> None}
   }
 
 }

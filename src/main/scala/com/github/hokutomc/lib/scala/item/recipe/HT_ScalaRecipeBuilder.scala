@@ -1,6 +1,7 @@
 package com.github.hokutomc.lib.scala.item.recipe
 
-import com.github.hokutomc.lib.item.recipe.{HT_ItemStackBuilder4Recipe, HT_CraftingRecipeBuilder, HT_ShapelessRecipeBuilder}
+import com.github.hokutomc.lib.item.recipe.HT_CraftingRecipeBuilder.ISB4RG
+import com.github.hokutomc.lib.item.recipe.{HT_ItemStackBuilder4Recipe => ISB4R, HT_CraftingRecipeBuilder, HT_ShapelessRecipeBuilder}
 import com.github.hokutomc.lib.util.HT_Color
 import net.minecraft.init.Items
 import net.minecraft.item.Item
@@ -12,20 +13,19 @@ class HT_ScalaRecipeBuilder extends HT_CraftingRecipeBuilder{
 
   type SELF = HT_ScalaRecipeBuilder
 
-  type ISB4RG = HT_ItemStackBuilder4Recipe[SELF]
 
   {
     param('a', Items.apple) {_.size(10)}
     to(Items.diamond) {_.setBoolean("a", false)}
   }
 
-  def param (char: Char, item: Item) (function: ISB4RG => ISB4RG): SELF = {
-    function(super.param(char, item).asInstanceOf[ISB4RG]).endItem()
+  def param (char: Char, item: Item) (function: ISB4RG => ISB4R[_]): SELF = {
+    function(super.param(char, item)).endItem()
     this
   }
 
-  def to (item: Item) (function: ISB4RG => ISB4RG): SELF = {
-    function(super.to(item).asInstanceOf[ISB4RG]).endItem()
+  def to (item: Item) (function: ISB4RG => ISB4R[_]): SELF = {
+    function(super.to(item)).endItem()
     this
   }
 
