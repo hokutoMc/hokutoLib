@@ -2,9 +2,10 @@ package com.github.hokutomc.lib.scala
 
 import com.github.hokutomc.lib.client.gui.HT_GuiAction
 import com.github.hokutomc.lib.item.HT_ItemStackBuilder
-import com.github.hokutomc.lib.scala.entity.HT_RichEntity.HT_RichEntity
+import com.github.hokutomc.lib.item.recipe.HT_CraftingRecipeBuilder
 import com.github.hokutomc.lib.scala.entity.HT_RichEntity.HT_RichEntity
 import com.github.hokutomc.lib.scala.entity.{HT_RichEntity, HT_RichPlayer}
+import com.github.hokutomc.lib.scala.item.recipe.HT_ScalaRecipeBuilder
 import com.github.hokutomc.lib.scala.nbt.HT_T_NBTValue.HT_T_NBTValue
 import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_RichNBTTagList}
 import net.minecraft.block.Block
@@ -96,4 +97,17 @@ object HT_ScalaConversion {
       override def get(player: EntityPlayer, world: World, x: Int, y: Int, z: Int): T = func(player, world, x, y, z)
     }
   }
+
+  implicit def wrapRecipeBuilder (builder: HT_CraftingRecipeBuilder): HT_ScalaRecipeBuilder = {
+    builder.asInstanceOf[HT_ScalaRecipeBuilder]
+  }
+
+  implicit class WrapOption[T] (val option: Option[T]) extends AnyVal {
+    def safe (function: T => Unit) = option match {case Some(v) => function(v) case _ =>}
+
+    def safe [A](function: T => A): WrapOption[A] = option match {case Some(v) => Some(function(v)) case _ => None}
+
+    def safe [A](function: T => Option[A]): WrapOption[A] = option match {case Some(v) => function(v) case _=> None}
+  }
+
 }
