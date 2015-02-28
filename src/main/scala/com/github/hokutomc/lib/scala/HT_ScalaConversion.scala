@@ -1,5 +1,6 @@
 package com.github.hokutomc.lib.scala
 
+import com.github.hokutomc.lib.client.gui.HT_GuiAction
 import com.github.hokutomc.lib.item.HT_ItemStackBuilder
 import com.github.hokutomc.lib.scala.entity.HT_RichEntity.HT_RichEntity
 import com.github.hokutomc.lib.scala.entity.HT_RichEntity.HT_RichEntity
@@ -88,5 +89,11 @@ object HT_ScalaConversion {
     def unary_~ : HT_RichItemStack = ~(+this)
 
     def unary_- : World = (+this) worldObj
+  }
+
+  implicit def funcToGuiAction [T](func : (EntityPlayer, World, Int, Int) =>  T): HT_GuiAction[T] = {
+    new HT_GuiAction[T] {
+      override def get(player: EntityPlayer, world: World, x: Int, y: Int, z: Int): T = func(player, world, x, y, z)
+    }
   }
 }
