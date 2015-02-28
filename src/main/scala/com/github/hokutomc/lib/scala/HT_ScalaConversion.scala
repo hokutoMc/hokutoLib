@@ -91,7 +91,7 @@ object HT_ScalaConversion {
     def unary_- : World = (+this) worldObj
   }
 
-  implicit def funcToGuiAction [T](func : (EntityPlayer, World, Int, Int) =>  T): HT_GuiAction[T] = {
+  implicit def funcToGuiAction [T](func : (EntityPlayer, World, Int, Int, Int) =>  T): HT_GuiAction[T] = {
     new HT_GuiAction[T] {
       override def get(player: EntityPlayer, world: World, x: Int, y: Int, z: Int): T = func(player, world, x, y, z)
     }
