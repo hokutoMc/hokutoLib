@@ -1,10 +1,10 @@
 package com.github.hokutomc.lib.scala.entity
 
-import com.github.hokutomc.lib.scala.HT_Vec3
 import com.github.hokutomc.lib.scala.nbt.HT_RichNBTTagCompound
 import com.github.hokutomc.lib.scala.nbt.HT_T_NBTValueCompound.HT_T_NBTValueCompound
 import net.minecraft.entity.Entity
 import net.minecraft.util.Vec3
+import com.github.hokutomc.lib.scala.HT_ScalaConversion._
 
 /**
  * Created by user on 2015/02/28.

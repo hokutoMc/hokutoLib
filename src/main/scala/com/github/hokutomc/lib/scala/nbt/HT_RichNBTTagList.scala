@@ -5,9 +5,9 @@ import net.minecraft.nbt.{NBTBase, NBTTagList}
 /**
  * Created by user on 2015/02/26.
  */
-class HT_RichNBTTagList extends NBTTagList{
+class HT_RichNBTTagList(val wrapped: NBTTagList) extends AnyVal{
   def + (nbtBase: NBTBase) : HT_RichNBTTagList = {
-    appendTag(nbtBase)
+    wrapped.appendTag(nbtBase)
     this
   }
 }

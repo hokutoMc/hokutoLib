@@ -2,6 +2,7 @@ package com.github.hokutomc.lib.scala.nbt
 
 import com.github.hokutomc.lib.data.enumerate.{HT_I_IntOrdered, HT_I_StringOrdered}
 import com.github.hokutomc.lib.nbt.HT_NBTUtil
+import com.github.hokutomc.lib.scala.HT_ScalaConversion._
 
 /**
  * Created by user on 2015/02/26.

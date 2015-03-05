@@ -1,11 +1,12 @@
 package com.github.hokutomc.lib.scala
 
+import com.github.hokutomc.lib.block.HT_ContainerBlock
 import com.github.hokutomc.lib.client.gui.HT_GuiAction
 import com.github.hokutomc.lib.item.HT_ItemStackBuilder
 import com.github.hokutomc.lib.item.recipe.HT_CraftingRecipeBuilder
 import com.github.hokutomc.lib.scala.entity.HT_RichEntity.HT_RichEntity
 import com.github.hokutomc.lib.scala.entity.{HT_RichEntity, HT_RichPlayer}
-import com.github.hokutomc.lib.scala.item.recipe.HT_ScalaRecipeBuilder
+import com.github.hokutomc.lib.scala.item.recipe.{HT_ScalaCraftingRecipeBuilder, HT_ScalaCraftingRecipeBuilder$}
 import com.github.hokutomc.lib.scala.nbt.HT_T_NBTValue.HT_T_NBTValue
 import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_RichNBTTagList}
 import net.minecraft.block.Block
@@ -16,7 +17,7 @@ import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.{EnumChatFormatting, Vec3}
-import net.minecraft.world.World
+import net.minecraft.world.{IBlockAccess, World}
 import net.minecraftforge.event.entity.player.PlayerEvent
 
 import scala.reflect.ClassTag
@@ -33,15 +34,17 @@ object HT_ScalaConversion {
    */
   implicit def unwrapItemStack (stack: HT_RichItemStack) : ItemStack = stack.stack
 
-  implicit def wrapNBTTagComp (nbtTagCompound: NBTTagCompound) : HT_RichNBTTagCompound = nbtTagCompound.asInstanceOf[HT_RichNBTTagCompound]
+  implicit def wrapNBTTagComp (nbtTagCompound: NBTTagCompound) : HT_RichNBTTagCompound = new HT_RichNBTTagCompound(nbtTagCompound)
 
-  implicit def wrapNBTTagList (nbtTagList: NBTTagList) : HT_RichNBTTagList = nbtTagList.asInstanceOf[HT_RichNBTTagList]
+  implicit def unwrapNBTTagComp (hT_RichNBTTagCompound: HT_RichNBTTagCompound): NBTTagCompound = hT_RichNBTTagCompound.wrapped
+
+  implicit def wrapNBTTagList (nbtTagList: NBTTagList) : HT_RichNBTTagList = new HT_RichNBTTagList(nbtTagList)
   
   implicit def ChatFormatToString (chatFormat: EnumChatFormatting) : String = chatFormat.toString
 
   implicit def StringToLocalizer (string: String) : Localizer = Localizer(string)
 
-  implicit def wrapVec3 (vec3: Vec3) : HT_Vec3 = vec3.asInstanceOf[HT_Vec3]
+  implicit def wrapVec3 (vec3: Vec3) : HT_Vec3 = new HT_Vec3(vec3)
 
   implicit def tupleToVec3 (tuple3: (Double, Double, Double)) : HT_Vec3 = Vec3.createVectorHelper(tuple3._1, tuple3._2, tuple3._3)
 
@@ -98,12 +101,16 @@ object HT_ScalaConversion {
     }
   }
 
-  implicit def wrapRecipeBuilder (builder: HT_CraftingRecipeBuilder): HT_ScalaRecipeBuilder = {
-    builder.asInstanceOf[HT_ScalaRecipeBuilder]
-  }
-
   implicit class WrapOption[T] (val option: Option[T]) extends AnyVal {
     def safe (function: T => Unit) = option match {case Some(v) => function(v) case _ =>}
   }
 
+  implicit class WrapBlockContainer[T <: TileEntity] (val containerBlock: HT_ContainerBlock[T]) extends AnyVal {
+    def tileEntity(world: IBlockAccess, x: Int, y: Int, z:Int)(func: T => Unit)(implicit classTag: ClassTag[T]) = {
+      world.getTileEntity(x, y, z) match {
+        case t: T => func(t)
+        case _=>
+      }
+    }
+  }
 }

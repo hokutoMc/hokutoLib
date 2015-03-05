@@ -63,6 +63,12 @@ case class HT_RichItemStack (stack : ItemStack) extends AnyVal with HT_T_NBTValu
 
   def getItemAs [T <: Item](implicit classTag: ClassTag[T]) : Option[T] = getItem flatMap { case i: T => Some(i) case _ => None}
 
+  def ifItemIsOf [T <: Item, U](func: T => U)(implicit classTag: ClassTag[T]): Option[U] = getItemAs[T] map func
+
+  def ifItemSame [T <: Item, U](item: Item)(func: T => U)(implicit classTag: ClassTag[T]): Option[U] = getItemAs[T] match {
+    case Some(v) if v eq item => Some(func(v))
+    case _=> None
+  }
 
   def getOrCreateTag : HT_RichNBTTagCompound = {
     if (!stack.hasTagCompound) {stack.setTagCompound(new NBTTagCompound)}

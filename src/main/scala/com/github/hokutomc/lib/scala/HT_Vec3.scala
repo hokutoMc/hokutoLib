@@ -6,29 +6,29 @@ import net.minecraft.util.Vec3
 /**
  * Created by user on 2015/02/26.
  */
-class HT_Vec3(a: Double, b: Double, c: Double) extends Vec3(a, b, c){
+class HT_Vec3(val wrapped: Vec3) extends AnyVal{
 
+  implicit def unwrap : Vec3 = wrapped
 
+  def x : Double = wrapped.xCoord
 
-  def x : Double = xCoord
+  def y : Double = wrapped.yCoord
 
-  def y : Double = yCoord
+  def z : Double = wrapped.zCoord
 
-  def z : Double = zCoord
+  def + (vec3: HT_Vec3) : HT_Vec3 = wrapped.addVector(vec3.x, vec3.y, vec3.z)
 
-  def + (vec3: HT_Vec3) : HT_Vec3 = addVector(vec3.x, vec3.y, vec3.z)
+  def - (vec3: HT_Vec3) : HT_Vec3 = vec3.unwrap.subtract(wrapped)
 
-  def - (vec3: HT_Vec3) : HT_Vec3 = vec3.subtract(this)
+  def * (vec3: HT_Vec3) : Double = wrapped.dotProduct(vec3.unwrap)
 
-  def * (vec3: HT_Vec3) : Double = dotProduct(vec3)
+  def × (vec3: Vec3) : HT_Vec3 = wrapped.crossProduct(vec3.unwrap)
 
-  def × (vec3: HT_Vec3) : HT_Vec3 = crossProduct(vec3)
+  def unary_~ : HT_Vec3 = wrapped.normalize()
 
-  def unary_~ : HT_Vec3 = normalize()
+  def unary_! : Double = wrapped.lengthVector()
 
-  def unary_! : Double = lengthVector()
+  def <--> (vec3: HT_Vec3) : Double = wrapped.distanceTo(vec3.unwrap)
 
-  def <--> (vec3: HT_Vec3) : Double = distanceTo(vec3)
-
-  def <<-->> (vec3: HT_Vec3) : Double = squareDistanceTo(vec3)
+  def <<-->> (vec3: HT_Vec3) : Double = wrapped.squareDistanceTo(vec3.unwrap)
 }
