@@ -42,7 +42,7 @@ object HT_ScalaConversion {
   
   implicit def ChatFormatToString (chatFormat: EnumChatFormatting) : String = chatFormat.toString
 
-  implicit def StringToLocalizer (string: String) : Localizer = Localizer(string)
+  implicit def StringToLocalizer (string: String) : HT_Localizer = HT_Localizer(string)
 
   implicit def wrapVec3 (vec3: Vec3) : HT_Vec3 = new HT_Vec3(vec3)
 
