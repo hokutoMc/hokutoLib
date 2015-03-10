@@ -39,8 +39,8 @@ ht_mod {
 	prefix = 'beta'
 	major = '1'
 	minor = '7'
-	revision = '6'
-	build = '18'
+	revision = '7'
+	build = '19'
 }
 
 
