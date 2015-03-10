@@ -16,6 +16,8 @@ import com.github.hokutomc.lib.item.recipe.HT_CraftingRecipeBuilder;
 import com.github.hokutomc.lib.item.recipe.HT_FurnaceRecipeBuilder;
 import com.github.hokutomc.lib.item.tool.HT_ItemTool;
 import com.github.hokutomc.lib.util.HT_CreativeTabsUtil;
+import com.github.hokutomc.lib.world.gen.HT_OreGenGen;
+import com.github.hokutomc.lib.world.gen.HT_OreGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,6 +30,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenMinable;
+
+import java.util.Random;
 
 /**
  * Created by user on 2014/11/03.
@@ -144,6 +149,21 @@ public class Debug {
         }.HT_setCreativeTab(tabHTLib).register();
 
         new HT_BlockDoubleSlab(MODID, Material.cloth, "slab", "a", "b").HT_setCreativeTab(tabHTLib).register();
+
+        final HT_OreGenGen gen = new HT_OreGenGen(128, 2, 60) {
+            @Override
+            protected void gen (World world, Random random, int genX, int genY, int genZ) {
+                new WorldGenMinable(Blocks.emerald_block, 20).generate(world, random, genX, genY, genZ);
+            }
+        };
+
+        new HT_OreGenerator() {
+            @Override
+            protected void generateSurface (World world, Random random, int x, int z) {
+                gen.generateRandomPos(world, random, x, z);
+            }
+        }.register(10);
+
         entityList = new HT_ModEntityList(Mod_HTLib.INSTANCE, MODID);
     }
 

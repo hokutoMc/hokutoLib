@@ -1,6 +1,6 @@
 package com.github.hokutomc.lib.scala.item.recipe
 
-import com.github.hokutomc.lib.item.recipe.HT_ItemStackBuilder4Recipe
+import com.github.hokutomc.lib.item.recipe.{HT_ItemStackBuilder4Recipe, HT_RecipeBuilder}
 import com.github.hokutomc.lib.util.HT_Color
 
 /**
@@ -11,6 +11,8 @@ trait HT_T_ScalaRecipeBuilder[Repr <: HT_T_ScalaRecipeBuilder[Repr]]{
   def getThis: Repr
 
   type AnyISB4R = HT_ItemStackBuilder4Recipe[_]
+
+  def THRU[R <: HT_RecipeBuilder[R]]: HT_ItemStackBuilder4Recipe[R] => AnyISB4R = a => a
 
   def eachColor (function: (Repr, HT_Color) => Unit): Repr = {
     HT_Color.values().foreach(function(getThis, _))

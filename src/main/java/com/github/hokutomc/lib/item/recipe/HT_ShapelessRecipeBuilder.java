@@ -1,6 +1,5 @@
 package com.github.hokutomc.lib.item.recipe;
 
-import com.github.hokutomc.lib.item.HT_ItemStackBuilder;
 import com.github.hokutomc.lib.util.HT_Color;
 import com.github.hokutomc.lib.util.HT_I_Colored;
 import com.google.common.collect.Lists;
@@ -67,15 +66,15 @@ public class HT_ShapelessRecipeBuilder extends HT_RecipeBuilder<HT_ShapelessReci
         this.oreNameList.clear();
     }
 
-    public ISB4RS from (Item item) {
+    public HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder> from (Item item) {
         return from(isb4r(item));
     }
 
-    public ISB4RS from (Block block) {
+    public HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder> from (Block block) {
         return from(isb4r(block));
     }
 
-    public ISB4RS from (ISB4RS isb4r) {
+    public HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder> from (HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder> isb4r) {
         this.mode = ISMode.SOURCE;
         return isb4r;
     }
@@ -85,11 +84,11 @@ public class HT_ShapelessRecipeBuilder extends HT_RecipeBuilder<HT_ShapelessReci
         return andOre(oreName);
     }
 
-    public ISB4RS and (Item item) {
+    public HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder> and (Item item) {
         return isb4r(item);
     }
 
-    public ISB4RS and (Block block) {
+    public HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder> and (Block block) {
         return isb4r(block);
     }
 
@@ -99,16 +98,16 @@ public class HT_ShapelessRecipeBuilder extends HT_RecipeBuilder<HT_ShapelessReci
         return this;
     }
 
-    public ISB4RS to (Item item) {
+    public HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder> to (Item item) {
         return to(isb4r(item));
     }
 
-    public ISB4RS to (Block block) {
+    public HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder> to (Block block) {
         return to(isb4r(block));
     }
 
 
-    public ISB4RS to (ISB4RS isb4r) {
+    public HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder> to (HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder> isb4r) {
         this.mode = ISMode.RESULT;
         return isb4r;
     }
@@ -120,49 +119,26 @@ public class HT_ShapelessRecipeBuilder extends HT_RecipeBuilder<HT_ShapelessReci
     public HT_ShapelessRecipeBuilder dye (HT_I_Colored itemOrBlock) {
         if (itemOrBlock instanceof Item) {
             for (HT_Color color : HT_Color.values()) {
-                this.from(new ISB4RS(this, itemOrBlock.getItemStackFromColor(color))).wildCard().endItem()
+                this.from(new HT_ItemStackBuilder4Recipe<>(this, itemOrBlock.getItemStackFromColor(color))).wildCard().endItem()
                         .andOre(color.getDyeName())
-                        .to(new ISB4RS(this, itemOrBlock.getItemStackFromColor(color))).damage(color.ordinal()).endItem();
+                        .to(new HT_ItemStackBuilder4Recipe<>(this, itemOrBlock.getItemStackFromColor(color))).damage(color.ordinal()).endItem();
             }
 
         } else if (itemOrBlock instanceof Block) {
             for (HT_Color color : HT_Color.values()) {
                 this.from((Block) itemOrBlock).wildCard().endItem()
                         .andOre(color.getDyeName())
-                        .to(new ISB4RS(this, itemOrBlock.getItemStackFromColor(color))).damage(color.ordinal()).endItem();
+                        .to(new HT_ItemStackBuilder4Recipe<>(this, itemOrBlock.getItemStackFromColor(color))).damage(color.ordinal()).endItem();
             }
         }
         return this;
     }
 
-    private ISB4RS isb4r (Item item) {
-        return new ISB4RS(this, item);
+    private HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder> isb4r (Item item) {
+        return new HT_ItemStackBuilder4Recipe<>(this, item);
     }
 
-    private ISB4RS isb4r (Block block) {
-        return new ISB4RS(this, block);
-    }
-
-    public static class ISB4RS extends HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder>{
-
-        protected ISB4RS (HT_ShapelessRecipeBuilder m_recipeBuilder, ItemStack template) {
-            super(m_recipeBuilder, template);
-        }
-
-        ISB4RS (HT_ShapelessRecipeBuilder recipeBuilder, HT_ItemStackBuilder base) {
-            super(recipeBuilder, base);
-        }
-
-        ISB4RS (HT_ShapelessRecipeBuilder recipeBuilder, Item item) {
-            super(recipeBuilder, item);
-        }
-
-        ISB4RS (HT_ShapelessRecipeBuilder recipeBuilder, Block block) {
-            super(recipeBuilder, block);
-        }
-
-        private HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder> castUp () {
-            return this;
-        }
+    private HT_ItemStackBuilder4Recipe<HT_ShapelessRecipeBuilder> isb4r (Block block) {
+        return new HT_ItemStackBuilder4Recipe<>(this, block);
     }
 }

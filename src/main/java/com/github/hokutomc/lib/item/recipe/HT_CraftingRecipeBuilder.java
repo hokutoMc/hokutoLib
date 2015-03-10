@@ -1,6 +1,5 @@
 package com.github.hokutomc.lib.item.recipe;
 
-import com.github.hokutomc.lib.item.HT_ItemStackBuilder;
 import com.google.common.collect.Maps;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -71,15 +70,15 @@ public class HT_CraftingRecipeBuilder extends HT_RecipeBuilder<HT_CraftingRecipe
         init();
     }
 
-    public ISB4RG param (char symbol, Item item) {
+    public HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> param (char symbol, Item item) {
         return param(symbol, isb4r(item));
     }
 
-    public ISB4RG param (char symbol, Block block) {
+    public HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> param (char symbol, Block block) {
         return param(symbol, isb4r(block));
     }
 
-    public ISB4RG param (char synbol, String modid, String name) {
+    public HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> param (char synbol, String modid, String name) {
         ItemStack itemStack = GameRegistry.findItemStack(modid, name, 0);
         if (itemStack == null){
             try {
@@ -88,10 +87,10 @@ public class HT_CraftingRecipeBuilder extends HT_RecipeBuilder<HT_CraftingRecipe
                 e.printStackTrace();
             }
         }
-        return new ISB4RG(this, itemStack);
+        return new HT_ItemStackBuilder4Recipe<>(this, itemStack);
     }
 
-    private ISB4RG param (char symbol, ISB4RG isb4r) {
+    private HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> param (char symbol, HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> isb4r) {
         this.register_ch = symbol;
         this.m_mode = ISMode.PARAM;
         return isb4r;
@@ -108,12 +107,12 @@ public class HT_CraftingRecipeBuilder extends HT_RecipeBuilder<HT_CraftingRecipe
         return this;
     }
 
-    public ISB4RG to (Item item) {
+    public HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> to (Item item) {
         this.m_mode = ISMode.RESULT;
         return isb4r(item);
     }
 
-    public ISB4RG to (Block block) {
+    public HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> to (Block block) {
         this.m_mode = ISMode.RESULT;
         return isb4r(block);
     }
@@ -122,31 +121,13 @@ public class HT_CraftingRecipeBuilder extends HT_RecipeBuilder<HT_CraftingRecipe
         return new HT_ShapelessRecipeBuilder(this);
     }
 
-    private ISB4RG isb4r (Item item) {
-        return new ISB4RG(this, item);
+    private HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> isb4r (Item item) {
+        return new HT_ItemStackBuilder4Recipe<>(this, item);
     }
 
-    private ISB4RG isb4r (Block block) {
-        return new ISB4RG(this, block);
+    private HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> isb4r (Block block) {
+        return new HT_ItemStackBuilder4Recipe<>(this, block);
     }
 
-    public static class ISB4RG extends HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder>{
 
-        protected ISB4RG (HT_CraftingRecipeBuilder m_recipeBuilder, ItemStack template) {
-            super(m_recipeBuilder, template);
-        }
-
-        ISB4RG (HT_CraftingRecipeBuilder recipeBuilder, HT_ItemStackBuilder base) {
-            super(recipeBuilder, base);
-        }
-
-        ISB4RG (HT_CraftingRecipeBuilder recipeBuilder, Item item) {
-            super(recipeBuilder, item);
-        }
-
-        ISB4RG (HT_CraftingRecipeBuilder recipeBuilder, Block block) {
-            super(recipeBuilder, block);
-        }
-
-    }
 }

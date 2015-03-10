@@ -3,10 +3,9 @@ package com.github.hokutomc.lib.scala
 import com.github.hokutomc.lib.block.HT_ContainerBlock
 import com.github.hokutomc.lib.client.gui.HT_GuiAction
 import com.github.hokutomc.lib.item.HT_ItemStackBuilder
-import com.github.hokutomc.lib.item.recipe.HT_CraftingRecipeBuilder
+import com.github.hokutomc.lib.item.recipe.{HT_ItemStackBuilder4Recipe, HT_RecipeBuilder}
 import com.github.hokutomc.lib.scala.entity.HT_RichEntity.HT_RichEntity
 import com.github.hokutomc.lib.scala.entity.{HT_RichEntity, HT_RichPlayer}
-import com.github.hokutomc.lib.scala.item.recipe.{HT_ScalaCraftingRecipeBuilder, HT_ScalaCraftingRecipeBuilder$}
 import com.github.hokutomc.lib.scala.nbt.HT_T_NBTValue.HT_T_NBTValue
 import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_RichNBTTagList}
 import net.minecraft.block.Block
@@ -113,4 +112,6 @@ object HT_ScalaConversion {
       }
     }
   }
+
+  implicit def endItem[RB <: HT_RecipeBuilder[RB]](itemStackBuilder4Recipe: HT_ItemStackBuilder4Recipe[RB]): RB = itemStackBuilder4Recipe.endItem()
 }

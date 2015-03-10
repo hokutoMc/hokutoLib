@@ -1,6 +1,5 @@
 package com.github.hokutomc.lib.scala.item.recipe
 
-import com.github.hokutomc.lib.item.recipe.HT_ShapelessRecipeBuilder.ISB4RS
 import com.github.hokutomc.lib.item.recipe.{HT_ItemStackBuilder4Recipe => ISB4r, HT_ShapelessRecipeBuilder}
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -20,32 +19,32 @@ class HT_ScalaShapelessRecipeBuilder extends HT_ShapelessRecipeBuilder with HT_T
     this
   }
 
-  def from (item: Item) (function: ISB4RS => AnyISB4R): SELF = {
+  def from(item: Item)(function: ISB4r[HT_ShapelessRecipeBuilder] => AnyISB4R): SELF = {
     function(from(item)).endItem()
     this
   }
 
-  def and (item: Item) (function: ISB4RS => AnyISB4R): SELF = {
+  def and(item: Item)(function: ISB4r[HT_ShapelessRecipeBuilder] => AnyISB4R): SELF = {
     function(and(item)).endItem()
     this
   }
 
-  def to (item: Item) (function: ISB4RS => AnyISB4R): SELF = {
+  def to(item: Item)(function: ISB4r[HT_ShapelessRecipeBuilder] => AnyISB4R): SELF = {
     function(to(item)).endItem()
     this
   }
 
-  def from (item: Block) (function: ISB4RS => AnyISB4R): SELF = {
+  def from(item: Block)(function: ISB4r[HT_ShapelessRecipeBuilder] => AnyISB4R): SELF = {
     function(from(item)).endItem()
     this
   }
 
-  def and (item: Block) (function: ISB4RS => AnyISB4R): SELF = {
+  def and(item: Block)(function: ISB4r[HT_ShapelessRecipeBuilder] => AnyISB4R): SELF = {
     function(and(item)).endItem()
     this
   }
 
-  def to (item: Block) (function: ISB4RS => AnyISB4R): SELF = {
+  def to(item: Block)(function: ISB4r[HT_ShapelessRecipeBuilder] => AnyISB4R): SELF = {
     function(to(item)).endItem()
     this
   }

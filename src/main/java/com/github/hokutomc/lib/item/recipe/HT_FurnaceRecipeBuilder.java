@@ -1,6 +1,5 @@
 package com.github.hokutomc.lib.item.recipe;
 
-import com.github.hokutomc.lib.item.HT_ItemStackBuilder;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -45,29 +44,29 @@ public class HT_FurnaceRecipeBuilder extends HT_RecipeBuilder<HT_FurnaceRecipeBu
         GameRegistry.addSmelting(this.m_source, this.m_result, this.m_chanceXp);
     }
 
-    public ISB4RF from (Item item) {
-        return this.from(new ISB4RF(this, item));
+    public HT_ItemStackBuilder4Recipe<HT_FurnaceRecipeBuilder> from (Item item) {
+        return this.from(new HT_ItemStackBuilder4Recipe<>(this, item));
     }
 
-    public ISB4RF from (Block block) {
-        return this.from(new ISB4RF(this, block));
+    public HT_ItemStackBuilder4Recipe<HT_FurnaceRecipeBuilder> from (Block block) {
+        return this.from(new HT_ItemStackBuilder4Recipe<>(this, block));
     }
 
-    private ISB4RF from (ISB4RF isb4r) {
+    private HT_ItemStackBuilder4Recipe<HT_FurnaceRecipeBuilder> from (HT_ItemStackBuilder4Recipe<HT_FurnaceRecipeBuilder> isb4r) {
         this.m_source = isb4r.build();
         this.m_mode = ISMode.SOURCE;
         return isb4r;
     }
 
-    public ISB4RF to (Item item) {
-        return this.to(new ISB4RF(this, item));
+    public HT_ItemStackBuilder4Recipe<HT_FurnaceRecipeBuilder> to (Item item) {
+        return this.to(new HT_ItemStackBuilder4Recipe<>(this, item));
     }
 
-    public ISB4RF to (Block block) {
-        return this.to(new ISB4RF(this, block));
+    public HT_ItemStackBuilder4Recipe<HT_FurnaceRecipeBuilder> to (Block block) {
+        return this.to(new HT_ItemStackBuilder4Recipe<>(this, block));
     }
 
-    private ISB4RF to (ISB4RF isb4r) {
+    private HT_ItemStackBuilder4Recipe<HT_FurnaceRecipeBuilder> to (HT_ItemStackBuilder4Recipe<HT_FurnaceRecipeBuilder> isb4r) {
         this.m_result = isb4r.build();
         this.m_mode = ISMode.RESULT;
         return isb4r;
@@ -76,25 +75,6 @@ public class HT_FurnaceRecipeBuilder extends HT_RecipeBuilder<HT_FurnaceRecipeBu
     public HT_FurnaceRecipeBuilder withXp (double xp) {
         this.m_chanceXp = (float) xp;
         return this;
-    }
-
-    public static class ISB4RF extends HT_ItemStackBuilder4Recipe<HT_FurnaceRecipeBuilder> {
-
-        protected ISB4RF (HT_FurnaceRecipeBuilder m_recipeBuilder, ItemStack template) {
-            super(m_recipeBuilder, template);
-        }
-
-        ISB4RF (HT_FurnaceRecipeBuilder recipeBuilder, HT_ItemStackBuilder base) {
-            super(recipeBuilder, base);
-        }
-
-        ISB4RF (HT_FurnaceRecipeBuilder recipeBuilder, Item item) {
-            super(recipeBuilder, item);
-        }
-
-        ISB4RF (HT_FurnaceRecipeBuilder recipeBuilder, Block block) {
-            super(recipeBuilder, block);
-        }
     }
 
 }
