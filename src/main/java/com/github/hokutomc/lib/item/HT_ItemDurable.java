@@ -32,6 +32,15 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
         this.m_subItems.add(new HT_ItemStackBuilder(this).fullDurability());
     }
 
+    @Override
+    public HT_ItemDurable multi (String... subNames) {
+        super.multi(subNames);
+        for (HT_ItemStackBuilder item : this.m_subItems) {
+            item.fullDurability();
+        }
+        return this;
+    }
+
     public HT_ItemStackBuilder getBuilder (int durability, int meta) {
         return new HT_ItemStackBuilder(this, meta).setInt(KEY_DURABILITY, durability).setBoolean(KEY_BROKEN, false);
     }
