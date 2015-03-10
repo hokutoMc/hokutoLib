@@ -16,6 +16,6 @@ public final class HT_ItemStackUtil {
     }
 
     public static <T extends Item> T getItemAs (ItemStack itemStack, Class<T> itemClass) {
-        return itemStack.getItem() != null ? itemClass.isInstance(itemStack.getItem()) ? itemClass.cast(itemStack.getItem()) : null : null;
+        return itemStack != null && itemStack.getItem() != null && itemClass.isInstance(itemStack.getItem()) ? itemClass.cast(itemStack.getItem()) : null;
     }
 }
