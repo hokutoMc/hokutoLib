@@ -83,7 +83,7 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
 
     @Override
     public double getDurabilityForDisplay (ItemStack stack) {
-        return ((double) this.getDurability(stack)) / ((double) this.getMaxDurability(stack));
+        return 1 - (((double) this.getDurability(stack)) / ((double) this.getMaxDurability(stack)));
     }
 
     public abstract int getMaxDurability (ItemStack itemStack);
