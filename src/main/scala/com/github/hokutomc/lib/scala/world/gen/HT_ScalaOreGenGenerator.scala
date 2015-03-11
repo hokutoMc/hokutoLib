@@ -26,10 +26,8 @@ object HT_ScalaOreGenGenerator {
  */
 class HT_ScalaOreGenGenerator(val block: Block, val size: Int, val meta: Int = -1, val target: Block = Blocks.stone, val chance: Int = 30, val canceled: Float = 0, val yMax: Int = 64, val yMin: Int = 2) {
 
-  def getGenerator: WorldGenMinable = {
-    if (meta < 0) new WorldGenMinable(block, size, target)
-    else new WorldGenMinable(block, size, meta, target)
-  }
+  val generator = if (meta < 0) new WorldGenMinable(block, size, target)
+  else new WorldGenMinable(block, meta, size, target)
 
   def generate(x: Int, z: Int, world: World, rand: Random): Unit = {
     for (i <- 0 until chance if rand.nextFloat() >= canceled) {
@@ -37,7 +35,7 @@ class HT_ScalaOreGenGenerator(val block: Block, val size: Int, val meta: Int = -
       val genY = yMin + rand.nextInt(yMax - yMin)
       val genZ = z + rand.nextInt(16)
 
-      getGenerator.generate(world, rand, genX, genY, genZ)
+      generator.generate(world, rand, genX, genY, genZ)
     }
   }
 }

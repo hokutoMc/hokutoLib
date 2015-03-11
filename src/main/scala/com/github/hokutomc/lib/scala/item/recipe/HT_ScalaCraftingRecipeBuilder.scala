@@ -1,6 +1,7 @@
 package com.github.hokutomc.lib.scala.item.recipe
 
 import com.github.hokutomc.lib.item.recipe.{HT_CraftingRecipeBuilder, HT_ItemStackBuilder4Recipe => ISB4R}
+import net.minecraft.block.Block
 import net.minecraft.item.Item
 
 /**
@@ -23,6 +24,33 @@ class HT_ScalaCraftingRecipeBuilder extends HT_CraftingRecipeBuilder with HT_T_S
     super.paramOre(symbol, oreName)
     this
   }
+
+
+  override def param(symbol: Char, item: Item): SELF = {
+    super.param(symbol, item)
+    this
+  }
+
+  override def param(symbol: Char, block: Block): SELF = {
+    super.param(symbol, block)
+    this
+  }
+
+  override def param(synbol: Char, modid: String, name: String): SELF = {
+    super.param(synbol, modid, name)
+    this
+  }
+
+  override def to(item: Item): SELF = {
+    super.to(item)
+    this
+  }
+
+  override def to(block: Block): SELF = {
+    super.to(block)
+    this
+  }
+
 
   def value(char: Char, item: Item)(function: ISB4R[HT_CraftingRecipeBuilder] => ISB4R[_] = THRU[HT_CraftingRecipeBuilder]): SELF = {
     function(super.param(char, item)).endItem()
