@@ -36,7 +36,7 @@ public class HT_ShapelessRecipeBuilder extends HT_RecipeBuilder<HT_ShapelessReci
     }
 
     public HT_ShapelessRecipeBuilder () {
-        this(new HT_CraftingRecipeBuilder());
+        this(HT_CraftingRecipeBuilder.create());
     }
 
     @Override

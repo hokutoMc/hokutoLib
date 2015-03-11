@@ -7,7 +7,8 @@ import net.minecraft.item.Item
 /**
  * Created by user on 2015/02/28.
  */
-class HT_ScalaCraftingRecipeBuilder extends HT_CraftingRecipeBuilder with HT_T_ScalaRecipeBuilder[HT_ScalaCraftingRecipeBuilder]{
+class HT_ScalaCraftingRecipeBuilder extends HT_CraftingRecipeBuilder[HT_ScalaCraftingRecipeBuilder]
+with HT_T_ScalaRecipeBuilder[HT_ScalaCraftingRecipeBuilder] {
 
   type SELF = HT_ScalaCraftingRecipeBuilder
 
@@ -16,7 +17,7 @@ class HT_ScalaCraftingRecipeBuilder extends HT_CraftingRecipeBuilder with HT_T_S
 
   override def grid(grid: String*): SELF = {
     super.grid(grid: _*)
-    this
+    getThis
   }
 
 
@@ -26,33 +27,19 @@ class HT_ScalaCraftingRecipeBuilder extends HT_CraftingRecipeBuilder with HT_T_S
   }
 
 
-  override def param(symbol: Char, item: Item): SELF = {
-    super.param(symbol, item)
-    this
-  }
-
-  override def param(symbol: Char, block: Block): SELF = {
-    super.param(symbol, block)
-    this
-  }
-
-  override def param(synbol: Char, modid: String, name: String): SELF = {
-    super.param(synbol, modid, name)
-    this
-  }
-
-  override def to(item: Item): SELF = {
-    super.to(item)
-    this
-  }
-
-  override def to(block: Block): SELF = {
-    super.to(block)
-    this
-  }
+  override def param(symbol: Char, item: Item): ISB4R[SELF] = super.param(symbol, item)
 
 
-  def value(char: Char, item: Item)(function: ISB4R[HT_CraftingRecipeBuilder] => ISB4R[_] = THRU[HT_CraftingRecipeBuilder]): SELF = {
+  override def param(symbol: Char, block: Block): ISB4R[SELF] = super.param(symbol, block)
+
+  override def param(synbol: Char, modid: String, name: String): ISB4R[SELF] = super.param(synbol, modid, name)
+
+  override def to(item: Item): ISB4R[SELF] = super.to(item)
+
+  override def to(block: Block): ISB4R[SELF] = super.to(block)
+
+
+  def value(char: Char, item: Item)(function: ISB4R[HT_ScalaCraftingRecipeBuilder] => ISB4R[_] = THRU[HT_ScalaCraftingRecipeBuilder]): SELF = {
     function(super.param(char, item)).endItem()
     this
   }
@@ -62,7 +49,7 @@ class HT_ScalaCraftingRecipeBuilder extends HT_CraftingRecipeBuilder with HT_T_S
   //    this
   //  }
 
-  def result(item: Item)(function: ISB4R[HT_CraftingRecipeBuilder] => ISB4R[_] = THRU[HT_CraftingRecipeBuilder]): SELF = {
+  def result(item: Item)(function: ISB4R[HT_ScalaCraftingRecipeBuilder] => ISB4R[_] = THRU[HT_ScalaCraftingRecipeBuilder]): SELF = {
     function(super.to(item)).endItem()
     this
   }

@@ -6,7 +6,6 @@ import com.github.hokutomc.lib.block.HT_MultiItemBlock;
 import com.github.hokutomc.lib.client.render.HT_I_EntityRender;
 import com.github.hokutomc.lib.client.render.HT_I_TileEntityRender;
 import com.github.hokutomc.lib.item.HT_Item;
-import com.github.hokutomc.lib.item.recipe.HT_CraftingRecipeBuilder;
 import com.github.hokutomc.lib.item.recipe.HT_FurnaceRecipeBuilder;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -77,10 +76,6 @@ public final class HT_Registries {
 
     public static void registerDispencerBehavior (Item item, IBehaviorDispenseItem behavior) {
         BlockDispenser.dispenseBehaviorRegistry.putObject(item, behavior);
-    }
-
-    public static HT_CraftingRecipeBuilder addRecipe () {
-        return new HT_CraftingRecipeBuilder();
     }
 
     public static HT_FurnaceRecipeBuilder addSmelting () {

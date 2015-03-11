@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by user on 2015/01/29.
  */
-public class HT_CraftingRecipeBuilder extends HT_RecipeBuilder<HT_CraftingRecipeBuilder> {
+public abstract class HT_CraftingRecipeBuilder<T extends HT_CraftingRecipeBuilder<T>> extends HT_RecipeBuilder<T> {
 
     private ISMode m_mode;
 
@@ -29,9 +29,13 @@ public class HT_CraftingRecipeBuilder extends HT_RecipeBuilder<HT_CraftingRecipe
         PARAM,RESULT,OTHER
     }
 
-    public HT_CraftingRecipeBuilder () {
+    protected HT_CraftingRecipeBuilder () {
         this.params = Maps.newHashMap();
         init();
+    }
+
+    public static Impl create () {
+        return new Impl();
     }
 
     private void init () {
@@ -42,7 +46,8 @@ public class HT_CraftingRecipeBuilder extends HT_RecipeBuilder<HT_CraftingRecipe
     }
 
     @Override
-    public HT_CraftingRecipeBuilder onReturned (HT_ItemStackBuilder4Recipe itemStackBuilder) {
+    @SuppressWarnings("unchecked")
+    public T onReturned (HT_ItemStackBuilder4Recipe itemStackBuilder) {
         switch (this.m_mode) {
             case PARAM: params.put(register_ch, itemStackBuilder.build()); break;
             case RESULT: this.m_result = itemStackBuilder.build();
@@ -50,7 +55,7 @@ public class HT_CraftingRecipeBuilder extends HT_RecipeBuilder<HT_CraftingRecipe
                 break;
         }
         this.m_mode = ISMode.OTHER;
-        return this;
+        return (T) this;
     }
 
     private void addRecipe () {
@@ -70,15 +75,16 @@ public class HT_CraftingRecipeBuilder extends HT_RecipeBuilder<HT_CraftingRecipe
         init();
     }
 
-    public HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> param (char symbol, Item item) {
+    public HT_ItemStackBuilder4Recipe<T> param (char symbol, Item item) {
         return param(symbol, isb4r(item));
     }
 
-    public HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> param (char symbol, Block block) {
+    public HT_ItemStackBuilder4Recipe<T> param (char symbol, Block block) {
         return param(symbol, isb4r(block));
     }
 
-    public HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> param (char synbol, String modid, String name) {
+    @SuppressWarnings("unchecked")
+    public HT_ItemStackBuilder4Recipe<T> param (char synbol, String modid, String name) {
         ItemStack itemStack = GameRegistry.findItemStack(modid, name, 0);
         if (itemStack == null){
             try {
@@ -87,32 +93,34 @@ public class HT_CraftingRecipeBuilder extends HT_RecipeBuilder<HT_CraftingRecipe
                 e.printStackTrace();
             }
         }
-        return new HT_ItemStackBuilder4Recipe<>(this, itemStack);
+        return new HT_ItemStackBuilder4Recipe<>((T) this, itemStack);
     }
 
-    private HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> param (char symbol, HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> isb4r) {
+    private HT_ItemStackBuilder4Recipe<T> param (char symbol, HT_ItemStackBuilder4Recipe<T> isb4r) {
         this.register_ch = symbol;
         this.m_mode = ISMode.PARAM;
         return isb4r;
     }
 
-    public HT_CraftingRecipeBuilder paramOre (char symbol, String oreName) {
+    @SuppressWarnings("unchecked")
+    public T paramOre (char symbol, String oreName) {
         this.m_isOreRecipe = true;
         this.params.put(symbol, oreName);
-        return this;
+        return (T) this;
     }
 
-    public HT_CraftingRecipeBuilder grid (String... grid) {
+    @SuppressWarnings("unchecked")
+    public T grid (String... grid) {
         this.m_grid = grid;
-        return this;
+        return (T) this;
     }
 
-    public HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> to (Item item) {
+    public HT_ItemStackBuilder4Recipe<T> to (Item item) {
         this.m_mode = ISMode.RESULT;
         return isb4r(item);
     }
 
-    public HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> to (Block block) {
+    public HT_ItemStackBuilder4Recipe<T> to (Block block) {
         this.m_mode = ISMode.RESULT;
         return isb4r(block);
     }
@@ -121,13 +129,16 @@ public class HT_CraftingRecipeBuilder extends HT_RecipeBuilder<HT_CraftingRecipe
         return new HT_ShapelessRecipeBuilder(this);
     }
 
-    private HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> isb4r (Item item) {
-        return new HT_ItemStackBuilder4Recipe<>(this, item);
+    @SuppressWarnings("unchecked")
+    private HT_ItemStackBuilder4Recipe<T> isb4r (Item item) {
+        return new HT_ItemStackBuilder4Recipe<>((T) this, item);
     }
 
-    private HT_ItemStackBuilder4Recipe<HT_CraftingRecipeBuilder> isb4r (Block block) {
-        return new HT_ItemStackBuilder4Recipe<>(this, block);
+    @SuppressWarnings("unchecked")
+    private HT_ItemStackBuilder4Recipe<T> isb4r (Block block) {
+        return new HT_ItemStackBuilder4Recipe<>((T) this, block);
     }
 
-
+    public static class Impl extends HT_CraftingRecipeBuilder<Impl> {
+    }
 }

@@ -15,7 +15,6 @@ import com.github.hokutomc.lib.item.HT_ItemDurable;
 import com.github.hokutomc.lib.item.recipe.HT_CraftingRecipeBuilder;
 import com.github.hokutomc.lib.item.recipe.HT_FurnaceRecipeBuilder;
 import com.github.hokutomc.lib.item.tool.HT_ItemTool;
-import com.github.hokutomc.lib.util.HT_CreativeTabsUtil;
 import com.github.hokutomc.lib.world.gen.HT_OreGenGen;
 import com.github.hokutomc.lib.world.gen.HT_OreGenerator;
 import net.minecraft.block.Block;
@@ -25,6 +24,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -44,7 +44,12 @@ public class Debug {
     public static HT_Item itemMulti;
     public static HT_Block blockMulti;
     public static HT_Block blockTE;
-    public static CreativeTabs tabHTLib = HT_CreativeTabsUtil.create("hokutoLib", "test", Items.iron_sword);
+    public static CreativeTabs tabHTLib = new CreativeTabs("hokutoLib" + ".test") {
+        @Override
+        public Item getTabIconItem () {
+            return Items.iron_sword;
+        }
+    };
     public static HT_ItemDurable itemArmor;
     private static HT_BlockFalling blockFall;
     private static HT_ModEntityList entityList;
@@ -191,10 +196,10 @@ public class Debug {
 
         HT_Registries.registerEntityRenderer(TestMob.class, new RenderTestEntity(new ModelTestEntity(), 0.5f));
 
-        new HT_CraftingRecipeBuilder()
+        HT_CraftingRecipeBuilder.create()
                 .param('X', Items.string).endItem()
                 .grid("XXX", "XXX", "XXX")
-                .to(Blocks.wool).damage(4).size(10).endItem()
+                .to(Blocks.wool).endItem()
         .paramOre('X', "ingotIron")
                 .grid("XXX")
                 .to(Items.diamond).size(2).endItem()
