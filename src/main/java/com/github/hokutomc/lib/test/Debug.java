@@ -92,7 +92,7 @@ public class Debug {
 
             @Override
             protected String getToolType (ItemStack itemStack) {
-                return "pickaxe";
+                return "hoe";
             }
 
             @Override

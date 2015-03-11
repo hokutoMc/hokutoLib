@@ -6,7 +6,9 @@ import net.minecraft.item.Item;
 
 /**
  * Created by user on 2014/10/11.
+ * @deprecated pass by value
  */
+@Deprecated
 public final class HT_CreativeTabsUtil {
     private HT_CreativeTabsUtil () {
     }
