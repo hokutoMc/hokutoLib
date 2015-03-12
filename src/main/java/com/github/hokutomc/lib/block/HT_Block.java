@@ -359,7 +359,7 @@ public class HT_Block<T extends HT_Block> extends Block {
 
     @SuppressWarnings("unchecked")
     public T HT_setStepSound (SoundType soundType) {
-        return (T) this.setStepSound(soundType);
+        return (T) super.setStepSound(soundType);
     }
 
     @Override
@@ -369,7 +369,7 @@ public class HT_Block<T extends HT_Block> extends Block {
 
     @SuppressWarnings("unchecked")
     public T HT_setLightOpacity (int lightOpacity) {
-        return (T) this.setLightOpacity(lightOpacity);
+        return (T) super.setLightOpacity(lightOpacity);
     }
 
     @Override
@@ -379,7 +379,7 @@ public class HT_Block<T extends HT_Block> extends Block {
 
     @SuppressWarnings("unchecked")
     public T HT_setLightLevel (float lightLevel) {
-        return (T) this.setLightLevel(lightLevel);
+        return (T) super.setLightLevel(lightLevel);
     }
 
     @Override
@@ -389,7 +389,7 @@ public class HT_Block<T extends HT_Block> extends Block {
 
     @SuppressWarnings("unchecked")
     public T HT_setResistance (float resistance) {
-        return (T) this.setResistance(resistance);
+        return (T) super.setResistance(resistance);
     }
 
     @Override
@@ -399,7 +399,7 @@ public class HT_Block<T extends HT_Block> extends Block {
 
     @SuppressWarnings("unchecked")
     public T HT_setHardness (float hardness) {
-        return (T) this.setHardness(hardness);
+        return (T) super.setHardness(hardness);
     }
 
     @Override
@@ -409,7 +409,7 @@ public class HT_Block<T extends HT_Block> extends Block {
 
     @SuppressWarnings("unchecked")
     public T HT_setBlockUnbreakable () {
-        return (T) this.setBlockUnbreakable();
+        return (T) super.setBlockUnbreakable();
     }
 
     @Override
@@ -419,7 +419,7 @@ public class HT_Block<T extends HT_Block> extends Block {
 
     @SuppressWarnings("unchecked")
     public T HT_setTickRandomly (boolean tickRandomly) {
-        return (T) this.setTickRandomly(tickRandomly);
+        return (T) super.setTickRandomly(tickRandomly);
     }
 
     @Override
