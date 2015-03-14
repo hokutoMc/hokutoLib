@@ -87,6 +87,10 @@ public class HT_Block<T extends HT_Block> extends Block {
         return (T) this;
     }
 
+    public Item getItem () {
+        return Item.getItemFromBlock(this);
+    }
+
     public boolean isFrontSide (int side, int meta) {
         return side == meta;
     }

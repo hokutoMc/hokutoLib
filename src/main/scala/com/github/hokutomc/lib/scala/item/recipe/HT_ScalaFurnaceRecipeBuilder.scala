@@ -18,6 +18,11 @@ class HT_ScalaFurnaceRecipeBuilder extends HT_FurnaceRecipeBuilder with HT_T_Sca
     this
   }
 
+  override def withXp(xp: Double): SELF = {
+    super.withXp(xp)
+    this
+  }
+
   def to(item: Item)(func: ISB4R[HT_FurnaceRecipeBuilder] => AnyISB4R = THRU): SELF = {
     super.to(item)
     this
