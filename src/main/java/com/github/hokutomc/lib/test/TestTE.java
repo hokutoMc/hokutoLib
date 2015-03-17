@@ -14,6 +14,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IChatComponent;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -22,6 +23,46 @@ import java.util.List;
  * Created by user on 2014/11/26.
  */
 public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
+
+    @Override
+    public boolean isUseableByPlayer (EntityPlayer playerIn) {
+        return this.getDistanceWith(playerIn) < 3.0;
+    }
+
+    @Override
+    public void openInventory (EntityPlayer playerIn) {
+
+    }
+
+    @Override
+    public void closeInventory (EntityPlayer playerIn) {
+
+    }
+
+    @Override
+    public int getField (int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField (int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount () {
+        return 0;
+    }
+
+    @Override
+    public void clear () {
+
+    }
+
+    @Override
+    public IChatComponent getDisplayName () {
+        return null;
+    }
 
     public enum Flags {
         A, B, C
@@ -53,59 +94,34 @@ public class TestTE extends HT_ProcessTile<TestTE.FurnaceLikeRecipe> {
         this.props.addProperty(save_flags).addProperty(new HT_BasicObjectData<>(this, "strSaved", StrSaved.X));
     }
 
-    @Override
-    public int[] HT_getAccessibleSlotsFromSide (int side) {
-        return new int[0];
-    }
 
     @Override
-    public boolean HT_canInsertItem (int slot, ItemStack itemStack, int side) {
-        return false;
-    }
-
-    @Override
-    public boolean HT_canExtractItem (int slot, ItemStack itemStack, int side) {
-        return false;
-    }
-
-    @Override
-    public int HT_getSizeInventory () {
+    public int getSizeInventory () {
         return 3;
     }
 
     @Override
-    public String HT_getInventoryName () {
+    public String getName () {
         return "hokutoLib.inv";
     }
 
     @Override
-    public boolean HT_hasCustomName () {
-        return false;
-    }
-
-    @Override
-    protected boolean HT_isUsableByPlayer (EntityPlayer entityPlayer) {
-        return this.HT_getDistanceWith(entityPlayer) < 3.0;
-    }
-
-    @Override
-    public boolean HT_isItemValidForSlot (int slot, ItemStack itemStack) {
+    public boolean isItemValidForSlot (int slot, ItemStack itemStack) {
         return true;
     }
 
     @Override
-    public void HT_readFromNBT (NBTTagCompound nbtTagCompound) {
-        super.HT_readFromNBT(nbtTagCompound);
+    public void readFromNBT (NBTTagCompound nbtTagCompound) {
+        super.readFromNBT(nbtTagCompound);
         this.props.HT_readFromNBT(nbtTagCompound, this);
         HT_NBTAnnotations.readFieldsFromNBT(this, nbtTagCompound);
     }
 
     @Override
-    public void HT_writeToNBT (NBTTagCompound nbtTagCompound) {
-        super.HT_writeToNBT(nbtTagCompound);
+    public void writeToNBT (NBTTagCompound nbtTagCompound) {
+        super.writeToNBT(nbtTagCompound);
         this.props.HT_writeToNBT(nbtTagCompound, this);
         HT_NBTAnnotations.writeFieldsToNBT(this, nbtTagCompound);
-        NBTTagCompound nbtTagCompound1 = nbtTagCompound;
     }
 
     public static class TestTEProcess extends HT_ItemStackProcess<FurnaceLikeRecipe> {

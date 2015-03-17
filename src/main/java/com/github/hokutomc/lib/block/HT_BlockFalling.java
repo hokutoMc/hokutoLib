@@ -2,6 +2,8 @@ package com.github.hokutomc.lib.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -15,22 +17,22 @@ public class HT_BlockFalling extends HT_Block<HT_BlockFalling> {
     }
 
     @Override
-    public void HT_onBlockAdded (World world, int x, int y, int z) {
-        world.scheduleBlockUpdate(x, y, z, this, this.HT_tickRate(world));
+    public void onBlockAdded (World world, BlockPos pos, IBlockState state) {
+        world.scheduleUpdate(pos, this, this.tickRate(world));
     }
 
     @Override
-    public void HT_onNeighborBlockChange (World world, int x, int y, int z, Block block) {
-        world.scheduleBlockUpdate(x, y, z, this, this.HT_tickRate(world));
+    public void onNeighborBlockChange (World world, BlockPos pos, IBlockState state, Block neighbor) {
+        world.scheduleUpdate(pos, this, this.tickRate(world));
     }
 
     @Override
-    public int HT_tickRate (World world) {
+    public int tickRate (World world) {
         return 2;
     }
 
     @Override
-    public void HT_updateTick (World world, int x, int y, int z, Random random) {
-        if (!world.isRemote) this.fall(world, x, y, z);
+    public void updateTick (World world, BlockPos pos, IBlockState state, Random random) {
+        if (!world.isRemote) this.fall(world, pos);
     }
 }

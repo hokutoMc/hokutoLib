@@ -1,7 +1,7 @@
 package com.github.hokutomc.lib.scala.item.recipe
 
 import com.github.hokutomc.lib.item.recipe.{HT_ItemStackBuilder4Recipe, HT_RecipeBuilder}
-import com.github.hokutomc.lib.util.HT_Color
+import net.minecraft.item.EnumDyeColor
 
 /**
  * Created by user on 2015/03/04.
@@ -14,8 +14,8 @@ trait HT_T_ScalaRecipeBuilder[Repr <: HT_T_ScalaRecipeBuilder[Repr]]{
 
   def THRU[R <: HT_RecipeBuilder[R]]: HT_ItemStackBuilder4Recipe[R] => AnyISB4R = a => a
 
-  def eachColor (function: (Repr, HT_Color) => Unit): Repr = {
-    HT_Color.values().foreach(function(getThis, _))
+  def eachColor(function: (Repr, EnumDyeColor) => Unit): Repr = {
+    EnumDyeColor.values().foreach(function(getThis, _))
     getThis
   }
 

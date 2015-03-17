@@ -139,7 +139,7 @@ public class HT_ModelPartBase extends ModelRenderer implements HT_I_ExModelPart 
     public void compileUniqueList(float p_78788_1_) {
         this.m_uniqueDisplayList = GLAllocation.generateDisplayLists(1);
         GL11.glNewList(this.m_uniqueDisplayList, GL11.GL_COMPILE);
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
 
         for (HT_I_AtomicModel uniqueBox : this.m_uniqueBoxes) {
             uniqueBox.render(tessellator, p_78788_1_);

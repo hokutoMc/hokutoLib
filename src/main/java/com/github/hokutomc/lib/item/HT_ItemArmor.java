@@ -1,16 +1,12 @@
 package com.github.hokutomc.lib.item;
 
-import com.github.hokutomc.lib.util.HT_ArrayUtil;
 import com.github.hokutomc.lib.util.HT_I18nUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -18,14 +14,18 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 
-import java.util.List;
-
 /**
  * This class allows you to create a wide variety of armors only in one instance.
  *
  * 2014/10/12.
  */
-public abstract class HT_ItemArmor extends HT_ItemDurable implements ISpecialArmor {
+public abstract class HT_ItemArmor<T extends HT_ItemArmor<T>> extends HT_ItemDurable<T> implements ISpecialArmor {
+
+    public abstract static class Raw extends HT_ItemArmor<Raw> {
+        public Raw (String modid, String innerName) {
+            super(modid, innerName);
+        }
+    }
 
     public static final String KEY_PART = "armer_part";
 
@@ -40,40 +40,41 @@ public abstract class HT_ItemArmor extends HT_ItemDurable implements ISpecialArm
     }
 
     @Override
-    public HT_ItemDurable multi (String... subNames) {
+    @SuppressWarnings("unchecked")
+    public T multi (String... subNames) {
         super.multi(subNames);
         this.m_subItems.clear();
         for (int i = 0; i < subNames.length; i++) {
             addParts(i);
         }
-        return this;
+        return (T) this;
     }
 
-    @SideOnly(Side.CLIENT)
-    public void HT_registerIcons (IIconRegister iconRegister) {
-        this.armorItemIcons = new IIcon[4];
-        if (this.HT_getHasSubtypes()) {
-            this.armorItemIcons = new IIcon[this.getMultiNames().length * 4];
-            for (int j = 0; j < getMultiNames().length; j++) {
-                registerArmorIcons(iconRegister, j);
-            }
-        } else {
-            registerArmorIcons(iconRegister, 0);
-        }
-    }
+//    @SideOnly(Side.CLIENT)
+//    public void HT_registerIcons (IIconRegister iconRegister) {
+//        this.armorItemIcons = new IIcon[4];
+//        if (this.getHasSubtypes()) {
+//            this.armorItemIcons = new IIcon[this.getMultiNames().length * 4];
+//            for (int j = 0; j < getMultiNames().length; j++) {
+//                registerArmorIcons(iconRegister, j);
+//            }
+//        } else {
+//            registerArmorIcons(iconRegister, 0);
+//        }
+//    }
 
-    private void registerArmorIcons (IIconRegister iconRegister, int meta) {
-        int i;
-        for (int k = 0; k < Part.values().length; k++) {
-            i = meta * 4 + k;
-            this.armorItemIcons[i] = iconRegister.registerIcon(this.HT_getIconString() + (this.getHasSubtypes() ? "_" + getMultiNames()[i] : ""));
-        }
-    }
+//    private void registerArmorIcons (IIconRegister iconRegister, int meta) {
+//        int i;
+//        for (int k = 0; k < Part.values().length; k++) {
+//            i = meta * 4 + k;
+//            this.armorItemIcons[i] = iconRegister.registerIcon(this.getIcon() + (this.getHasSubtypes() ? "_" + getMultiNames()[i] : ""));
+//        }
+//    }
 
-    @Override
-    public IIcon getIcon (ItemStack stack, int pass) {
-        return HT_ArrayUtil.getWithNoEx(this.armorItemIcons, stack.getItemDamage() * 4 + this.getPart(stack).ordinal());
-    }
+//    @Override
+//    public IIcon getIcon (ItemStack stack, int pass) {
+//        return HT_ArrayUtil.getWithNoEx(this.armorItemIcons, stack.getItemDamage() * 4 + this.getPart(stack).ordinal());
+//    }
 
     @Override
     public HT_ItemStackBuilder getBuilder (int durability, int meta) {
@@ -92,24 +93,22 @@ public abstract class HT_ItemArmor extends HT_ItemDurable implements ISpecialArm
     }
 
     @Override
-    public String HT_getItemStackDisplayName (ItemStack itemStack) {
-        return HT_I18nUtil.localize(this.getUnlocalizedName(itemStack) + "." + getPart(itemStack).toString() + ".name");
+    public String getItemStackDisplayName (ItemStack itemStack) {
+        return HT_I18nUtil.localize(this.getUnlocalizedName(itemStack) + "." + getPart(itemStack) + ".name");
     }
 
-    @Override
-    public void HT_registerMulti (Item item, CreativeTabs tab, List<ItemStack> list) {
-
-        super.HT_registerMulti(item, tab, list);
-    }
 
     public Part getPart (ItemStack itemStack) {
-        return Part.values()[itemStack.stackTagCompound.getInteger(KEY_PART)];
+        if (!itemStack.hasTagCompound()) {
+            return null;
+        }
+        return Part.values()[itemStack.getTagCompound().getInteger(KEY_PART)];
     }
 
     protected abstract ItemArmor.ArmorMaterial getArmorMaterial (ItemStack itemStack);
 
     @Override
-    public ItemStack HT_onItemRightClick (ItemStack itemStack, World world, EntityPlayer player) {
+    public ItemStack onItemRightClick (ItemStack itemStack, World world, EntityPlayer player) {
         int i = EntityLiving.getArmorPosition(itemStack) - 1;
         ItemStack equipped = player.getCurrentArmor(i);
 
@@ -132,7 +131,7 @@ public abstract class HT_ItemArmor extends HT_ItemDurable implements ISpecialArm
     }
 
     @Override
-    protected int HT_getBonusWithEfficency (ItemStack itemStack) {
+    protected int getBonusWithEfficency (ItemStack itemStack) {
         return 0;
     }
 

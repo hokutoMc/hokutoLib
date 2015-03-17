@@ -1,10 +1,10 @@
 package com.github.hokutomc.lib.item.recipe;
 
 import com.google.common.collect.Maps;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.ArrayList;
@@ -83,18 +83,18 @@ public abstract class HT_CraftingRecipeBuilder<T extends HT_CraftingRecipeBuilde
         return param(symbol, isb4r(block));
     }
 
-    @SuppressWarnings("unchecked")
-    public HT_ItemStackBuilder4Recipe<T> param (char synbol, String modid, String name) {
-        ItemStack itemStack = GameRegistry.findItemStack(modid, name, 0);
-        if (itemStack == null){
-            try {
-                throw new ItemNotFoundException(modid, name);
-            } catch (ItemNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return new HT_ItemStackBuilder4Recipe<>((T) this, itemStack);
-    }
+//    @SuppressWarnings("unchecked")
+//    public HT_ItemStackBuilder4Recipe<T> param (char synbol, String modid, String name) {
+//        ItemStack itemStack = GameRegistry.findItemStack(modid, name, 0);
+//        if (itemStack == null){
+//            try {
+//                throw new ItemNotFoundException(modid, name);
+//            } catch (ItemNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return new HT_ItemStackBuilder4Recipe<>((T) this, itemStack);
+//    }
 
     private HT_ItemStackBuilder4Recipe<T> param (char symbol, HT_ItemStackBuilder4Recipe<T> isb4r) {
         this.register_ch = symbol;

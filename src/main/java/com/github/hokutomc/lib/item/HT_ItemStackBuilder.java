@@ -71,9 +71,9 @@ public class HT_ItemStackBuilder<T extends HT_ItemStackBuilder> {
         if (m_block == null) return;
         Item item = Item.getItemFromBlock(m_block);
         if (item != null) {
-            NBTTagCompound tag = this.m_template.stackTagCompound;
+            NBTTagCompound tag = this.m_template.getTagCompound();
             this.m_template = new ItemStack(m_block, 1, m_damage);
-            this.m_template.stackTagCompound = tag;
+            this.m_template.setTagCompound(tag);
             this.m_isBlockEvaluated = true;
         }
     }
@@ -95,8 +95,10 @@ public class HT_ItemStackBuilder<T extends HT_ItemStackBuilder> {
     }
 
     public NBTTagCompound getNBTTag () {
-        if (m_template.getTagCompound() == null) {m_template.stackTagCompound = new NBTTagCompound();}
-        return m_template.stackTagCompound;
+        if (m_template.getTagCompound() == null) {
+            m_template.setTagCompound(new NBTTagCompound());
+        }
+        return m_template.getTagCompound();
     }
 
     @SuppressWarnings("unchecked")

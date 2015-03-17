@@ -20,7 +20,7 @@ import java.util.Random;
  *
  * 2014/10/11.
  */
-public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
+public abstract class HT_ItemDurable<T extends HT_ItemDurable> extends HT_Item<T> {
     public static final String KEY_DURABILITY = "durability";
     public static final String KEY_BROKEN = "broken";
     private static Random random = new Random();
@@ -33,12 +33,12 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
     }
 
     @Override
-    public HT_ItemDurable multi (String... subNames) {
-        super.multi(subNames);
+    public T multi (String... subNames) {
+        T t = super.multi(subNames);
         for (HT_ItemStackBuilder item : this.m_subItems) {
             item.fullDurability();
         }
-        return this;
+        return t;
     }
 
     public HT_ItemStackBuilder getBuilder (int durability, int meta) {
@@ -50,7 +50,7 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
             @Override
             public ItemStack build (int size) {
                 ItemStack stack = super.build(size);
-                stack.stackTagCompound.setInteger(KEY_DURABILITY, getMaxDurability(stack));
+                stack.getTagCompound().setInteger(KEY_DURABILITY, getMaxDurability(stack));
                 return stack;
             }
         }.setBoolean(KEY_BROKEN, false);
@@ -58,7 +58,6 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
 
     @Override
     public void HT_addInformation (ItemStack itemStack, EntityPlayer player, List<String> list, boolean b) {
-        super.HT_addInformation(itemStack, player, list, b);
         if (this.isBroken(itemStack)) {
             list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("item.hokutolib.status.broken.name").trim());
         } else {
@@ -89,28 +88,28 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
     public abstract int getMaxDurability (ItemStack itemStack);
 
     public int getDurability (ItemStack itemStack) {
-        NBTTagCompound tag = itemStack.stackTagCompound;
+        NBTTagCompound tag = itemStack.getTagCompound();
         return HT_NBTUtil.getInteger(KEY_DURABILITY, tag, 0);
     }
 
     public void updateDurability (ItemStack itemStack, int durability) {
         if (durability <= 0) {
-            itemStack.stackTagCompound.setBoolean(KEY_BROKEN, true);
+            itemStack.getTagCompound().setBoolean(KEY_BROKEN, true);
             this.onUsingBrokenItem(itemStack);
             durability = 0;
         } else if (this.isBroken(itemStack)) {
-            itemStack.stackTagCompound.setBoolean(KEY_BROKEN, false);
+            itemStack.getTagCompound().setBoolean(KEY_BROKEN, false);
         }
         if (this.getMaxDurability(itemStack) < durability) {
             durability = this.getMaxDurability(itemStack);
         }
 
-        itemStack.stackTagCompound.setInteger(KEY_DURABILITY, durability);
+        itemStack.getTagCompound().setInteger(KEY_DURABILITY, durability);
 
     }
 
     public boolean isBroken (ItemStack itemStack) {
-        return HT_NBTUtil.getBoolean(KEY_BROKEN, itemStack.stackTagCompound, false);
+        return HT_NBTUtil.getBoolean(KEY_BROKEN, itemStack.getTagCompound(), false);
     }
 
     protected void onUsingBrokenItem (ItemStack itemStack) {
@@ -120,13 +119,13 @@ public abstract class HT_ItemDurable extends HT_Item<HT_ItemDurable> {
         int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId, itemStack);
         for (int i = 0; j > 0 && i < damage; i++) {
             if (EnchantmentDurability.negateDamage(itemStack, j, random)) {
-                damage -= this.HT_getBonusWithEfficency(itemStack);
+                damage -= this.getBonusWithEfficency(itemStack);
             }
         }
         this.updateDurability(itemStack, this.getDurability(itemStack) - damage);
     }
 
 
-    protected abstract int HT_getBonusWithEfficency (ItemStack itemStack);
+    protected abstract int getBonusWithEfficency (ItemStack itemStack);
 
 }

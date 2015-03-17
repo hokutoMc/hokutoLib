@@ -1,9 +1,9 @@
 package com.github.hokutomc.lib.item.recipe;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * Created by user on 2015/01/29.

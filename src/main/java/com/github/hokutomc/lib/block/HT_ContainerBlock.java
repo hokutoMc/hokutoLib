@@ -1,43 +1,39 @@
 package com.github.hokutomc.lib.block;
 
 import com.github.hokutomc.lib.reflect.HT_Reflections;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
  * Created by user on 2014/10/11.
  */
-public abstract class HT_ContainerBlock<T extends TileEntity> extends HT_Block<HT_ContainerBlock> implements ITileEntityProvider {
+public abstract class HT_ContainerBlock<B extends HT_ContainerBlock<B, T>, T extends TileEntity> extends HT_Block<B> implements ITileEntityProvider {
     public HT_ContainerBlock (String modid, Material material, String innerName) {
         super(modid, material, innerName);
         this.isBlockContainer = true;
     }
 
     @Override
-    public void HT_onBlockAdded (World world, int x, int y, int z) {
-        super.HT_onBlockAdded(world, x, y, z);
+    public void breakBlock (World worldIn, BlockPos pos, IBlockState state) {
+        super.breakBlock(worldIn, pos, state);
+        worldIn.removeTileEntity(pos);
     }
 
     @Override
-    public void HT_breakBlock (World world, int x, int y, int z, Block block, int meta) {
-        super.HT_breakBlock(world, x, y, z, block, meta);
-        world.removeTileEntity(x, y, z);
-    }
-
-    @Override
-    public boolean HT_onBlockEventReceived (World world, int x, int y, int z, int i1, int i2) {
-        super.HT_onBlockEventReceived(world, x, y, z, i1, i2);
-        TileEntity tileentity = world.getTileEntity(x, y, z);
-        return tileentity != null && tileentity.receiveClientEvent(i1, i2);
+    public boolean onBlockEventReceived (World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam) {
+        super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        return tileentity != null && tileentity.receiveClientEvent(eventID, eventParam);
     }
 
     @SuppressWarnings("unchecked")
-    protected T getTileEntityAt (IBlockAccess world, int x, int y, int z, T... empty) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    protected T getTileEntityAt (IBlockAccess world, BlockPos pos, T... empty) {
+        TileEntity te = world.getTileEntity(pos);
         return HT_Reflections.getClass(empty).isInstance(te) ? (T) te : null;
     }
 }

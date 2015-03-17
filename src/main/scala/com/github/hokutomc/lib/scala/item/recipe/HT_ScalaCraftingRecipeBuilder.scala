@@ -32,7 +32,7 @@ with HT_T_ScalaRecipeBuilder[HT_ScalaCraftingRecipeBuilder] {
 
   override def param(symbol: Char, block: Block): ISB4R[SELF] = super.param(symbol, block)
 
-  override def param(synbol: Char, modid: String, name: String): ISB4R[SELF] = super.param(synbol, modid, name)
+  //  override def param(synbol: Char, modid: String, name: String): ISB4R[SELF] = super.param(synbol, modid, name)
 
   override def to(item: Item): ISB4R[SELF] = super.to(item)
 

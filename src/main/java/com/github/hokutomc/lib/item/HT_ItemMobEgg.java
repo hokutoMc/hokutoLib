@@ -4,9 +4,8 @@ import com.github.hokutomc.lib.entity.HT_ModEntityList;
 import com.github.hokutomc.lib.util.HT_I18nUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -14,10 +13,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Facing;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -35,7 +31,7 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
         super(modid, "mobEgg");
         this.m_listEntity = entityList;
         this.HT_setCreativeTab(CreativeTabs.tabMisc);
-        this.HT_setTextureName("spawn_egg");
+//        this.HT_setTextureName("spawn_egg");
     }
 
     @Override
@@ -49,34 +45,32 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
     }
 
     @Override
-    public String HT_getItemStackDisplayName (ItemStack itemStack) {
+    public String getItemStackDisplayName (ItemStack itemStack) {
         return HT_I18nUtil.localize("item.hokutolib.mobEgg.name", HT_I18nUtil.localize("entity." + this.m_listEntity.getNameAt(itemStack.getItemDamage())+ ".name"));
     }
 
     @Override
-    public boolean HT_onItemUse (ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-        if (world.isRemote) {
+    public boolean onItemUse (ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (worldIn.isRemote) {
             return true;
         } else {
-            Block block = world.getBlock(x, y, z);
-            x += Facing.offsetsXForSide[side];
-            y += Facing.offsetsYForSide[side];
-            z += Facing.offsetsZForSide[side];
+            IBlockState blockState = worldIn.getBlockState(pos);
+            BlockPos set = pos.offset(side);
             double d0 = 0.0D;
 
-            if (side == 1 && block.getRenderType() == 11) {
+            if (side == EnumFacing.DOWN && blockState.getBlock().getRenderType() == 11) {
                 d0 = 0.5D;
             }
 
-            Entity entity = spawnCreature(world, itemStack.getItemDamage(), (double) x + 0.5D, (double) y + d0, (double) z + 0.5D);
+            Entity entity = spawnCreature(worldIn, stack.getItemDamage(), (double) set.getX() + 0.5D, (double) set.getY() + d0, (double) set.getZ() + 0.5D);
 
             if (entity != null) {
-                if (entity instanceof EntityLivingBase && itemStack.hasDisplayName()) {
-                    ((EntityLiving)entity).setCustomNameTag(itemStack.getDisplayName());
+                if (entity instanceof EntityLivingBase && stack.hasDisplayName()) {
+                    ((EntityLiving) entity).setCustomNameTag(stack.getDisplayName());
                 }
 
-                if (!player.capabilities.isCreativeMode) {
-                    --itemStack.stackSize;
+                if (!playerIn.capabilities.isCreativeMode) {
+                    --stack.stackSize;
                 }
             }
 
@@ -85,7 +79,7 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
     }
 
     @Override
-    public ItemStack HT_onItemRightClick (ItemStack itemStack, World world, EntityPlayer player) {
+    public ItemStack onItemRightClick (ItemStack itemStack, World world, EntityPlayer player) {
         if (world.isRemote) {
             return itemStack;
         } else {
@@ -95,20 +89,18 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
                 return itemStack;
             } else {
                 if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                    int i = movingobjectposition.blockX;
-                    int j = movingobjectposition.blockY;
-                    int k = movingobjectposition.blockZ;
+                    BlockPos pos = movingobjectposition.func_178782_a();
 
-                    if (!world.canMineBlock(player, i, j, k)) {
+                    if (!world.canMineBlockBody(player, pos)) {
                         return itemStack;
                     }
 
-                    if (!player.canPlayerEdit(i, j, k, movingobjectposition.sideHit, itemStack)) {
+                    if (!player.func_175151_a(pos, movingobjectposition.field_178784_b, itemStack)) {
                         return itemStack;
                     }
 
-                    if (world.getBlock(i, j, k) instanceof BlockLiquid) {
-                        Entity entity = spawnCreature(world, itemStack.getItemDamage(), (double) i, (double) j, (double) k);
+                    if (world.getBlockState(pos).getBlock() instanceof BlockLiquid) {
+                        Entity entity = spawnCreature(world, itemStack.getItemDamage(), pos.getX(), pos.getY(), pos.getZ());
 
                         if (entity != null) {
                             if (entity instanceof EntityLivingBase && itemStack.hasDisplayName()) {
@@ -135,36 +127,36 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
             entity.setLocationAndAngles(x, y, z, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
             entityliving.rotationYawHead = entityliving.rotationYaw;
             entityliving.renderYawOffset = entityliving.rotationYaw;
-            entityliving.onSpawnWithEgg(null);
+//            entityliving.onSpawnWithEgg(null);
             world.spawnEntityInWorld(entity);
             entityliving.playLivingSound();
         }
         return entity;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean HT_requiresMultipleRenderPasses () {
-        return true;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon HT_getIconFromDamageForRenderPass (int meta, int pass) {
-        return pass > 0 ? this.m_iconOverlay : super.HT_getIconFromDamageForRenderPass(meta, pass);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int HT_getColorFromItemStack (ItemStack itemStack, int path) {
-        int damage = itemStack.getItemDamage();
-        return path == 1 ? this.m_listEntity.getSpotColorAt(damage) : (path == 0 ? this.m_listEntity.getBaseColorAt(damage) : 0xffffff);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void HT_registerIcons (IIconRegister iconRegister) {
-        super.HT_registerIcons(iconRegister);
-        this.m_iconOverlay = iconRegister.registerIcon(this.getIconString() + "_overlay");
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public boolean HT_requiresMultipleRenderPasses () {
+//        return true;
+//    }
+//
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public IIcon HT_getIconFromDamageForRenderPass (int meta, int pass) {
+//        return pass > 0 ? this.m_iconOverlay : super.HT_getIconFromDamageForRenderPass(meta, pass);
+//    }
+//
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public int HT_getColorFromItemStack (ItemStack itemStack, int path) {
+//        int damage = itemStack.getItemDamage();
+//        return path == 1 ? this.m_listEntity.getSpotColorAt(damage) : (path == 0 ? this.m_listEntity.getBaseColorAt(damage) : 0xffffff);
+//    }
+//
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public void HT_registerIcons (IIconRegister iconRegister) {
+//        super.HT_registerIcons(iconRegister);
+//        this.m_iconOverlay = iconRegister.registerIcon(this.getIconString() + "_overlay");
+//    }
 }

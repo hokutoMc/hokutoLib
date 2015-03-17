@@ -7,15 +7,6 @@ import com.github.hokutomc.lib.client.render.HT_I_EntityRender;
 import com.github.hokutomc.lib.client.render.HT_I_TileEntityRender;
 import com.github.hokutomc.lib.item.HT_Item;
 import com.github.hokutomc.lib.item.recipe.HT_FurnaceRecipeBuilder;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.IWorldGenerator;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -25,6 +16,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * Created by user on 2014/09/23.
@@ -35,12 +35,12 @@ public final class HT_Registries {
 
 
     public static <T extends HT_Block> T registerBlock (T block) {
-        GameRegistry.registerBlock(block, block.HT_getShortName());
+        GameRegistry.registerBlock(block, block.getShortName());
         return block;
     }
 
     public static <T extends HT_Block> T registerMultiBlock (T block) {
-        GameRegistry.registerBlock(block, HT_MultiItemBlock.class, block.HT_getShortName());
+        GameRegistry.registerBlock(block, HT_MultiItemBlock.class, block.getShortName());
         return block;
     }
 
@@ -83,7 +83,7 @@ public final class HT_Registries {
     }
 
     public static void registerBlock (HT_Block block, Class<? extends ItemBlock> itemBlockClass) {
-        GameRegistry.registerBlock(block, itemBlockClass, block.HT_getShortName());
+        GameRegistry.registerBlock(block, itemBlockClass, block.getShortName());
     }
 
     public static <E extends Entity, R extends Render & HT_I_EntityRender<E>> void registerEntityRenderer (Class<E> entityClass, R render) {

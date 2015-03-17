@@ -2,10 +2,10 @@ package com.github.hokutomc.lib.tileentity;
 
 import com.github.hokutomc.lib.nbt.HT_NBTUtil;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 
 /**
  * This class allows you to create TileEntity with inventory easily.
@@ -27,7 +27,7 @@ public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInve
     }
 
     public void drop (ItemStack itemStack, double yOffset) {
-        this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.xCoord, this.yCoord + yOffset, this.zCoord, itemStack));
+        this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.pos.getX(), this.pos.getY() + yOffset, this.pos.getZ(), itemStack));
     }
 
     public void drop (ItemStack itemStack) {
@@ -36,46 +36,24 @@ public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInve
 
     // Wrapper====
 
-    @Override
-    public final int[] getAccessibleSlotsFromSide (int p_94128_1_) {
-        return this.HT_getAccessibleSlotsFromSide(p_94128_1_);
-    }
 
-    public int[] HT_getAccessibleSlotsFromSide (int side) {
+    @Override
+    public int[] getSlotsForFace (EnumFacing side) {
         return new int[0];
     }
 
     @Override
-    public final boolean canInsertItem (int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
-        return this.HT_canInsertItem(p_102007_1_, p_102007_2_, p_102007_3_);
-    }
-
-    public boolean HT_canInsertItem (int slot, ItemStack itemStack, int side) {
+    public final boolean canInsertItem (int slot, ItemStack itemStack, EnumFacing side) {
         return false;
     }
 
     @Override
-    public final boolean canExtractItem (int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
-        return this.HT_canExtractItem(p_102008_1_, p_102008_2_, p_102008_3_);
-    }
-
-    public boolean HT_canExtractItem (int slot, ItemStack itemStack, int side) {
+    public final boolean canExtractItem (int slot, ItemStack itemStack, EnumFacing side) {
         return false;
     }
 
     @Override
-    public final int getSizeInventory () {
-        return this.HT_getSizeInventory();
-    }
-
-    public abstract int HT_getSizeInventory ();
-
-    @Override
-    public final ItemStack getStackInSlot (int p_70301_1_) {
-        return this.HT_getStackInSlot(p_70301_1_);
-    }
-
-    public ItemStack HT_getStackInSlot (int slot) {
+    public final ItemStack getStackInSlot (int slot) {
         return slot < this.m_contents.length ? m_contents[slot] : null;
     }
 
@@ -121,72 +99,27 @@ public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInve
     }
 
     @Override
-    public final String getInventoryName () {
-        return this.HT_getInventoryName();
-    }
-
-    public String HT_getInventoryName () {
-        return "";
-    }
-
-    @Override
-    public final boolean hasCustomInventoryName () {
-        return this.HT_hasCustomName();
-    }
-
-    public boolean HT_hasCustomName () {
+    public final boolean hasCustomName () {
         return false;
     }
+
 
     @Override
     public final int getInventoryStackLimit () {
-        return this.HT_getInventoryStackLimit();
-    }
-
-    public int HT_getInventoryStackLimit () {
         return 64;
     }
 
-    @Override
-    public final boolean isUseableByPlayer (EntityPlayer p_70300_1_) {
-        return this.HT_isUsableByPlayer(p_70300_1_);
-    }
 
-    protected boolean HT_isUsableByPlayer (EntityPlayer entityPlayer) {
-        return false;
-    }
 
     @Override
-    public final void openInventory () {
-        this.HT_openInventory();
-    }
-
-    public void HT_openInventory () {}
-
-    @Override
-    public final void closeInventory () {
-        this.HT_closeInventory();
-    }
-
-    public void HT_closeInventory () {}
-
-    @Override
-    public final boolean isItemValidForSlot (int p_94041_1_, ItemStack p_94041_2_) {
-        return HT_isItemValidForSlot(p_94041_1_, p_94041_2_);
-    }
-
-    public abstract boolean HT_isItemValidForSlot (int slot, ItemStack itemStack);
-
-    @Override
-    public void HT_readFromNBT (NBTTagCompound nbtTagCompound) {
-        super.HT_readFromNBT(nbtTagCompound);
+    public void readFromNBT (NBTTagCompound nbtTagCompound) {
+        super.readFromNBT(nbtTagCompound);
         this.m_contents = HT_NBTUtil.readItemStacks(nbtTagCompound, this.getSizeInventory());
     }
 
     @Override
-    public void HT_writeToNBT (NBTTagCompound nbtTagCompound) {
-        super.HT_writeToNBT(nbtTagCompound);
+    public void writeToNBT (NBTTagCompound nbtTagCompound) {
+        super.writeToNBT(nbtTagCompound);
         HT_NBTUtil.writeItemStacks(nbtTagCompound, this.m_contents);
     }
-
 }

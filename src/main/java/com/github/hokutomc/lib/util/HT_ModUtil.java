@@ -1,6 +1,7 @@
 package com.github.hokutomc.lib.util;
 
-import cpw.mods.fml.common.Mod;
+
+import net.minecraftforge.fml.common.Mod;
 
 import java.lang.annotation.Annotation;
 

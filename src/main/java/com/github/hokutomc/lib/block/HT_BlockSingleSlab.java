@@ -4,13 +4,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Facing;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -30,85 +31,77 @@ public class HT_BlockSingleSlab extends HT_Block<HT_BlockSingleSlab> {
         this.m_isUpper = isUpper;
         this.m_parent = parent;
         if (this.m_isUpper) {
-            this.HT_setBlockBounds(0.0F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+            this.setBlockBounds(0.0F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
         } else {
-            this.HT_setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
         }
     }
 
     @Override
-    public String HT_getShortName () {
-        return super.HT_getShortName() + (m_isUpper ? "_upper" : "_lower");
+    public String getShortName () {
+        return super.getShortName() + (m_isUpper ? "_upper" : "_lower");
     }
 
     @Override
-    public void HT_registerMulti (Item item, CreativeTabs creativeTab, List<ItemStack> list) {}
-
-    @Override
-    public boolean HT_renderAsNormalBlock () {
-        return false;
+    public IBlockState getStateFromMeta (int meta) {
+        return this.m_parent.getStateFromMeta(meta);
     }
 
     @Override
-    public boolean HT_isOpaque () {
-        return false;
+    public int getMetaFromState (IBlockState state) {
+        return this.m_parent.getMetaFromState(state);
     }
 
     @Override
-    public boolean HT_isOpaqueCube () {
-        return false;
-    }
-
-    @Override
-    public Item HT_getItem (World world, int x, int y, int z) {
+    public Item getItem (World world, BlockPos pos) {
         return Item.getItemFromBlock(this.m_parent);
     }
 
     @Override
-    public Item HT_getItemDropped (int p_149650_1_, Random random, int p_149650_3_) {
+    public Item getItemDropped (IBlockState state, Random rand, int fortune) {
         return Item.getItemFromBlock(this.m_parent);
     }
 
     @Override
-    public int HT_onBlockPlaced (World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta) {
+    public IBlockState onBlockPlaced (World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         if (this.m_isUpper && hitY < 0.5f) {
-            world.setBlock(x, y, z, this.m_parent.m_lower, meta, 9);
+            worldIn.setBlockState(pos, this.m_parent.m_lower.getStateFromMeta(meta), 9);
         } else if (!this.m_isUpper) {
-            world.setBlock(x, y, z, this.m_parent.m_upper, meta, 9);
+            worldIn.setBlockState(pos, this.m_parent.m_upper.getStateFromMeta(meta), 9);
         }
-        return meta;
+        return worldIn.getBlockState(pos);
     }
 
     @Override
-    public void HT_addCollisionBoxesToList (World world, int x, int y, int z, AxisAlignedBB axisAlignedBB, List list, Entity entity) {
-        this.HT_setBlockBoundsBasedOnState(world, x, y, z);
-        super.HT_addCollisionBoxesToList(world, x, y, z, axisAlignedBB, list, entity);
+    public void addCollisionBoxesToList (World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity) {
+        this.setBlockBoundsBasedOnState(worldIn, pos);
+        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
     }
 
     @Override
-    public void HT_setBlockBoundsBasedOnState (IBlockAccess world, int x, int y, int z) {
+    public void setBlockBoundsBasedOnState (IBlockAccess access, BlockPos pos) {
         if (this.m_isUpper) {
-            this.HT_setBlockBounds(0.0F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+            this.setBlockBounds(0.0F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
         } else {
-            this.HT_setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
         }
     }
+
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean HT_shouldSideBeRendered (IBlockAccess world, int x, int y, int z, int side) {
-        if (side != 1 && side != 0 && !super.HT_shouldSideBeRendered(world, x, y, z, side)) {
+    public boolean shouldSideBeRendered (IBlockAccess world, BlockPos pos, EnumFacing side) {
+        if (side != EnumFacing.UP && side != EnumFacing.DOWN && !super.shouldSideBeRendered(world, pos, side)) {
             return false;
         } else {
-            int i1 = x + Facing.offsetsXForSide[Facing.oppositeSide[side]];
-            int j1 = y + Facing.offsetsYForSide[Facing.oppositeSide[side]];
-            int k1 = z + Facing.offsetsZForSide[Facing.oppositeSide[side]];
-            boolean flag = ((HT_BlockSingleSlab) world.getBlock(i1, j1, k1)).m_isUpper;
-            return flag ? (side == 0 || (side == 1 && super.HT_shouldSideBeRendered(world, x, y, z, side) || !isHalfSlab(world.getBlock(x, y, z)) || (world.getBlockMetadata(x, y, z) & 8) == 0)) : (side == 1 || (side == 0 && super.HT_shouldSideBeRendered(world, x, y, z, side) || !isHalfSlab(world.getBlock(x, y, z)) || (world.getBlockMetadata(x, y, z) & 8) != 0));
+            BlockPos nextPos = pos.offset(side);
+            boolean flag = ((HT_BlockSingleSlab) world.getBlockState(nextPos).getBlock()).m_isUpper;
+            return flag ? side == EnumFacing.UP || side == EnumFacing.DOWN && super.shouldSideBeRendered(world, pos, side) || !isHalfSlab(world, nextPos) : (side == EnumFacing.UP || (side == EnumFacing.DOWN && super.shouldSideBeRendered(world, pos, side) || !isHalfSlab(world, nextPos)));
         }
     }
 
-    private boolean isHalfSlab (Block block) {
+    private boolean isHalfSlab (IBlockAccess world, BlockPos pos) {
+        Block block = world.getBlockState(pos).getBlock();
         return block instanceof HT_BlockSingleSlab || block == Blocks.stone_slab || block == Blocks.wooden_slab;
     }
 }

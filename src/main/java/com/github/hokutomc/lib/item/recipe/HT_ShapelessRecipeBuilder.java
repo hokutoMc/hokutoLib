@@ -1,12 +1,13 @@
 package com.github.hokutomc.lib.item.recipe;
 
-import com.github.hokutomc.lib.util.HT_Color;
 import com.github.hokutomc.lib.util.HT_I_Colored;
+import com.github.hokutomc.lib.util.HT_StringUtil;
 import com.google.common.collect.Lists;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class HT_ShapelessRecipeBuilder extends HT_RecipeBuilder<HT_ShapelessReci
         list.addAll(this.itemStackList);
         if (this.isOreRecipe) {
             list.addAll(this.oreNameList);
-            GameRegistry.addRecipe(new ShapelessOreRecipe(this.result,list.toArray()));
+            GameRegistry.addRecipe(new ShapelessOreRecipe(this.result, list.toArray()));
         } else {
             GameRegistry.addShapelessRecipe(this.result, list.toArray());
         }
@@ -118,16 +119,16 @@ public class HT_ShapelessRecipeBuilder extends HT_RecipeBuilder<HT_ShapelessReci
 
     public HT_ShapelessRecipeBuilder dye (HT_I_Colored itemOrBlock) {
         if (itemOrBlock instanceof Item) {
-            for (HT_Color color : HT_Color.values()) {
+            for (EnumDyeColor color : EnumDyeColor.values()) {
                 this.from(new HT_ItemStackBuilder4Recipe<>(this, itemOrBlock.getItemStackFromColor(color))).wildCard().endItem()
-                        .andOre(color.getDyeName())
+                        .andOre("dye" + HT_StringUtil.capitalize(color.getName()))
                         .to(new HT_ItemStackBuilder4Recipe<>(this, itemOrBlock.getItemStackFromColor(color))).damage(color.ordinal()).endItem();
             }
 
         } else if (itemOrBlock instanceof Block) {
-            for (HT_Color color : HT_Color.values()) {
+            for (EnumDyeColor color : EnumDyeColor.values()) {
                 this.from((Block) itemOrBlock).wildCard().endItem()
-                        .andOre(color.getDyeName())
+                        .andOre("dye" + HT_StringUtil.capitalize(color.getName()))
                         .to(new HT_ItemStackBuilder4Recipe<>(this, itemOrBlock.getItemStackFromColor(color))).damage(color.ordinal()).endItem();
             }
         }

@@ -1,8 +1,8 @@
 package com.github.hokutomc.lib.item.tool;
 
 import com.github.hokutomc.lib.util.HT_I18nUtil;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 /**
@@ -34,11 +34,8 @@ public class HT_ToolType {
         return name;
     }
 
-    public float getCapability (ItemStack itemStack, IBlockAccess world, int x, int y, int z) {
-        return this.getCapability(itemStack, world.getBlock(x, y, z));
-    }
-
-    public float getCapability (ItemStack itemStack, Block block) {
+    public float getCapability (ItemStack itemStack, IBlockAccess world, BlockPos pos) {
         return 0;
     }
+
 }

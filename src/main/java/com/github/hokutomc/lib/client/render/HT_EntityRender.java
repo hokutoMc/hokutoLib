@@ -1,6 +1,7 @@
 package com.github.hokutomc.lib.client.render;
 
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
@@ -8,6 +9,10 @@ import net.minecraft.util.ResourceLocation;
  * Created by user on 2015/02/22.
  */
 public abstract class HT_EntityRender<E extends Entity> extends Render implements HT_I_EntityRender<E> {
+    protected HT_EntityRender (RenderManager p_i46179_1_) {
+        super(p_i46179_1_);
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public final void doRender (Entity entity, double x, double y, double z, float p_76986_8_, float p_76986_9_) {

@@ -2,11 +2,11 @@ package com.github.hokutomc.lib.client.gui;
 
 import com.github.hokutomc.lib.HT_Registries;
 import com.google.common.collect.Lists;
-import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import java.util.ArrayList;
 

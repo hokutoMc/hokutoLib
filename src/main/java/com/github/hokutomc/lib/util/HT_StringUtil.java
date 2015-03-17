@@ -14,4 +14,15 @@ public final class HT_StringUtil {
         }
         return stringBuilder.toString();
     }
+
+    public static String capitalize (String string) {
+        if (string == null || string.isEmpty()) {
+            return "";
+        }
+        StringBuilder stringBuilder = new StringBuilder("");
+        for (int i = 0; i < string.length(); i++) {
+            stringBuilder.append(i == 0 ? Character.toUpperCase(string.charAt(i)) : string.charAt(i));
+        }
+        return stringBuilder.toString();
+    }
 }

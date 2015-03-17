@@ -2,8 +2,8 @@ package com.github.hokutomc.lib;
 
 
 import com.github.hokutomc.lib.util.HT_ModUtil;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.util.Properties;
 

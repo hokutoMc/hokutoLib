@@ -2,19 +2,19 @@ package com.github.hokutomc.lib;
 
 
 import com.github.hokutomc.lib.common.config.HT_Config;
+import com.github.hokutomc.lib.entity.HT_EntityUtil;
 import com.github.hokutomc.lib.item.HT_ItemStackUtil;
 import com.github.hokutomc.lib.item.tool.HT_ItemTool;
-import com.github.hokutomc.lib.entity.HT_EntityUtil;
 import com.github.hokutomc.lib.test.Debug;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * Created by user on 2014/09/26.
@@ -68,9 +68,9 @@ public class Mod_HTLib {
         HT_ItemTool item = HT_ItemStackUtil.getItemAs(currentItem, HT_ItemTool.class);
         if (item != null) {
             if (event.target instanceof EntityLivingBase) {
-                item.HT_hitEntity(currentItem, (EntityLivingBase) event.target, event.entityPlayer);
+                item.hitEntity(currentItem, (EntityLivingBase) event.target, event.entityPlayer);
             }
-            float damage = item.HT_getAttackDamage(currentItem);
+            float damage = item.getAttackDamage(currentItem);
             float reaching = HT_EntityUtil.getReachingSpeed(event.entityPlayer, event.target);
             float bonus = item.getRangeBonus(currentItem, event.entityPlayer.getDistanceToEntity(event.target));
             damage *= bonus;

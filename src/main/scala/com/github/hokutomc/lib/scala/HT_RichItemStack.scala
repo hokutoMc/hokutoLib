@@ -41,7 +41,7 @@ case class HT_RichItemStack (stack : ItemStack) extends AnyVal with HT_T_NBTValu
   
   def damage_= (value : Int) = getItem map {_ => stack.setItemDamage(value)}
 
-  def durability : Option[Int] = getItemAs[HT_ItemDurable] map {e => e.getDurability(stack)}
+  def durability: Option[Int] = getItemAs[HT_ItemDurable[_]] map { e => e.getDurability(stack)}
 
   def durability_= (int: Int) : HT_RichItemStack = {
     this(HT_ItemDurable.KEY_DURABILITY) = int
@@ -57,7 +57,9 @@ case class HT_RichItemStack (stack : ItemStack) extends AnyVal with HT_T_NBTValu
     this
   }
 
-  def armorPart : Option[HT_ItemArmor.Part] = getItemAs[HT_ItemArmor] map {_.getPart(this)}
+  def armorPart: Option[HT_ItemArmor.Part] = getItemAs[HT_ItemArmor[_]] map {
+    _.getPart(this)
+  }
 
   private def getItem : Option[Item] = if (stack.getItem == null) None  else Some(stack.getItem)
 
