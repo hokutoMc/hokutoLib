@@ -2,9 +2,9 @@ package com.github.hokutomc.lib.block;
 
 import com.github.hokutomc.lib.item.HT_ItemStackBuilder;
 import com.github.hokutomc.lib.util.HT_I_Colored;
+import net.minecraft.block.BlockColored;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
@@ -15,13 +15,12 @@ import net.minecraft.world.IBlockAccess;
  * Created by user on 2014/12/21.
  */
 public class HT_BlockColored extends HT_Block<HT_BlockColored> implements HT_I_Colored {
-    public static final PropertyEnum COLOR = PropertyEnum.create("color", EnumDyeColor.class);
     private boolean m_isDyable;
 
     public HT_BlockColored (String modid,  Material material, String innerName) {
         super(modid, material, innerName);
         this.multi(toStrings(EnumDyeColor.values()));
-        this.setDefaultState(this.blockState.getBaseState().withProperty(COLOR, EnumDyeColor.WHITE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(BlockColored.COLOR, EnumDyeColor.WHITE));
     }
 
     private String[] toStrings (EnumDyeColor[] colors) {
@@ -34,22 +33,22 @@ public class HT_BlockColored extends HT_Block<HT_BlockColored> implements HT_I_C
 
     @Override
     public IBlockState getStateFromMeta (int meta) {
-        return this.getDefaultState().withProperty(COLOR, EnumDyeColor.func_176766_a(meta).func_176765_a());
+        return this.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.func_176766_a(meta).func_176765_a());
     }
 
     @Override
     public int getMetaFromState (IBlockState state) {
-        return ((EnumDyeColor) state.getValue(COLOR)).getDyeColorDamage();
+        return ((EnumDyeColor) state.getValue(BlockColored.COLOR)).getDyeColorDamage();
     }
 
     @Override
     public MapColor getMapColor (IBlockState state) {
-        return ((EnumDyeColor) state.getValue(COLOR)).func_176768_e();
+        return ((EnumDyeColor) state.getValue(BlockColored.COLOR)).func_176768_e();
     }
 
 
     public EnumDyeColor getClolor (IBlockAccess world, BlockPos pos) {
-        return (EnumDyeColor) world.getBlockState(pos).getValue(COLOR);
+        return (EnumDyeColor) world.getBlockState(pos).getValue(BlockColored.COLOR);
     }
 
     @Override
