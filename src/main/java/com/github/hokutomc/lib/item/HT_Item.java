@@ -2,7 +2,7 @@ package com.github.hokutomc.lib.item;
 
 import com.github.hokutomc.lib.HT_Registries;
 import com.github.hokutomc.lib.util.HT_ArrayUtil;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,7 +29,7 @@ public class HT_Item<T extends HT_Item> extends Item {
     private String m_shortName;
     protected List<HT_ItemStackBuilder> m_subItems;
 
-    private ImmutableSet<String> m_multiNames;
+    private ImmutableList<String> m_multiNames;
 
     @SideOnly(Side.CLIENT)
     private IIcon[] m_multiIcons;
@@ -48,8 +48,9 @@ public class HT_Item<T extends HT_Item> extends Item {
     }
 
     public T multi(String... subNames) {
-        this.m_multiNames = ImmutableSet.copyOf(subNames);
+        this.m_multiNames = ImmutableList.copyOf(subNames);
         this.setMaxDamage(0);
+        this.setHasSubtypes(true);
         this.m_multiIcons = new IIcon[subNames.length];
         for (int i = 1; i < subNames.length; i++) {
             m_subItems.add(new HT_ItemStackBuilder(this, i));
@@ -125,12 +126,18 @@ public class HT_Item<T extends HT_Item> extends Item {
     }
 
     protected void HT_registerMulti (Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-        if (this.getHasSubtypes()) {
-            for (HT_ItemStackBuilder b : this.m_subItems) {
-                subItems.add(b.build(1));
-            }
-        } else {
-            super.getSubItems(itemIn, tab, subItems);
+        for (HT_ItemStackBuilder b : this.m_subItems) {
+            subItems.add(b.build(1));
         }
+    }
+
+    @Override
+    public String getUnlocalizedName (ItemStack stack) {
+        if (this.getHasSubtypes()) {
+            return this.getUnlocalizedName() + "." + HT_ArrayUtil.getWithNoEx(m_multiNames, stack.getItemDamage());
+        } else {
+            return this.getUnlocalizedName();
+        }
+
     }
 }

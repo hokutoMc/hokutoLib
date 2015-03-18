@@ -6,9 +6,11 @@ import com.github.hokutomc.lib.item.HT_ItemStackBuilder
 import com.github.hokutomc.lib.item.recipe.{HT_ItemStackBuilder4Recipe, HT_RecipeBuilder}
 import com.github.hokutomc.lib.scala.block.states.HT_RichBlockState
 import com.github.hokutomc.lib.scala.entity.{HT_RichEntity, HT_RichPlayer}
+import com.github.hokutomc.lib.scala.item.HT_RichItemStack
 import com.github.hokutomc.lib.scala.nbt.HT_T_NBTValue.HT_T_NBTValue
 import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_RichNBTTagList}
 import net.minecraft.block.Block
+import net.minecraft.block.properties.IProperty
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
@@ -27,13 +29,13 @@ import scala.reflect.ClassTag
  * Created by user on 2015/02/26.
  */
 object HT_ScalaConversion {
-  implicit def wrapItemStack (stack : ItemStack) : HT_RichItemStack = HT_RichItemStack(stack)
+  implicit def wrapItemStack(stack: ItemStack): HT_RichItemStack = new HT_RichItemStack(stack)
 
   /**
    *
    * @return null if this is empty stack
    */
-  implicit def unwrapItemStack (stack: HT_RichItemStack) : ItemStack = stack.stack
+  implicit def unwrapItemStack(stack: HT_RichItemStack): ItemStack = stack.unwrap
 
   implicit def wrapNBTTagComp (nbtTagCompound: NBTTagCompound) : HT_RichNBTTagCompound = new HT_RichNBTTagCompound(nbtTagCompound)
 
@@ -43,7 +45,7 @@ object HT_ScalaConversion {
   
   implicit def ChatFormatToString (chatFormat: EnumChatFormatting) : String = chatFormat.toString
 
-  implicit def StringToLocalizer (string: String) : HT_Localizer = HT_Localizer(string)
+  implicit def StringToLocalizer(string: String): HT_Localizer = new HT_Localizer(string)
 
   implicit def wrapVec3 (vec3: Vec3) : HT_Vec3 = new HT_Vec3(vec3)
 
@@ -130,4 +132,8 @@ object HT_ScalaConversion {
   implicit def unwrapBlockState(richBlockState: HT_RichBlockState): IBlockState = richBlockState.blockState
 
   implicit def endItem[RB <: HT_RecipeBuilder[RB]](itemStackBuilder4Recipe: HT_ItemStackBuilder4Recipe[RB]): RB = itemStackBuilder4Recipe.endItem()
+
+  implicit class HT_IProp(val iProperty: IProperty) {
+    def :=(comparable: Comparable[_])(implicit state: HT_RichBlockState) = state(iProperty) = comparable
+  }
 }

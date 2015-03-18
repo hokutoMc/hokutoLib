@@ -16,7 +16,7 @@ import javax.naming.OperationNotSupportedException;
 public class HT_ItemStackBuilder<T extends HT_ItemStackBuilder> {
     private Block m_block;
     private int m_damage;
-    private ItemStack m_template;
+    public ItemStack m_template;
     private boolean m_isBlockEvaluated;
     private int m_size;
 
@@ -202,7 +202,7 @@ public class HT_ItemStackBuilder<T extends HT_ItemStackBuilder> {
             return setBoolean(HT_ItemDurable.KEY_BROKEN, false);
         }
         try {
-            throw new OperationNotSupportedException("invalid operation fullDurabilty() to itemStackBuilder with non-HT_ItemDurable item");
+            throw new OperationNotSupportedException("invalid operation fullDurability() to itemStackBuilder with non-HT_ItemDurable item");
         } catch (OperationNotSupportedException e) {
             e.printStackTrace();
         }
@@ -213,4 +213,6 @@ public class HT_ItemStackBuilder<T extends HT_ItemStackBuilder> {
     public String toString () {
         return this.m_template.getItem().toString() + "@" + this.m_template.getItemDamage();
     }
+
+
 }

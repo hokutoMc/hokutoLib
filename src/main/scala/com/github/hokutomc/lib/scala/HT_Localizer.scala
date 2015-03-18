@@ -6,7 +6,7 @@ import com.github.hokutomc.lib.util.HT_I18nUtil
 /**
  * Created by user on 2015/02/26.
  */
-case class HT_Localizer (string: String) extends AnyVal{
+class HT_Localizer(val string: String) extends AnyVal {
   def localize : String = HT_I18nUtil.localize(string)
   def localize (array: Any*) : String = HT_I18nUtil.localize(string, array toArray)
 

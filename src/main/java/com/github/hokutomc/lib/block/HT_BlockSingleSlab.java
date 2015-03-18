@@ -104,4 +104,9 @@ public class HT_BlockSingleSlab extends HT_Block<HT_BlockSingleSlab> {
         Block block = world.getBlockState(pos).getBlock();
         return block instanceof HT_BlockSingleSlab || block == Blocks.stone_slab || block == Blocks.wooden_slab;
     }
+
+    @Override
+    public boolean isFullBlock () {
+        return false;
+    }
 }

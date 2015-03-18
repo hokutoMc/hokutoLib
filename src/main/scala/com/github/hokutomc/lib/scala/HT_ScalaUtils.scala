@@ -1,5 +1,6 @@
 package com.github.hokutomc.lib.scala
 
+import com.github.hokutomc.lib.scala.item.recipe.HT_ScalaCraftingRecipeBuilder
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.{Item, ItemStack}
 
@@ -11,9 +12,12 @@ object HT_ScalaUtils {
     override def getTabIconItem: Item = item
   }
 
-  def creativeTab(modid: String, name: String, itemStack: => ItemStack) = new CreativeTabs(modid + "." + name) {
+  def creativeTabFromStack(modid: String, name: String, itemStack: => ItemStack) = new CreativeTabs(modid + "." + name) {
     override def getTabIconItem: Item = itemStack.getItem
 
     override def getIconItemStack: ItemStack = itemStack
   }
+
+  def recipe = new HT_ScalaCraftingRecipeBuilder
+
 }

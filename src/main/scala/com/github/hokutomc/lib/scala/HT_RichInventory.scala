@@ -1,6 +1,7 @@
 package com.github.hokutomc.lib.scala
 
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
+import com.github.hokutomc.lib.scala.item.HT_RichItemStack
 import com.github.hokutomc.lib.scala.nbt.HT_RichNBTTagCompound
 import com.github.hokutomc.lib.scala.nbt.HT_T_NBTValueCompound.HT_T_NBTValueCompound
 import net.minecraft.inventory.IInventory

@@ -1,7 +1,7 @@
 package com.github.hokutomc.lib.scala.entity
 
-import com.github.hokutomc.lib.scala.HT_RichItemStack
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
+import com.github.hokutomc.lib.scala.item.HT_RichItemStack
 import com.github.hokutomc.lib.util.HT_PlayerUtil
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.DamageSource
