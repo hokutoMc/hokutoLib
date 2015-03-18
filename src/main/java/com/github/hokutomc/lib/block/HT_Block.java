@@ -12,10 +12,7 @@ import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +31,6 @@ public class HT_Block<T extends HT_Block> extends Block {
     protected List<HT_ItemStackBuilder> m_subItems = new ArrayList<>();
 
     private ImmutableSet<String> m_multiNames;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon[] m_multiIcons;
 
     public HT_Block (String modid, Material material, String innerName) {
         super(material);
@@ -61,9 +55,8 @@ public class HT_Block<T extends HT_Block> extends Block {
 
     public T multi (String... subNames) {
         this.m_multiNames = ImmutableSet.copyOf(subNames);
-        this.m_multiIcons = new IIcon[subNames.length];
         this.setHasSubTypes(true);
-        for (int i = 1; i < m_multiIcons.length; i++) {
+        for (int i = 1; i < m_multiNames.size(); i++) {
             m_subItems.add(new HT_ItemStackBuilder(this, i));
         }
         return cast(this);

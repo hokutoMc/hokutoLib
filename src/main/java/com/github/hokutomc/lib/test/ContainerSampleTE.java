@@ -4,7 +4,7 @@ import com.github.hokutomc.lib.client.gui.HT_GuiContainer;
 import com.github.hokutomc.lib.inventory.HT_ContainerProcessor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
+import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -16,7 +16,7 @@ public class ContainerSampleTE extends HT_ContainerProcessor<TestTE> {
         super(player, tileEntity);
         this.setPlayerSlotPosition(151);
         this.addSlotToContainer(new Slot(tileEntity, 0, 56, 17));
-        this.addSlotToContainer(new SlotFurnace(player, tileEntity, 1, 116, 35));
+        this.addSlotToContainer(new SlotFurnaceOutput(player, tileEntity, 1, 116, 35));
     }
 
     @Override

@@ -3,13 +3,10 @@ package com.github.hokutomc.lib.item;
 import com.github.hokutomc.lib.HT_Registries;
 import com.github.hokutomc.lib.util.HT_ArrayUtil;
 import com.google.common.collect.ImmutableList;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +28,6 @@ public class HT_Item<T extends HT_Item> extends Item {
 
     private ImmutableList<String> m_multiNames;
 
-    @SideOnly(Side.CLIENT)
-    private IIcon[] m_multiIcons;
-
     public HT_Item (String modid, String innerName) {
         super();
         this.m_shortName = innerName;
@@ -51,7 +45,6 @@ public class HT_Item<T extends HT_Item> extends Item {
         this.m_multiNames = ImmutableList.copyOf(subNames);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
-        this.m_multiIcons = new IIcon[subNames.length];
         for (int i = 1; i < subNames.length; i++) {
             m_subItems.add(new HT_ItemStackBuilder(this, i));
         }

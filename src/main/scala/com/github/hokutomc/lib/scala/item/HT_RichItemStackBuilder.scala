@@ -14,8 +14,5 @@ class HT_RichItemStackBuilder(val itemStackBuilder: HT_ItemStackBuilder[_]) exte
     this
   }
 
-  override def damage_=(value: Int): Unit = {
-    itemStackBuilder.damage(value)
-    this
-  }
+  override def damage_=(value: Int): Unit = itemStackBuilder.damage(value)
 }

@@ -1,6 +1,5 @@
 package com.github.hokutomc.lib.scala.nbt
 
-import com.github.hokutomc.lib.scala.nbt.HT_T_NBTValue.HT_T_NBTValue
 
 /**
  * Created by user on 2015/02/26.

@@ -7,8 +7,7 @@ import com.github.hokutomc.lib.item.recipe.{HT_ItemStackBuilder4Recipe, HT_Recip
 import com.github.hokutomc.lib.scala.block.states.HT_RichBlockState
 import com.github.hokutomc.lib.scala.entity.{HT_RichEntity, HT_RichPlayer}
 import com.github.hokutomc.lib.scala.item.HT_RichItemStack
-import com.github.hokutomc.lib.scala.nbt.HT_T_NBTValue.HT_T_NBTValue
-import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_RichNBTTagList}
+import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_RichNBTTagList, HT_T_NBTValue}
 import net.minecraft.block.Block
 import net.minecraft.block.properties.IProperty
 import net.minecraft.block.state.IBlockState

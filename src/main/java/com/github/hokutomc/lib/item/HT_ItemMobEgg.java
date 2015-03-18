@@ -2,8 +2,6 @@ package com.github.hokutomc.lib.item;
 
 import com.github.hokutomc.lib.entity.HT_ModEntityList;
 import com.github.hokutomc.lib.util.HT_I18nUtil;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,8 +11,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -23,9 +26,6 @@ import java.util.List;
  */
 public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
     private HT_ModEntityList m_listEntity;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon m_iconOverlay;
 
     public HT_ItemMobEgg (String modid, HT_ModEntityList entityList) {
         super(modid, "mobEgg");

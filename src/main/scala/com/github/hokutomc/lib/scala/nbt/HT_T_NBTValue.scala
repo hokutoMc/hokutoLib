@@ -4,15 +4,16 @@ import com.github.hokutomc.lib.data.enumerate.{HT_I_IntOrdered, HT_I_StringOrder
 import com.github.hokutomc.lib.nbt.HT_NBTUtil
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
 
+trait HT_T_NBTValue[T] extends Any {
+  def setToNBT(nbt: HT_RichNBTTagCompound, key: String)
+
+  def getFromNBT(nbt: HT_RichNBTTagCompound, key: String): T
+}
+
 /**
  * Created by user on 2015/02/26.
  */
 object HT_T_NBTValue {
-  trait HT_T_NBTValue[T] extends Any{
-    def setToNBT (nbt: HT_RichNBTTagCompound, key: String)
-
-    def getFromNBT (nbt: HT_RichNBTTagCompound, key: String) : T
-  }
 
   implicit class HT_IntNBT (val value: Int) extends AnyVal with HT_T_NBTValue[HT_IntNBT] {
     override def setToNBT(nbt: HT_RichNBTTagCompound, key: String): Unit = nbt.setInteger(key, value)
