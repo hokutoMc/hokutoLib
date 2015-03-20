@@ -105,7 +105,7 @@ public abstract class HT_StorageTile extends HT_TileEntity implements ISidedInve
 
 
     @Override
-    public final int getInventoryStackLimit () {
+    public int getInventoryStackLimit () {
         return 64;
     }
 

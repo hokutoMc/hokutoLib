@@ -14,7 +14,7 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
-import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.item.{EnumDyeColor, Item, ItemStack}
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.{BlockPos, EnumChatFormatting, Vec3, Vec3i}
@@ -135,4 +135,6 @@ object HT_ScalaConversion {
   implicit class HT_IProp(val iProperty: IProperty) {
     def :=(comparable: Comparable[_])(implicit state: HT_RichBlockState) = state(iProperty) = comparable
   }
+
+  implicit def wrapColor(dyeColor: EnumDyeColor): HT_RichEnumDyeColor = HT_RichEnumDyeColor(dyeColor)
 }

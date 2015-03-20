@@ -9,13 +9,18 @@ import net.minecraft.nbt.NBTTagCompound
 trait HT_T_NBTCompound extends Any {
   def tag: NBTTagCompound
 
-  def ifHasKey(key: String, func: => Unit) = if (tag.hasKey(key)) func
+  def ifHasKey[T <: HT_T_NBTValue[T]](key: String, defValue: T)(func: T => Unit) = if (tag.hasKey(key)) func(tag.apply[T](key, defValue))
 
   def update[T <: HT_T_NBTValue[T]](key: String, nbtValue: HT_T_NBTValue[T]): Unit = {
     nbtValue.setToNBT(tag, key)
   }
 
-  def apply[T <: HT_T_NBTValue[T]](key: String, nbtValue: T): T = nbtValue.getFromNBT(tag, key)
+  def apply[T <: HT_T_NBTValue[T]](key: String, defValue: T): T = defValue.getFromNBT(tag, key)
 
   def apply(key: String, func: => Unit) = ifHasKey(key, func)
+
+  def map(func: NBTTagCompound => Unit): NBTTagCompound = {
+    func(tag)
+    tag
+  }
 }
