@@ -54,6 +54,8 @@ object HT_ScalaConversion {
 
   implicit def Vec32Vec3i(vec3: Vec3): Vec3i = new Vec3i(vec3.x, vec3.y, vec3.z)
 
+  implicit def wrapVec3i(blockPos: BlockPos): HT_BlockPos = new HT_BlockPos(blockPos)
+
   implicit def getEntityPosVec (entity: Entity) : HT_Vec3 = (entity.posX, entity.posY, entity.posZ)
 
   implicit def getTilePosVec(tileEntity: TileEntity): HT_Vec3 = Vec3i2Vec3(tileEntity.getPos)
