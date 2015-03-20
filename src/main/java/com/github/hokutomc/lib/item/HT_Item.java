@@ -33,7 +33,7 @@ public class HT_Item<T extends HT_Item> extends Item {
         this.m_shortName = innerName;
         this.setInnerName(modid, innerName);
         m_subItems = new ArrayList<>();
-        m_subItems.add(new HT_ItemStackBuilder(this, 0));
+        m_subItems.add(new HT_ItemStackBuilder(this));
     }
 
     @SuppressWarnings("unchecked")
@@ -46,7 +46,7 @@ public class HT_Item<T extends HT_Item> extends Item {
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         for (int i = 1; i < subNames.length; i++) {
-            m_subItems.add(new HT_ItemStackBuilder(this, i));
+            m_subItems.add(new HT_ItemStackBuilder(this).damage(i));
         }
         return cast(this);
     }

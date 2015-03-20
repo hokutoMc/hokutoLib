@@ -39,7 +39,7 @@ public class HT_Block<T extends HT_Block> extends Block {
         this.m_shortName = innerName;
         this.setInnerName(modid, innerName);
 //        this.HT_setTextureName(modid, innerName);
-        m_subItems.add(new HT_ItemStackBuilder(this, 0));
+        m_subItems.add(new HT_ItemStackBuilder(this));
     }
 
 
@@ -57,7 +57,7 @@ public class HT_Block<T extends HT_Block> extends Block {
         this.m_multiNames = ImmutableSet.copyOf(subNames);
         this.setHasSubTypes(true);
         for (int i = 1; i < m_multiNames.size(); i++) {
-            m_subItems.add(new HT_ItemStackBuilder(this, i));
+            m_subItems.add(new HT_ItemStackBuilder(this).damage(i));
         }
         return cast(this);
     }

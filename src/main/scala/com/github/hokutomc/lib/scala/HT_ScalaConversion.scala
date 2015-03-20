@@ -6,8 +6,8 @@ import com.github.hokutomc.lib.item.HT_ItemStackBuilder
 import com.github.hokutomc.lib.item.recipe.{HT_ItemStackBuilder4Recipe, HT_RecipeBuilder}
 import com.github.hokutomc.lib.scala.block.states.HT_RichBlockState
 import com.github.hokutomc.lib.scala.entity.{HT_RichEntity, HT_RichPlayer}
-import com.github.hokutomc.lib.scala.item.HT_RichItemStack
-import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_RichNBTTagList, HT_T_NBTValue}
+import com.github.hokutomc.lib.scala.item.{HT_RichItemStack, HT_RichItemStackBuilder}
+import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_RichNBTTagList}
 import net.minecraft.block.Block
 import net.minecraft.block.properties.IProperty
 import net.minecraft.block.state.IBlockState
@@ -74,28 +74,18 @@ object HT_ScalaConversion {
 
   implicit def wrapWorld(world: World): HT_World = new HT_World(world)
 
-  implicit def itemToBuilder (item: Item) : HT_ItemStackBuilder[_] = HT_ItemStackBuilder.start(item)
+  implicit def itemToBuilder(item: Item): HT_ItemStackBuilder.Raw = new HT_ItemStackBuilder.Raw(item)
 
-  implicit def blockToBuilder (block: Block) : HT_ItemStackBuilder[_] = HT_ItemStackBuilder.apply(block)
+  implicit def blockToBuilder(block: Block): HT_ItemStackBuilder.Raw = new HT_ItemStackBuilder.Raw(block)
 
   implicit class BlockToItem (val block: Block) extends AnyVal {
-    def getItem : Option[Item] = Option(Item.getItemFromBlock(block))
+    def item: Option[Item] = Option(Item.getItemFromBlock(block))
 
-    def getItemAs [T <: Item] (implicit classTag: ClassTag[T]) = getItem map { case i: T => Some(i) case _ => None}
+    def getItemAs[T <: Item](implicit classTag: ClassTag[T]) = item map { case i: T => Some(i) case _ => None}
   }
 
-  implicit class WrapItemStackBuilder (val itemStackBuilder: HT_ItemStackBuilder[_]) extends AnyVal {
-    def unary_! : HT_RichNBTTagCompound = itemStackBuilder.getNBTTag
+  implicit def wrapItemStackBuilder(itemStackBuilder: HT_ItemStackBuilder[_]): HT_RichItemStackBuilder = new HT_RichItemStackBuilder(itemStackBuilder)
 
-    def apply [T <: HT_T_NBTValue[T]] (key: String, nbtValue: T): T = {
-      nbtValue.getFromNBT(!this, key)
-    }
-
-    def update [T <: HT_T_NBTValue[T]](key: String, nbtValue: HT_T_NBTValue[T]): WrapItemStackBuilder = {
-      nbtValue.setToNBT(!this, key)
-      this
-    }
-  }
 
   implicit class WrapPlayerEvent (val event: PlayerEvent) extends AnyVal {
     def unary_+ : HT_RichPlayer = event entityPlayer

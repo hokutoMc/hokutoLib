@@ -42,18 +42,18 @@ public abstract class HT_ItemDurable<T extends HT_ItemDurable> extends HT_Item<T
     }
 
     public HT_ItemStackBuilder getBuilder (int durability, int meta) {
-        return new HT_ItemStackBuilder(this, meta).setInt(KEY_DURABILITY, durability).setBoolean(KEY_BROKEN, false);
+        return new HT_ItemStackBuilder(this).damage(meta).setInt(KEY_DURABILITY, durability).setBoolean(KEY_BROKEN, false);
     }
 
     public HT_ItemStackBuilder getBuilder (int meta) {
-        return new HT_ItemStackBuilder(this, meta) {
+        return new HT_ItemStackBuilder(this) {
             @Override
             public ItemStack build (int size) {
                 ItemStack stack = super.build(size);
                 stack.getTagCompound().setInteger(KEY_DURABILITY, getMaxDurability(stack));
                 return stack;
             }
-        }.setBoolean(KEY_BROKEN, false);
+        }.damage(meta).setBoolean(KEY_BROKEN, false);
     }
 
     @Override

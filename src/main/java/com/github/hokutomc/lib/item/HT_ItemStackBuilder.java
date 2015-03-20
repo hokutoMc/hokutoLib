@@ -20,6 +20,16 @@ public class HT_ItemStackBuilder<T extends HT_ItemStackBuilder> {
     private boolean m_isBlockEvaluated;
     private int m_size;
 
+    public static class Raw extends HT_ItemStackBuilder<Raw> {
+        public Raw (Item item) {
+            super(item);
+        }
+
+        public Raw (Block block) {
+            super(block);
+        }
+    }
+
     protected HT_ItemStackBuilder (ItemStack template) {
         this.m_size = 1;
         this.m_template = template;
@@ -27,22 +37,15 @@ public class HT_ItemStackBuilder<T extends HT_ItemStackBuilder> {
     }
 
     public HT_ItemStackBuilder (Item item) {
-        this(item, 0);
-    }
-
-    public HT_ItemStackBuilder (Item item, int meta) {
-        this(new ItemStack(item, 1, meta));
-        this.m_damage = meta;
+        this(new ItemStack(item, 1, 0));
+        this.size(1);
+        this.damage(0);
     }
 
     public HT_ItemStackBuilder (Block block) {
-        this(block, 0);
-    }
-
-    public HT_ItemStackBuilder (Block block, int meta) {
-        this(new ItemStack(block, 1, meta));
+        this(new ItemStack(block, 1, 0));
         this.m_block = block;
-        this.m_damage = meta;
+        this.m_damage = 0;
         this.m_isBlockEvaluated = false;
         tryToSolveItemBlock();
     }
