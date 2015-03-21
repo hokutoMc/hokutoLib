@@ -14,7 +14,7 @@ import net.minecraft.world.IBlockAccess;
 /**
  * Created by user on 2014/12/21.
  */
-public class HT_BlockColored extends HT_Block<HT_BlockColored> implements HT_I_Colored {
+public class HT_BlockColored<T extends HT_BlockColored<T>> extends HT_Block<T> implements HT_I_Colored {
     private boolean m_isDyable;
 
     public HT_BlockColored (String modid,  Material material, String innerName) {

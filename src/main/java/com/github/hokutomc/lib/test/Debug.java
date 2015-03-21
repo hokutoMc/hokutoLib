@@ -51,7 +51,7 @@ public class Debug {
         }
     };
     public static HT_ItemDurable itemArmor;
-    private static HT_BlockFalling blockFall;
+    private static HT_BlockFalling.Raw blockFall;
     private static HT_ModEntityList entityList;
 
     public static final String MODID = "hokutolib";
@@ -144,7 +144,7 @@ public class Debug {
         itemMulti = new HT_Item.Impl(MODID, "multi").multi("a", "b").HT_setCreativeTab(tabHTLib).register();
 
         blockMulti = new HT_Block(MODID, Material.wood, "multiblock").multi("a", "b").HT_setCreativeTab(tabHTLib).register();
-        blockFall = new HT_BlockFalling(MODID, Material.sand, "falling").HT_setCreativeTab(tabHTLib).register();
+        blockFall = new HT_BlockFalling.Raw(MODID, Material.sand, "falling").HT_setCreativeTab(tabHTLib).register();
         blockTE = new TestContainerBlock().HT_setCreativeTab(tabHTLib).register();
 //        new HT_ContainerBlock(MODID, Material.iron, "dummy") {
 //
