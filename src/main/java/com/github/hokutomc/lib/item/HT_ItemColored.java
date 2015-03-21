@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by user on 2015/02/12.
  */
-public class HT_ItemColored extends HT_Item<HT_ItemColored> implements HT_I_Colored {
+public class HT_ItemColored<T extends HT_ItemColored<T>> extends HT_Item<T> implements HT_I_Colored {
     public HT_ItemColored (String modid, String innerName) {
         super(modid, innerName);
         this.multi(toStringArray(EnumDyeColor.values()));

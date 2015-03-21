@@ -25,7 +25,7 @@ import static net.minecraft.block.BlockStairs.*;
 /**
  * Created by user on 2015/03/18.
  */
-public class HT_BlockStairs<T extends HT_BlockStairs<T>> extends HT_Block<T> {
+public class HT_BlockStairs extends HT_Block<HT_BlockStairs> {
     private final IBlockState modelState;
     private final Block modelBlock;
     private static final int[][] matrix = new int[][]{{4, 5}, {5, 7}, {6, 7}, {4, 6}, {0, 1}, {1, 3}, {2, 3}, {0, 2}};
