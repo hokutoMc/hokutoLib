@@ -13,7 +13,7 @@ import scala.reflect.ClassTag
 /**
  * Created by user on 2015/03/18.
  */
-trait HT_ItemStackOp[Repr <: HT_ItemStackOp[Repr]] extends Any with HT_T_NBTCompound {
+trait HT_ItemStackOp[Repr <: HT_ItemStackOp[Repr]] extends Any with HT_T_NBTCompound[Repr] {
   this: Repr =>
 
   def stack: ItemStack
@@ -109,4 +109,6 @@ trait HT_ItemStackOp[Repr <: HT_ItemStackOp[Repr]] extends Any with HT_T_NBTComp
   def apply(function: HT_RichItemStack => Unit) = function(stack)
 
   override def tag: NBTTagCompound = this getOrCreateTag
+
+  override def a: Repr = this
 }

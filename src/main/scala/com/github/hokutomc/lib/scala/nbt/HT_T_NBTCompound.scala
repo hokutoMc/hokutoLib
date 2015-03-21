@@ -6,8 +6,10 @@ import net.minecraft.nbt.NBTTagCompound
 /**
  * Created by user on 2015/03/18.
  */
-trait HT_T_NBTCompound extends Any {
+trait HT_T_NBTCompound[A] extends Any {
   def tag: NBTTagCompound
+
+  def a: A
 
   def update[T <: HT_T_NBTValue[T]](key: String, nbtValue: HT_T_NBTValue[T]): Unit = {
     nbtValue.setToNBT(tag, key)
@@ -18,8 +20,8 @@ trait HT_T_NBTCompound extends Any {
     else Some(defValue.getFromNBT(tag, key))
   }
 
-  def apply(func: NBTTagCompound => Unit): NBTTagCompound = {
+  def apply(func: NBTTagCompound => Unit): A = {
     func(tag)
-    tag
+    a
   }
 }
