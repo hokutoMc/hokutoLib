@@ -28,5 +28,5 @@ class HT_RichItemStack(val wrapped: ItemStack) extends AnyVal with HT_T_NBTValue
 
   override def tag: NBTTagCompound = this.getOrCreateTag
 
-  override def stack: ItemStack = this
+  override def stack: ItemStack = wrapped
 }
