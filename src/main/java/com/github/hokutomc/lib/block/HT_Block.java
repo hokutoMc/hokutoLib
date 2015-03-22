@@ -1,9 +1,10 @@
 package com.github.hokutomc.lib.block;
 
 import com.github.hokutomc.lib.HT_Registries;
+import com.github.hokutomc.lib.client.render.HT_RenderUtil;
 import com.github.hokutomc.lib.item.HT_ItemStackBuilder;
 import com.github.hokutomc.lib.util.HT_ArrayUtil;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -30,7 +31,7 @@ public class HT_Block<T extends HT_Block> extends Block {
     public String m_modid;
     protected List<HT_ItemStackBuilder> m_subItems = new ArrayList<>();
 
-    private ImmutableSet<String> m_multiNames;
+    private ImmutableList<String> m_multiNames;
 
     public HT_Block (String modid, Material material, String innerName) {
         super(material);
@@ -54,7 +55,7 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     public T multi (String... subNames) {
-        this.m_multiNames = ImmutableSet.copyOf(subNames);
+        this.m_multiNames = ImmutableList.copyOf(subNames);
         this.setHasSubTypes(true);
         for (int i = 1; i < m_multiNames.size(); i++) {
             m_subItems.add(new HT_ItemStackBuilder(this).damage(i));
@@ -66,6 +67,16 @@ public class HT_Block<T extends HT_Block> extends Block {
         if (this.m_hasSubTypes) HT_Registries.registerMultiBlock(this);
         else HT_Registries.registerBlock(this);
         return cast(this);
+    }
+
+    public void registerMesher () {
+        if (this.getHasSubTypes()) {
+            for (int i = 0; i < m_multiNames.size(); i++) {
+                HT_RenderUtil.registerOneItemMesher(this.getItem(), i, this.m_modid + ":" + this.getShortName() + m_multiNames.get(i));
+            }
+        } else {
+            HT_RenderUtil.registerOneItemMesher(this.getItem(), 0, this.m_modid + ":" + this.getShortName());
+        }
     }
 
     public String[] getMultiNames () {
@@ -84,11 +95,6 @@ public class HT_Block<T extends HT_Block> extends Block {
     public Item getItem () {
         return Item.getItemFromBlock(this);
     }
-
-    public boolean isFrontSide (int side, int meta) {
-        return side == meta;
-    }
-
 
     public void fall (World world, BlockPos pos) {
         if (canContinueFalling(world, pos) && pos.getY() >= 0) {

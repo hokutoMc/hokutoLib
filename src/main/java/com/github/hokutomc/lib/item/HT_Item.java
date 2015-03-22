@@ -1,6 +1,7 @@
 package com.github.hokutomc.lib.item;
 
 import com.github.hokutomc.lib.HT_Registries;
+import com.github.hokutomc.lib.client.render.HT_RenderUtil;
 import com.github.hokutomc.lib.util.HT_ArrayUtil;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.creativetab.CreativeTabs;
@@ -25,12 +26,14 @@ public class HT_Item<T extends HT_Item> extends Item {
 
     private String m_shortName;
     protected List<HT_ItemStackBuilder> m_subItems;
+    public final String m_modid;
 
     private ImmutableList<String> m_multiNames;
 
     public HT_Item (String modid, String innerName) {
         super();
         this.m_shortName = innerName;
+        this.m_modid = modid;
         this.setInnerName(modid, innerName);
         m_subItems = new ArrayList<>();
         m_subItems.add(new HT_ItemStackBuilder(this));
@@ -54,6 +57,16 @@ public class HT_Item<T extends HT_Item> extends Item {
     public T register () {
         HT_Registries.registerItem(this);
         return cast(this);
+    }
+
+    public void registerMesher () {
+        if (this.getHasSubtypes()) {
+            for (int i = 0; i < m_multiNames.size(); i++) {
+                HT_RenderUtil.registerOneItemMesher(this, i, this.m_modid + ":" + this.getShortName() + m_multiNames.get(i));
+            }
+        } else {
+            HT_RenderUtil.registerOneItemMesher(this, 0, this.m_modid + ":" + this.getShortName());
+        }
     }
 
     public String[] getMultiNames () {

@@ -1,5 +1,6 @@
 package com.github.hokutomc.lib.scala
 
+import com.github.hokutomc.lib.scala.HT_ScalaConversion._
 import net.minecraft.item.EnumDyeColor
 
 object HT_RichEnumDyeColor {
@@ -10,6 +11,12 @@ object HT_RichEnumDyeColor {
   def forItemDamage(damage: Int) = EnumDyeColor.func_176766_a(damage)
 
   def forColoredBlockMeta(meta: Int) = EnumDyeColor.func_176764_b(meta)
+
+  def foreach(func: HT_RichEnumDyeColor => Unit) = {
+    EnumDyeColor.values() foreach {
+      func(_)
+    }
+  }
 }
 
 /**

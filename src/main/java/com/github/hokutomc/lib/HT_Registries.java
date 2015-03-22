@@ -7,13 +7,9 @@ import com.github.hokutomc.lib.client.render.HT_I_EntityRender;
 import com.github.hokutomc.lib.client.render.HT_I_TileEntityRender;
 import com.github.hokutomc.lib.item.HT_Item;
 import com.github.hokutomc.lib.item.recipe.HT_FurnaceRecipeBuilder;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -51,18 +47,6 @@ public final class HT_Registries {
     public static <T extends HT_Item> T registerItem (T item) {
         GameRegistry.registerItem(item, item.getShortName());
         return item;
-    }
-
-    public static void registerItemModelMesher (Block block, int meta, String file, String variant) {
-        getItemModelMesher().register(Item.getItemFromBlock(block), meta, new ModelResourceLocation(file, variant));
-    }
-
-    public static void registerItemModelMesher (Item item, int meta, String file, String variant) {
-        getItemModelMesher().register(item, meta, new ModelResourceLocation(file, variant));
-    }
-
-    public static ItemModelMesher getItemModelMesher () {
-        return Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
     }
 
     public static void registerCommonTileEntity (Class<? extends TileEntity> tileClass, String id) {

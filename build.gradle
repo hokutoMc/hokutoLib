@@ -39,8 +39,8 @@ ht_mod {
 	prefix = 'alpha'
 	major = '2'
 	minor = '0'
-	revision = '5'
-	build = '31'
+	revision = '6'
+	build = '32'
 }
 
 
