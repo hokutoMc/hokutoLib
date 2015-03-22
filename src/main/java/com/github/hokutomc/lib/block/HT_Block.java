@@ -12,6 +12,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
@@ -145,6 +146,18 @@ public class HT_Block<T extends HT_Block> extends Block {
 
     public String getShortName () {
         return this.m_shortName;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void getSubBlocks (Item itemIn, CreativeTabs tab, List list) {
+        this.HT_registerMulti(itemIn, tab, (List<ItemStack>) list);
+    }
+
+    public void HT_registerMulti (Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+        for (HT_ItemStackBuilder b : this.m_subItems) {
+            subItems.add(b.build(1));
+        }
     }
 
     /**
