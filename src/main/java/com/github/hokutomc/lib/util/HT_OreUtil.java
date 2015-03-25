@@ -38,6 +38,7 @@ public final class HT_OreUtil {
     }
 
     public static String[] getNames (ItemStack itemStack) {
+        if (itemStack == null) return new String[0];
         int[] intIds = OreDictionary.getOreIDs(itemStack);
         ArrayList<String> strings = new ArrayList<>();
         for (int e : intIds) {

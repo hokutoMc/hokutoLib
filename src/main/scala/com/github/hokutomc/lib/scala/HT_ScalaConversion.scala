@@ -17,7 +17,7 @@ import net.minecraft.inventory.IInventory
 import net.minecraft.item.{EnumDyeColor, Item, ItemStack}
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.{BlockPos, EnumChatFormatting, Vec3, Vec3i}
+import net.minecraft.util._
 import net.minecraft.world.{IBlockAccess, World}
 import net.minecraftforge.event.entity.player.PlayerEvent
 import net.minecraftforge.fml.common.IFuelHandler
@@ -129,4 +129,6 @@ object HT_ScalaConversion {
   }
 
   implicit def wrapColor(dyeColor: EnumDyeColor): HT_RichEnumDyeColor = HT_RichEnumDyeColor(dyeColor)
+
+  implicit def asMessage(string: String): ChatComponentText = new ChatComponentText(string)
 }
