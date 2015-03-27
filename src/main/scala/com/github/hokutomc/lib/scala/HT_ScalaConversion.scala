@@ -44,7 +44,9 @@ object HT_ScalaConversion {
   
   implicit def ChatFormatToString (chatFormat: EnumChatFormatting) : String = chatFormat.toString
 
-  implicit def StringToLocalizer(string: String): HT_Localizer = new HT_Localizer(string)
+  implicit def wrapString(string: String): HT_RichString = new HT_RichString(string)
+
+  implicit def unwrapString(string: HT_RichString): String = string.string
 
   implicit def wrapVec3 (vec3: Vec3) : HT_Vec3 = new HT_Vec3(vec3)
 

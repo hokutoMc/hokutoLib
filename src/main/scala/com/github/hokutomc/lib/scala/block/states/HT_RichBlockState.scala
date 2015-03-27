@@ -17,7 +17,7 @@ object HT_RichBlockState {
 class HT_RichBlockState(val blockState: IBlockState) extends AnyVal {
   self =>
 
-  def apply[A <: Comparable[A]](iProperty: IProperty)(implicit classTag: ClassTag[A]): A = blockState.getValue(iProperty) match {
+  def apply[A](iProperty: IProperty)(implicit classTag: ClassTag[A]): A = blockState.getValue(iProperty) match {
     case a: A => a
     case _ => throw new ClassCastException("Cannot get BlockState property " + iProperty.getName + "'s value of type " + classTag.toString())
   }
@@ -28,6 +28,5 @@ class HT_RichBlockState(val blockState: IBlockState) extends AnyVal {
     function(this)
     this
   }
-
 
 }
