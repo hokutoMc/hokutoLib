@@ -63,6 +63,14 @@ public abstract class HT_ItemFood<T extends HT_ItemFood> extends HT_Item<T> {
         this(modid, innerName, healAmount, 0.6f);
     }
 
+
+    @Override
+    public ItemStack onItemRightClick (ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
+        if (this.getIsAlwaysEdible(itemStackIn))
+            playerIn.setItemInUse(itemStackIn, this.getMaxItemUseDuration(itemStackIn));
+        return itemStackIn;
+    }
+    
     @Override
     public ItemStack onItemUseFinish (ItemStack stack, World worldIn, EntityPlayer playerIn) {
         --stack.stackSize;
@@ -71,6 +79,10 @@ public abstract class HT_ItemFood<T extends HT_ItemFood> extends HT_Item<T> {
         this.onFoodEaten(stack, worldIn, playerIn);
         playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
         return stack;
+    }
+
+    protected boolean getIsAlwaysEdible (ItemStack itemStack) {
+        return this.alwaysEdible;
     }
 
     protected float getSaturationModifier (ItemStack stack) {
