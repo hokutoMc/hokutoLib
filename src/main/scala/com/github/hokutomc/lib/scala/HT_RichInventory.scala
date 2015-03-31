@@ -22,6 +22,7 @@ class HT_RichInventory (val inventory: IInventory) extends AnyVal with HT_T_NBTV
 
   override def readFromNBT(compound: HT_RichNBTTagCompound): HT_RichInventory = inventory.readFromNBT(compound)
 
-  def foreach(func: ItemStack => Unit) = for (i <- 0 until inventory.getSizeInventory) func(inventory.getStackInSlot(i))
-
+  def foreach(func: ItemStack => Unit) = this.map(func)
+  
+  def map[A](func: ItemStack => A) = for (i <- 0 until inventory.getSizeInventory) yield func(inventory.getStackInSlot(i))
 }
