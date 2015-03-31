@@ -28,7 +28,9 @@ import scala.reflect.ClassTag
  * Created by user on 2015/02/26.
  */
 object HT_ScalaConversion {
-  implicit def wrapItemStack(stack: ItemStack): HT_RichItemStack = new HT_RichItemStack(stack)
+  implicit def wrapItemStack(stack: ItemStack): HT_RichItemStack = {
+    if (stack == null || stack.stackSize == 0) HT_RichItemStack.NullStack else new HT_RichItemStack(stack)
+  }
 
   /**
    *

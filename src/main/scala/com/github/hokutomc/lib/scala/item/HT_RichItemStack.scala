@@ -6,6 +6,10 @@ import com.github.hokutomc.lib.scala.nbt.HT_T_NBTValueCompound.HT_T_NBTValueComp
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 
+object HT_RichItemStack {
+  val NullStack = new HT_RichItemStack(null)
+}
+
 /**
  * Created by user on 2015/02/26.
  */

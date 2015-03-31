@@ -58,7 +58,7 @@ trait HT_ItemStackOp[Repr <: HT_ItemStackOp[Repr]] extends Any with HT_T_NBTComp
     _.getPart(stack)
   }
 
-  private def getItem: Option[Item] = if (stack.getItem == null) None else Some(stack.getItem)
+  private def getItem: Option[Item] = if (stack == null || stack.getItem == null) None else Some(stack.getItem)
 
   def getItemAs[T](implicit classTag: ClassTag[T]): Option[T] = getItem flatMap { case i: T => Some(i) case _ => None }
 

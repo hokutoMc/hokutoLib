@@ -5,12 +5,6 @@ import net.minecraft.block.state.IBlockState
 
 import scala.reflect.ClassTag
 
-
-object HT_RichBlockState {
-
-
-}
-
 /**
  * Created by user on 2015/03/17.
  */
