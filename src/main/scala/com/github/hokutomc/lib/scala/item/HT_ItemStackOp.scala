@@ -44,6 +44,7 @@ trait HT_ItemStackOp[Repr <: HT_ItemStackOp[Repr]] extends Any with HT_T_NBTComp
     durability match {
       case Some(v) =>
         if (v > 0) this(HT_ItemDurable.KEY_BROKEN) = v <= 0
+      case _ =>
     }
     this
   }
@@ -59,9 +60,9 @@ trait HT_ItemStackOp[Repr <: HT_ItemStackOp[Repr]] extends Any with HT_T_NBTComp
 
   private def getItem: Option[Item] = if (stack.getItem == null) None else Some(stack.getItem)
 
-  def getItemAs[T <: Item](implicit classTag: ClassTag[T]): Option[T] = getItem flatMap { case i: T => Some(i) case _ => None}
+  def getItemAs[T](implicit classTag: ClassTag[T]): Option[T] = getItem flatMap { case i: T => Some(i) case _ => None }
 
-  def ifItemIsOf[T <: Item, U](func: T => U)(implicit classTag: ClassTag[T]): Option[U] = getItemAs[T] map func
+  def ifItemIsOf[T, U](func: T => U)(implicit classTag: ClassTag[T]): Option[U] = getItemAs[T] map func
 
   def ifItemSame[T <: Item, U](item: Item)(func: T => U)(implicit classTag: ClassTag[T]): Option[U] = getItemAs[T] match {
     case Some(v) if v eq item => Some(func(v))
