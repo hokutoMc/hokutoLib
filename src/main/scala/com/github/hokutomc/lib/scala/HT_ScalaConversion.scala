@@ -42,8 +42,8 @@ object HT_ScalaConversion {
 
   implicit def unwrapNBTTagComp (hT_RichNBTTagCompound: HT_RichNBTTagCompound): NBTTagCompound = hT_RichNBTTagCompound.wrapped
 
-  implicit def wrapNBTTagList (nbtTagList: NBTTagList) : HT_RichNBTTagList = new HT_RichNBTTagList(nbtTagList)
-  
+  implicit def unwrapNBTTagList(ht_RichNBTTAgList: HT_RichNBTTagList[_]): NBTTagList = ht_RichNBTTAgList.wrapped
+
   implicit def ChatFormatToString (chatFormat: EnumChatFormatting) : String = chatFormat.toString
 
   implicit def wrapString(string: String): HT_RichString = new HT_RichString(string)
