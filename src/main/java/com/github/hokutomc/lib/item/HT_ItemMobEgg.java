@@ -24,14 +24,13 @@ import java.util.List;
 /**
  * 2015/01/06.
  */
-public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
+public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg> {
     private HT_ModEntityList m_listEntity;
 
     public HT_ItemMobEgg (String modid, HT_ModEntityList entityList) {
         super(modid, "mobEgg");
         this.m_listEntity = entityList;
         this.HT_setCreativeTab(CreativeTabs.tabMisc);
-//        this.HT_setTextureName("spawn_egg");
     }
 
     @Override
@@ -46,7 +45,7 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
 
     @Override
     public String getItemStackDisplayName (ItemStack itemStack) {
-        return HT_I18nUtil.localize("item.hokutolib.mobEgg.name", HT_I18nUtil.localize("entity." + this.m_listEntity.getNameAt(itemStack.getItemDamage())+ ".name"));
+        return HT_I18nUtil.localize("item.hokutolib.mobEgg.name", HT_I18nUtil.localize("entity." + this.m_listEntity.getNameAt(itemStack.getItemDamage()) + ".name"));
     }
 
     @Override
@@ -66,7 +65,7 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
 
             if (entity != null) {
                 if (entity instanceof EntityLivingBase && stack.hasDisplayName()) {
-                    ((EntityLiving) entity).setCustomNameTag(stack.getDisplayName());
+                    entity.setCustomNameTag(stack.getDisplayName());
                 }
 
                 if (!playerIn.capabilities.isCreativeMode) {
@@ -104,7 +103,7 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
 
                         if (entity != null) {
                             if (entity instanceof EntityLivingBase && itemStack.hasDisplayName()) {
-                                ((EntityLiving)entity).setCustomNameTag(itemStack.getDisplayName());
+                                entity.setCustomNameTag(itemStack.getDisplayName());
                             }
 
                             if (!player.capabilities.isCreativeMode) {
@@ -123,40 +122,19 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg>{
     private Entity spawnCreature (World world, int itemDamage, double x, double y, double z) {
         Entity entity = m_listEntity.createEntityById(itemDamage, world);
         if (entity != null && entity instanceof EntityLivingBase) {
-            EntityLiving entityliving = (EntityLiving)entity;
+            EntityLiving entityliving = (EntityLiving) entity;
             entity.setLocationAndAngles(x, y, z, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
             entityliving.rotationYawHead = entityliving.rotationYaw;
             entityliving.renderYawOffset = entityliving.rotationYaw;
-//            entityliving.onSpawnWithEgg(null);
             world.spawnEntityInWorld(entity);
             entityliving.playLivingSound();
         }
         return entity;
     }
 
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public boolean HT_requiresMultipleRenderPasses () {
-//        return true;
-//    }
-//
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public IIcon HT_getIconFromDamageForRenderPass (int meta, int pass) {
-//        return pass > 0 ? this.m_iconOverlay : super.HT_getIconFromDamageForRenderPass(meta, pass);
-//    }
-//
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public int HT_getColorFromItemStack (ItemStack itemStack, int path) {
-//        int damage = itemStack.getItemDamage();
-//        return path == 1 ? this.m_listEntity.getSpotColorAt(damage) : (path == 0 ? this.m_listEntity.getBaseColorAt(damage) : 0xffffff);
-//    }
-//
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public void HT_registerIcons (IIconRegister iconRegister) {
-//        super.HT_registerIcons(iconRegister);
-//        this.m_iconOverlay = iconRegister.registerIcon(this.getIconString() + "_overlay");
-//    }
+    @Override
+    public int getColorFromItemStack (ItemStack stack, int renderPass) {
+        int damage = stack.getItemDamage();
+        return renderPass == 1 ? this.m_listEntity.getSpotColorAt(damage) : (renderPass == 0 ? this.m_listEntity.getBaseColorAt(damage) : 0xffffff);
+    }
 }

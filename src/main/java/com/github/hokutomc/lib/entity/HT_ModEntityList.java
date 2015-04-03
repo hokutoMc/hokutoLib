@@ -1,9 +1,15 @@
 package com.github.hokutomc.lib.entity;
 
 import com.github.hokutomc.lib.HT_Registries;
+import com.github.hokutomc.lib.client.render.HT_RenderUtil;
 import com.github.hokutomc.lib.item.HT_ItemMobEgg;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,6 +21,7 @@ import java.util.Iterator;
  */
 public class HT_ModEntityList implements Iterable<Class<? extends Entity>>{
 
+    private static final ModelResourceLocation modelEgg = new ModelResourceLocation("hokutomc.lib", "mobEgg");
 
     private class HT_EntityRegistration {
         private Class<? extends Entity> m_class;
@@ -39,6 +46,17 @@ public class HT_ModEntityList implements Iterable<Class<? extends Entity>>{
         m_listRegistrations = new ArrayList<>();
         this.m_modObj = mod;
         m_itemMobEgg = new HT_ItemMobEgg(modid, this).register();
+    }
+
+    public void registerModel () {
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            HT_RenderUtil.getItemModelMesher().register(m_itemMobEgg, new ItemMeshDefinition() {
+                @Override
+                public ModelResourceLocation getModelLocation (ItemStack p_178113_1_) {
+                    return modelEgg;
+                }
+            });
+        }
     }
 
     public HT_ModEntityList register(Class<? extends Entity> classEntity, String name, int colorBase, int colorSpot) {

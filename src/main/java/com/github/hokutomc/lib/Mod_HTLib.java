@@ -58,8 +58,6 @@ public class Mod_HTLib {
         if (isDebug) {
             Debug.init();
         }
-
-
     }
 
     @SubscribeEvent
