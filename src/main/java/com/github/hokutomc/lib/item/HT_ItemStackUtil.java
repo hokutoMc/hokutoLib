@@ -1,7 +1,6 @@
 package com.github.hokutomc.lib.item;
 
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -15,7 +14,7 @@ public final class HT_ItemStackUtil {
         return itemStack != null && itemStack.getItem() != null ? itemStack.stackSize : 0;
     }
 
-    public static <T extends Item> T getItemAs (ItemStack itemStack, Class<T> itemClass) {
+    public static <T> T getItemAs (ItemStack itemStack, Class<T> itemClass) {
         return itemStack != null && itemStack.getItem() != null && itemClass.isInstance(itemStack.getItem()) ? itemClass.cast(itemStack.getItem()) : null;
     }
 }

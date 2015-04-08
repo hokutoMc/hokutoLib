@@ -48,4 +48,13 @@ public final class HT_ArrayUtil {
         System.arraycopy(stacks, start, objects, 0, size);
         return (T[]) objects;
     }
+
+    @SuppressWarnings("unchecked")
+    public static <R> R[] append (R[] arrayA, R[] arrayB, R... dummy) {
+        Class<R> rClass = HT_Reflections.getClass(dummy);
+        R[] newArr = (R[]) Array.newInstance(rClass, arrayA.length + arrayB.length);
+        System.arraycopy(arrayA, 0, newArr, 0, arrayA.length);
+        System.arraycopy(arrayB, 0, newArr, arrayA.length, arrayB.length);
+        return newArr;
+    }
 }
