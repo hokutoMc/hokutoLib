@@ -8,7 +8,8 @@ import com.github.hokutomc.lib.util.HT_I18nUtil
  */
 class HT_RichString(val string: String) extends AnyVal {
   def localize : String = HT_I18nUtil.localize(string)
-  def localize (array: Any*) : String = HT_I18nUtil.localize(string, array toArray)
+
+  def localize(array: Any*): String = HT_I18nUtil.localize(string, array: _*)
 
   // operators
   def unary_- () : String = localize
