@@ -18,11 +18,11 @@ public final class HT_I18nUtil {
         return StatCollector.translateToLocal(unlocalizedName).trim();
     }
 
-    public static String localize (HT_I_International international, Object... datas) {
+    public static String localizeObj (HT_I_International international, Object... datas) {
         return localize(international.getUnlocalizedName(), datas);
     }
 
-    public static String localize (HT_I_International international) {
+    public static String localizeObj (HT_I_International international) {
         return localize(international.getUnlocalizedName());
     }
 }
