@@ -3,6 +3,7 @@ package com.github.hokutomc.lib.item;
 import com.github.hokutomc.lib.HT_Registries;
 import com.github.hokutomc.lib.client.render.HT_RenderUtil;
 import com.github.hokutomc.lib.util.HT_ArrayUtil;
+import com.github.hokutomc.lib.util.HT_GeneralUtil;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +26,7 @@ public class HT_Item<T extends HT_Item> extends Item {
     }
 
     private String m_shortName;
-    protected List<HT_ItemStackBuilder> m_subItems;
+    protected List<HT_ItemStackBuilder.Raw> m_subItems;
     public final String m_modid;
 
     private ImmutableList<String> m_multiNames;
@@ -36,7 +37,7 @@ public class HT_Item<T extends HT_Item> extends Item {
         this.m_modid = modid;
         this.setInnerName(modid, innerName);
         m_subItems = new ArrayList<>();
-        m_subItems.add(new HT_ItemStackBuilder(this));
+        m_subItems.add(new HT_ItemStackBuilder.Raw(this));
     }
 
     @SuppressWarnings("unchecked")
@@ -49,7 +50,7 @@ public class HT_Item<T extends HT_Item> extends Item {
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         for (int i = 1; i < subNames.length; i++) {
-            m_subItems.add(new HT_ItemStackBuilder(this).damage(i));
+            m_subItems.add(new HT_ItemStackBuilder.Raw(this).damage(i));
         }
         return cast(this);
     }
@@ -69,8 +70,8 @@ public class HT_Item<T extends HT_Item> extends Item {
         }
     }
 
-    public String[] getMultiNames () {
-        return m_multiNames != null ? HT_ArrayUtil.toArray(m_multiNames) : new String[0];
+    public List<String> getMultiNames () {
+        return HT_GeneralUtil.orElse(m_multiNames, ImmutableList.<String>of());
     }
 
     public T setInnerName (String modid, String innerName) {

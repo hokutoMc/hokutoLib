@@ -45,18 +45,18 @@ public abstract class HT_ItemArmor<T extends HT_ItemArmor<T>> extends HT_ItemDur
     }
 
     @Override
-    public HT_ItemStackBuilder getBuilder (int durability, int meta) {
+    public HT_ItemStackBuilder.Raw getBuilder (int durability, int meta) {
         return super.getBuilder(durability, meta);
     }
 
     @Override
-    public HT_ItemStackBuilder getBuilder (int meta) {
+    public HT_ItemStackBuilder.Raw getBuilder (int meta) {
         return super.getBuilder(meta);
     }
 
     private void addParts (int damage) {
         for (Part p : Part.values()) {
-            m_subItems.add(new HT_ItemStackBuilder(this).damage(damage).fullDurability().setPart(p));
+            m_subItems.add(new HT_ItemStackBuilder.Raw(this).damage(damage).fullDurability().setPart(p));
         }
     }
 

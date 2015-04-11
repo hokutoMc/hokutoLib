@@ -1,5 +1,6 @@
 package com.github.hokutomc.lib.block;
 
+import com.github.hokutomc.lib.util.HT_ArrayUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -25,9 +26,9 @@ public class HT_BlockSingleSlab extends HT_Block<HT_BlockSingleSlab> {
     public final boolean m_isUpper;
     private final HT_BlockDoubleSlab m_parent;
 
-    protected HT_BlockSingleSlab (String modid, Material material, String innerName, boolean isUpper, HT_BlockDoubleSlab parent, String... subNameList) {
+    protected HT_BlockSingleSlab (String modid, Material material, String innerName, boolean isUpper, HT_BlockDoubleSlab parent, List<String> subNameList) {
         super(modid, material, innerName);
-        this.multi(subNameList);
+        this.multi(HT_ArrayUtil.toArray(subNameList, String.class));
         this.m_isUpper = isUpper;
         this.m_parent = parent;
         if (this.m_isUpper) {

@@ -3,7 +3,7 @@ package com.github.hokutomc.lib.block;
 import com.github.hokutomc.lib.HT_Registries;
 import com.github.hokutomc.lib.client.render.HT_RenderUtil;
 import com.github.hokutomc.lib.item.HT_ItemStackBuilder;
-import com.github.hokutomc.lib.util.HT_ArrayUtil;
+import com.github.hokutomc.lib.util.HT_GeneralUtil;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -30,7 +30,7 @@ public class HT_Block<T extends HT_Block> extends Block {
     private String m_innerName;
     protected boolean m_fallInstantly;
     public String m_modid;
-    protected List<HT_ItemStackBuilder> m_subItems = new ArrayList<>();
+    protected List<HT_ItemStackBuilder.Raw> m_subItems = new ArrayList<>();
 
     private ImmutableList<String> m_multiNames;
 
@@ -40,8 +40,7 @@ public class HT_Block<T extends HT_Block> extends Block {
         this.m_modid = modid;
         this.m_shortName = innerName;
         this.setInnerName(modid, innerName);
-//        this.HT_setTextureName(modid, innerName);
-        m_subItems.add(new HT_ItemStackBuilder(this));
+        m_subItems.add(new HT_ItemStackBuilder.Raw(this));
     }
 
 
@@ -59,7 +58,7 @@ public class HT_Block<T extends HT_Block> extends Block {
         this.m_multiNames = ImmutableList.copyOf(subNames);
         this.setHasSubTypes(true);
         for (int i = 1; i < m_multiNames.size(); i++) {
-            m_subItems.add(new HT_ItemStackBuilder(this).damage(i));
+            m_subItems.add(new HT_ItemStackBuilder.Raw(this).damage(i));
         }
         return cast(this);
     }
@@ -80,8 +79,9 @@ public class HT_Block<T extends HT_Block> extends Block {
         }
     }
 
-    public String[] getMultiNames () {
-        return this.m_hasSubTypes ? HT_ArrayUtil.toArray(this.m_multiNames) : new String[0];
+
+    public List<String> getMultiNames () {
+        return HT_GeneralUtil.orElse(this.m_multiNames, ImmutableList.<String>of());
     }
 
     public boolean getHasSubTypes () {
@@ -155,7 +155,7 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     public void HT_registerMulti (Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-        for (HT_ItemStackBuilder b : this.m_subItems) {
+        for (HT_ItemStackBuilder.Raw b : this.m_subItems) {
             subItems.add(b.build(1));
         }
     }

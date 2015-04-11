@@ -29,24 +29,24 @@ public abstract class HT_ItemDurable<T extends HT_ItemDurable> extends HT_Item<T
         super(modid, innerName);
         this.HT_setMaxStackSize(1);
         this.m_subItems.clear();
-        this.m_subItems.add(new HT_ItemStackBuilder(this).fullDurability());
+        this.m_subItems.add(new HT_ItemStackBuilder.Raw(this).fullDurability());
     }
 
     @Override
     public T multi (String... subNames) {
         T t = super.multi(subNames);
-        for (HT_ItemStackBuilder item : this.m_subItems) {
+        for (HT_ItemStackBuilder.Raw item : this.m_subItems) {
             item.fullDurability();
         }
         return t;
     }
 
-    public HT_ItemStackBuilder getBuilder (int durability, int meta) {
-        return new HT_ItemStackBuilder(this).damage(meta).setInt(KEY_DURABILITY, durability).setBoolean(KEY_BROKEN, false);
+    public HT_ItemStackBuilder.Raw getBuilder (int durability, int meta) {
+        return new HT_ItemStackBuilder.Raw(this).damage(meta).setInt(KEY_DURABILITY, durability).setBoolean(KEY_BROKEN, false);
     }
 
-    public HT_ItemStackBuilder getBuilder (int meta) {
-        return new HT_ItemStackBuilder(this) {
+    public HT_ItemStackBuilder.Raw getBuilder (int meta) {
+        return new HT_ItemStackBuilder.Raw(this) {
             @Override
             public ItemStack build (int size) {
                 ItemStack stack = super.build(size);

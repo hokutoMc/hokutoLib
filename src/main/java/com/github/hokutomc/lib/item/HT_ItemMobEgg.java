@@ -38,7 +38,7 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg> {
     public void HT_registerMulti (Item item, CreativeTabs tab, List<ItemStack> list) {
         this.m_subItems.clear();
         for (int i = 0; i < m_listEntity.size(); i++) {
-            m_subItems.add(new HT_ItemStackBuilder(this).damage(i));
+            m_subItems.add(new HT_ItemStackBuilder.Raw(this).damage(i));
         }
         super.HT_registerMulti(item, tab, list);
     }
