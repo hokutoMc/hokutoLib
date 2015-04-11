@@ -47,4 +47,15 @@ object HT_ScalaUtils {
       override def getBurnTime(fuel: ItemStack): Int = func(fuel)
     })
   }
+
+  def doWileNone[A](functions: (() => Option[A])*): Option[A] = {
+    var prev: Option[A] = None
+    for (f <- functions) {
+      prev match {
+        case Some(v) => return Some(v)
+        case _ => prev = f()
+      }
+    }
+    prev
+  }
 }

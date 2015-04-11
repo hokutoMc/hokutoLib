@@ -5,6 +5,7 @@ import com.github.hokutomc.lib.common.config.HT_Config;
 import com.github.hokutomc.lib.entity.HT_EntityUtil;
 import com.github.hokutomc.lib.item.HT_ItemStackUtil;
 import com.github.hokutomc.lib.item.tool.HT_ItemTool;
+import com.github.hokutomc.lib.oredict.HT_OreDictPlus;
 import com.github.hokutomc.lib.test.Debug;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -50,6 +51,7 @@ public class Mod_HTLib {
 
 
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(HT_OreDictPlus.EVENT_HOOK);
     }
 
     @Mod.EventHandler

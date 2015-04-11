@@ -1,10 +1,11 @@
 package com.github.hokutomc.lib.util;
 
 
+import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Created by user on 2014/10/08.
@@ -63,5 +64,31 @@ public final class HT_OreUtil {
             if (s.equals(name)) return true;
         }
         return false;
+    }
+
+    public static String assumeNameFromStacks (List<ItemStack> list) {
+        int count = 0;
+        LinkedHashMap<String, Integer> map = Maps.newLinkedHashMap();
+        for (ItemStack i : list) {
+            for (String s : HT_OreUtil.getNames(i)) {
+                if (map.containsKey(s)) {
+                    map.put(s, map.get(s));
+                } else {
+                    map.put(s, 1);
+                }
+            }
+        }
+
+
+        List<Map.Entry<String, Integer>> entries = new ArrayList<>(map.entrySet());
+
+        Collections.sort(entries, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare (Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return -(o1.getValue() - o2.getValue());
+            }
+        });
+
+        return entries.get(0).getKey();
     }
 }

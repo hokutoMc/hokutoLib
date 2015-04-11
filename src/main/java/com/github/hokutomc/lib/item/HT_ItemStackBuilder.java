@@ -199,9 +199,9 @@ public class HT_ItemStackBuilder<T extends HT_ItemStackBuilder> {
     @SuppressWarnings("unchecked")
     public T fullDurability () {
         ItemStack stack = this.m_template.copy();
-        HT_ItemDurable itemDurable = HT_ItemStackUtil.getItemAs(stack, HT_ItemDurable.class);
-        if (itemDurable != null) {
-            setInt(HT_ItemDurable.KEY_DURABILITY, itemDurable.getMaxDurability(stack));
+        HT_ItemDurable item = HT_ItemStackUtil.getItemAs(stack, HT_ItemDurable.class);
+        if (item != null) {
+            setInt(HT_ItemDurable.KEY_DURABILITY, item.getMaxDurability(stack));
             return setBoolean(HT_ItemDurable.KEY_BROKEN, false);
         }
         try {

@@ -1,5 +1,6 @@
 package com.github.hokutomc.lib.scala.item
 
+import com.github.hokutomc.lib.item.matcher.{HT_ItemMatcher, HT_ItemMatcherItem, HT_ItemMatcherOre}
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
 import net.minecraft.init.Items
 import net.minecraft.item.{Item, ItemStack}
@@ -19,32 +20,18 @@ object HT_ItemStackPattern {
     case _ => itemStack.damage flatMap { d => itemStack.getItemAs[A] map { i => (i, d) } }
   }
 
-  def ofType[I](eqOrMore: Int = 1)(implicit classTag: ClassTag[I]) = new HT_ItemStackPatternType[I](eqOrMore)
+  def ofType[I](implicit classTag: ClassTag[I]) = new HT_ItemStackPatternType[I]
 
-  def apply[I <: Item](item: I, damage: Option[Int] = None, eqOrMore: Int = 1)(implicit classTag: ClassTag[I]) = new HT_ItemStackPatternItem[I](item, damage, eqOrMore)
-
-  def ofOre(ore: String, eqOrMore: Int = 1) = new HT_ItemStackPatternOre(ore, eqOrMore)
-}
-
-
-abstract class HT_ItemStackPattern(val eqOrMore: Int = 1) {
-
-  protected def satisfy(itemStack: ItemStack): Boolean
-
-  def matches(itemStack: ItemStack): Boolean = !itemStack.isEmpty && itemStack.stackSize >= eqOrMore && satisfy(itemStack)
-}
-
-class HT_ItemStackPatternItem[I <: Item](val item: I, val damage: Option[Int] = None, override val eqOrMore: Int) extends HT_ItemStackPattern(eqOrMore) {
-  override def satisfy(itemStack: ItemStack): Boolean = damage match {
-    case Some(d) => itemStack.getItem == item && itemStack.getItemDamage == d
-    case _ => itemStack.getItem == item
+  def apply[I <: Item](item: I, damage: Option[Int] = None, eqOrMore: Int = 1)(implicit classTag: ClassTag[I]) = {
+    new PatternWrapperItem(damage match { case Some(d) => new HT_ItemMatcherItem(item, d) case _ => new HT_ItemMatcherItem(item) })
   }
 
-  def unapply(itemStack: ItemStack): Option[I] = if (matches(itemStack)) Some(item) else None
+  def ofOre(ore: String, eqOrMore: Int = 1) = new PatternWrapperOre(new HT_ItemMatcherOre(ore))
 }
 
-class HT_ItemStackPatternType[I](override val eqOrMore: Int)(implicit val classTag: ClassTag[I]) extends HT_ItemStackPattern(eqOrMore) {
-  override def satisfy(itemStack: ItemStack): Boolean = itemStack.getItem match {
+
+class HT_ItemStackPatternType[I](implicit val classTag: ClassTag[I]) extends HT_ItemMatcher() {
+  override def check(itemStack: ItemStack): Boolean = itemStack.getItem match {
     case _: I => true
     case _ => false
   }
@@ -52,8 +39,10 @@ class HT_ItemStackPatternType[I](override val eqOrMore: Int)(implicit val classT
   def unapply(itemStack: ItemStack): Option[I] = if (matches(itemStack)) itemStack.getItemAs[I] else None
 }
 
-class HT_ItemStackPatternOre(val name: String, override val eqOrMore: Int) extends HT_ItemStackPattern(eqOrMore) {
-  override protected def satisfy(itemStack: ItemStack): Boolean = itemStack hasName name
+class PatternWrapperItem[I <: Item](val matcher: HT_ItemMatcherItem)(implicit val classTag: ClassTag[I]) {
+  def unapply(itemStack: ItemStack): Option[(I, Int)] = if (matcher.matches(itemStack)) Some((matcher.item.asInstanceOf[I], matcher.damage)) else None
+}
 
-  def unapply(itemStack: ItemStack): Option[Item] = if (matches(itemStack)) Some(itemStack.getItem) else None
+class PatternWrapperOre(val matcherOre: HT_ItemMatcherOre) {
+  def unapply(itemStack: ItemStack): Option[(ItemStack, Item)] = if (matcherOre.matches(itemStack)) Some((itemStack, itemStack.getItem)) else None
 }
