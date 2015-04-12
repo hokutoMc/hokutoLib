@@ -30,7 +30,10 @@ class HT_RichItemStack(val wrapped: ItemStack) extends AnyVal with HT_T_NBTValue
 
   override def readFromNBT(compound: HT_RichNBTTagCompound): HT_RichItemStack = ItemStack loadItemStackFromNBT compound
 
-  override def tag: NBTTagCompound = this.getOrCreateTag
+  override def tag: NBTTagCompound = this.getOrCreateTag match {
+    case Some(v) => v
+    case _ => null
+  }
 
   override def stack: ItemStack = wrapped
 }

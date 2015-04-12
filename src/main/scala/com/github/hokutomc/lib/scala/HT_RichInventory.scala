@@ -16,7 +16,7 @@ class HT_RichInventory(val inventory: IInventory) extends AnyVal with HT_T_NBTVa
 
   def update(index: Int, itemStack: ItemStack) = inventory.setInventorySlotContents(index, itemStack)
 
-  def checkEmpty(index: Int) = if (this(index) != null && this(index).stackSize == 0) this.update(index, null)
+  def checkEmpty(index: Int) = if (this(index) != null && this(index).stackSize <= 0) this.update(index, null)
 
   def checkAllEmpty() = for (i <- 0 until inventory.getSizeInventory) checkEmpty(i)
 

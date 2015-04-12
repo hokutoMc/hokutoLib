@@ -13,12 +13,14 @@ trait HT_T_NBTCompound[A] extends Any {
 
   def a: A
 
+  def isNull = tag eq null
+
   def update[T <: HT_T_NBTValue[T]](key: String, nbtValue: HT_T_NBTValue[T]): Unit = {
-    nbtValue.setToNBT(tag, key)
+    if (!isNull) nbtValue.setToNBT(tag, key)
   }
 
   def apply[T <: HT_T_NBTValue[T]](key: String, defValue: T) = {
-    if (!tag.hasKey(key)) None
+    if (isNull || !tag.hasKey(key)) None
     else Some(defValue.getFromNBT(tag, key))
   }
 
@@ -28,11 +30,11 @@ trait HT_T_NBTCompound[A] extends Any {
   }
 
 
-  def doubleList(key: String) = new ListDouble(tag.getTagList(key, TAG_DOUBLE))
+  def doubleList(key: String) = if (isNull) None else Some(new ListDouble(tag.getTagList(key, TAG_DOUBLE)))
 
-  def floatList(key: String) = new ListFloat(tag.getTagList(key, TAG_FLOAT))
+  def floatList(key: String) = if (isNull) None else Some(new ListFloat(tag.getTagList(key, TAG_FLOAT)))
 
-  def tagCompList(key: String) = new ListCompound(tag.getTagList(key, TAG_COMPOUND))
+  def tagCompList(key: String) = if (isNull) None else Some(new ListCompound(tag.getTagList(key, TAG_COMPOUND)))
 
-  def stringList(key: String) = new ListString(tag.getTagList(key, TAG_STRING))
+  def stringList(key: String) = if (isNull) None else Some(new ListString(tag.getTagList(key, TAG_STRING)))
 }

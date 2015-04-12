@@ -46,14 +46,7 @@ public abstract class HT_ItemDurable<T extends HT_ItemDurable> extends HT_Item<T
     }
 
     public HT_ItemStackBuilder.Raw getBuilder (int meta) {
-        return new HT_ItemStackBuilder.Raw(this) {
-            @Override
-            public ItemStack build (int size) {
-                ItemStack stack = super.build(size);
-                stack.getTagCompound().setInteger(KEY_DURABILITY, getMaxDurability(stack));
-                return stack;
-            }
-        }.damage(meta).setBoolean(KEY_BROKEN, false);
+        return new HT_ItemStackBuilder.Raw(this).damage(meta).fullDurability();
     }
 
     @Override

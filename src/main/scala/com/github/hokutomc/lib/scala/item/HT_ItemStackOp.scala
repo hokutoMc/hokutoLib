@@ -1,13 +1,15 @@
 package com.github.hokutomc.lib.scala.item
 
 import com.github.hokutomc.lib.item.{HT_ItemArmor, HT_ItemDurable}
+import com.github.hokutomc.lib.oredict.HT_OreDictPlus
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
 import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_T_NBTCompound}
-import com.github.hokutomc.lib.util.{HT_GeneralUtil, HT_OreUtil}
+import com.github.hokutomc.lib.util.HT_GeneralUtil
 import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.oredict.OreDictionary
 
+import scala.collection.JavaConversions._
 import scala.reflect.ClassTag
 
 /**
@@ -17,6 +19,8 @@ trait HT_ItemStackOp[Repr <: HT_ItemStackOp[Repr]] extends Any with HT_T_NBTComp
   this: Repr =>
 
   def stack: ItemStack
+
+  def isStackNull = stack ne null
 
   def decreaseOne: Repr = decreaseSize(1)
 
@@ -69,16 +73,17 @@ trait HT_ItemStackOp[Repr <: HT_ItemStackOp[Repr]] extends Any with HT_T_NBTComp
     case _ => None
   }
 
-  def getOrCreateTag: HT_RichNBTTagCompound = {
+  def getOrCreateTag: Option[HT_RichNBTTagCompound] = {
+    if (isStackNull) return None
     if (!stack.hasTagCompound) {
       stack.setTagCompound(new NBTTagCompound)
     }
-    stack.getTagCompound
+    Some(stack.getTagCompound)
   }
 
-  def getOreNames: Array[String] = HT_OreUtil getNames stack
+  def getOreNames: Seq[String] = HT_OreDictPlus getNames stack
 
-  def hasName(name: String): Boolean = HT_OreUtil.hasName(stack, name)
+  def hasName(name: String): Boolean = HT_OreDictPlus.hasName(stack, name)
 
 
   // operator support
@@ -86,7 +91,7 @@ trait HT_ItemStackOp[Repr <: HT_ItemStackOp[Repr]] extends Any with HT_T_NBTComp
 
   def unary_+ : Repr = increaseOne
 
-  def unary_! : HT_RichNBTTagCompound = getOrCreateTag
+  def unary_! : Option[HT_RichNBTTagCompound] = getOrCreateTag
 
   def unary_~ : Option[Item] = getItem
 
@@ -109,7 +114,10 @@ trait HT_ItemStackOp[Repr <: HT_ItemStackOp[Repr]] extends Any with HT_T_NBTComp
 
   def apply(function: HT_RichItemStack => Unit) = function(stack)
 
-  override def tag: NBTTagCompound = this getOrCreateTag
+  override def tag: NBTTagCompound = this.getOrCreateTag match {
+    case Some(v) => v
+    case _ => null
+  }
 
   override def a: Repr = this
 }
