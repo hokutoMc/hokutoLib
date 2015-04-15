@@ -2,6 +2,7 @@ package com.github.hokutomc.lib.scala.item
 
 import com.github.hokutomc.lib.item.{HT_ItemArmor, HT_ItemDurable}
 import com.github.hokutomc.lib.oredict.HT_OreDictPlus
+import com.github.hokutomc.lib.scala.HT_Predef._
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
 import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_T_NBTCompound}
 import com.github.hokutomc.lib.util.HT_GeneralUtil

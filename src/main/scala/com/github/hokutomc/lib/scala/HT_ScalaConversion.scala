@@ -5,14 +5,15 @@ import com.github.hokutomc.lib.client.gui.HT_GuiAction
 import com.github.hokutomc.lib.item.HT_ItemStackBuilder
 import com.github.hokutomc.lib.item.recipe.{HT_ItemStackBuilder4Recipe, HT_RecipeBuilder}
 import com.github.hokutomc.lib.scala.block.states.HT_RichBlockState
-import com.github.hokutomc.lib.scala.entity.{HT_RichEntity, HT_RichPlayer}
+import com.github.hokutomc.lib.scala.entity.{HT_RichDataWatcher, HT_RichEntity, HT_RichPlayer}
 import com.github.hokutomc.lib.scala.item.{HT_RichItemStack, HT_RichItemStackBuilder}
 import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_RichNBTTagList}
+import com.github.hokutomc.lib.scala.world.HT_World
 import net.minecraft.block.Block
 import net.minecraft.block.properties.IProperty
 import net.minecraft.block.state.IBlockState
-import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.{DataWatcher, Entity}
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.{EnumDyeColor, Item, ItemStack}
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
@@ -67,6 +68,10 @@ object HT_ScalaConversion {
   implicit def wrapPlayer (entityPlayer: EntityPlayer) : HT_RichPlayer = new HT_RichPlayer(entityPlayer)
 
   implicit def unwrapPlayer (player: HT_RichPlayer) : EntityPlayer = player.player
+
+  implicit def wrapDataWatcher(dataWatcher: DataWatcher): HT_RichDataWatcher = new HT_RichDataWatcher(dataWatcher)
+
+  implicit def unwrapDataWatcher(dataWatcher: HT_RichDataWatcher): DataWatcher = dataWatcher.wrapped
 
   implicit def wrapInventory (inventory: IInventory) : HT_RichInventory = new HT_RichInventory(inventory)
 

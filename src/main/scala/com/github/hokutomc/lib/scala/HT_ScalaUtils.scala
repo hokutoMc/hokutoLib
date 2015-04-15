@@ -48,14 +48,5 @@ object HT_ScalaUtils {
     })
   }
 
-  def doWileNone[A](functions: (() => Option[A])*): Option[A] = {
-    var prev: Option[A] = None
-    for (f <- functions) {
-      prev match {
-        case Some(v) => return Some(v)
-        case _ => prev = f()
-      }
-    }
-    prev
-  }
+
 }

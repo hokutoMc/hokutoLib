@@ -1,4 +1,4 @@
-package com.github.hokutomc.lib.scala
+package com.github.hokutomc.lib.scala.world
 
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.BlockPos
@@ -11,4 +11,6 @@ class HT_World(val world: World) extends AnyVal {
   def apply(blockPos: BlockPos): IBlockState = world.getBlockState(blockPos)
 
   def update(blockPos: BlockPos, flags: Int = 3)(blockState: IBlockState): Unit = world.setBlockState(blockPos, blockState)
+
+  def server[A](function: () => A): A = function()
 }

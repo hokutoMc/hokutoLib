@@ -1,6 +1,5 @@
 package com.github.hokutomc.lib.scala.nbt
 
-import com.github.hokutomc.lib.scala.HT_ScalaConversion._
 import com.github.hokutomc.lib.scala.nbt.HT_RichNBTTagList.{ListCompound, ListDouble, ListFloat, ListString}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.common.util.Constants.NBT._
@@ -15,13 +14,13 @@ trait HT_T_NBTCompound[A] extends Any {
 
   def isNull = tag eq null
 
-  def update[T <: HT_T_NBTValue[T]](key: String, nbtValue: HT_T_NBTValue[T]): Unit = {
-    if (!isNull) nbtValue.setToNBT(tag, key)
+  def update[T](key: String, t: T)(implicit ev: HT_NBTEvidence[T]): Unit = {
+    if (!isNull) ev.write(key, tag, t)
   }
 
-  def apply[T <: HT_T_NBTValue[T]](key: String, defValue: T) = {
+  def apply[T](key: String)(implicit ev: HT_NBTEvidence[T]) = {
     if (isNull || !tag.hasKey(key)) None
-    else Some(defValue.getFromNBT(tag, key))
+    else Some(ev.read(key, tag))
   }
 
   def apply(func: NBTTagCompound => Unit): A = {
