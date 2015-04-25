@@ -28,16 +28,28 @@ object HT_EntityVariable {
 
   class NBT[A](override val key: String, override val initial: Option[A]) extends T_NBT[A]
 
-  class NBTWatchable[A](val entity: Entity, override val key: String, val id: Int, override val initial: Option[A])(implicit evD: HT_DataWatchEvidence[A])
-    extends T_NBT[A] {
+  trait T_Watchable[A] extends HT_EntityVariable[A] {
+    val evD: HT_DataWatchEvidence[A]
+    val entity: Entity
+    val id: Int
+    
     def initialize(): Unit = initial foreach { a => evD.init(entity.getDataWatcher, id, a) }
 
-    override def :=(a: A): Unit = entity.getDataWatcher.update(id, a)(evD)
+    override def flatAssign(oA: Option[A]): Unit = oA safe { a => entity.getDataWatcher.update(id, a)(evD) }
 
     override def getOption: Option[A] = Some(entity.getDataWatcher.apply(id)(evD))
   }
 
+  class Watchable[A](val entity: Entity, val id: Int, override val initial: Option[A])(implicit val evD: HT_DataWatchEvidence[A])
+    extends T_Watchable[A]
+
+  class NBTWatchable[A](val entity: Entity, override val key: String, val id: Int, override val initial: Option[A])(implicit val evD: HT_DataWatchEvidence[A])
+    extends T_NBT[A] with T_Watchable[A]
+
   def nbt[A](key: String, initial: Option[A]) = new NBT[A](key, initial)
+
+  def watchable[A](entity: Entity, id: Int, initial: Option[A])(implicit evD: HT_DataWatchEvidence[A]) =
+    new Watchable[A](entity, id, initial)(evD)
 
   def nbtWatchable[A](entity: Entity, key: String, id: Int, initial: Option[A])(implicit evD: HT_DataWatchEvidence[A]) =
     new NBTWatchable[A](entity, key, id, initial)(evD)
@@ -55,10 +67,24 @@ abstract class HT_EntityVariable[A] {
 
   def getOption: Option[A] = value
 
-  def :=(a: A): Unit = value = Option(a)
+  final def :=(a: A): Unit = flatAssign(Some(a))
 
+  def flatAssign(a: Option[A]): Unit = value = a
 
   def safe[U](f: A => U): Unit = foreach(f)
+
+  /**
+   * to give side effect to the value.
+   * the returned value of the function will be re-assigned.
+   * @param f
+   */
+  def side(f: A => A): Unit = this flatAssign map(f)
+
+  /**
+   * flat version of side
+   * @param f
+   */
+  def flatSide(f: A => Option[A]): Unit = this flatAssign flatMap(f)
 
   def isEmpty: Boolean = getOption isEmpty
 
