@@ -17,15 +17,11 @@ class HT_RichItemStack(val wrapped: ItemStack) extends AnyVal with HT_ItemStackO
 
   def isEmpty = stackSize == 0
 
-
   def writeToNBT(nbtTagCompound: NBTTagCompound) = wrapped.writeToNBT(nbtTagCompound)
 
   override def toString: String = if (isEmpty) "empty stack" else stack.toString
 
-  override def tag: NBTTagCompound = this.getOrCreateTag match {
-    case Some(v) => v
-    case _ => null
-  }
+  override def tag: NBTTagCompound = this.getOrCreateTag
 
   override def stack: ItemStack = wrapped
 }

@@ -22,6 +22,8 @@ class HT_Vec3(val wrapped: Vec3) extends AnyVal{
 
   def * (vec3: HT_Vec3) : Double = wrapped.dotProduct(vec3.unwrap)
 
+  def *:(double: Double): HT_Vec3 = new Vec3(double * x, double * y, double * z)
+
   def × (vec3: Vec3) : HT_Vec3 = wrapped.crossProduct(vec3.unwrap)
 
   def unary_~ : HT_Vec3 = wrapped.normalize()

@@ -14,7 +14,9 @@ class HT_RichPlayer(val player: EntityPlayer) extends AnyVal with HT_RichEntity 
 
   implicit def unwrap: EntityPlayer = player
 
-  def toDamageSource = DamageSource.causePlayerDamage(player)
+  def toDamageSource: DamageSource = DamageSource.causePlayerDamage(player)
+
+  def holdNothing: Boolean = player.getCurrentEquippedItem isEmpty
 
   // operation support
 

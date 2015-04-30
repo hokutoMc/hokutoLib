@@ -67,19 +67,13 @@ trait HT_ItemStackOp[Repr <: HT_ItemStackOp[Repr]] extends Any with HT_T_NBTComp
 
   def getItemAs[T](implicit classTag: ClassTag[T]): Option[T] = getItem flatMap { case i: T => Some(i) case _ => None }
 
-  def ifItemIsOf[T, U](func: T => U)(implicit classTag: ClassTag[T]): Option[U] = getItemAs[T] map func
+  def getItemIfSame[T](item: T)(implicit classTag: ClassTag[T]) = getItem flatMap { case i if i == item => Some(i) case _ => None }
 
-  def ifItemSame[T <: Item, U](item: Item)(func: T => U)(implicit classTag: ClassTag[T]): Option[U] = getItemAs[T] match {
-    case Some(v) if v eq item => Some(func(v))
-    case _ => None
-  }
-
-  def getOrCreateTag: Option[HT_RichNBTTagCompound] = {
-    if (isStackNull) return None
+  def getOrCreateTag: HT_RichNBTTagCompound = {
     if (!stack.hasTagCompound) {
       stack.setTagCompound(new NBTTagCompound)
     }
-    Some(stack.getTagCompound)
+    stack.getTagCompound
   }
 
   def getOreNames: Seq[String] = HT_OreDictPlus getNames stack
@@ -92,7 +86,7 @@ trait HT_ItemStackOp[Repr <: HT_ItemStackOp[Repr]] extends Any with HT_T_NBTComp
 
   def unary_+ : Repr = increaseOne
 
-  def unary_! : Option[HT_RichNBTTagCompound] = getOrCreateTag
+  def unary_! : HT_RichNBTTagCompound = getOrCreateTag
 
   def unary_~ : Option[Item] = getItem
 
@@ -113,12 +107,7 @@ trait HT_ItemStackOp[Repr <: HT_ItemStackOp[Repr]] extends Any with HT_T_NBTComp
   def apply[T <: Item](implicit classTag: ClassTag[T]): Option[T] = getItemAs[T]
 
 
-  def apply(function: HT_RichItemStack => Unit) = function(stack)
-
-  override def tag: NBTTagCompound = this.getOrCreateTag match {
-    case Some(v) => v
-    case _ => null
-  }
+  override def tag: NBTTagCompound = this.getOrCreateTag
 
   override def a: Repr = this
 }

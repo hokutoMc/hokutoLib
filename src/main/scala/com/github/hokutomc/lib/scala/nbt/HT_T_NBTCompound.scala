@@ -23,11 +23,6 @@ trait HT_T_NBTCompound[A] extends Any {
     else Some(ev.read(key, tag))
   }
 
-  def apply(func: NBTTagCompound => Unit): A = {
-    func(tag)
-    a
-  }
-
 
   def doubleList(key: String) = if (isNull) None else Some(new ListDouble(tag.getTagList(key, TAG_DOUBLE)))
 

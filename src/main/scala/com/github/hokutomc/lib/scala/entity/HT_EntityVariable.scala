@@ -10,7 +10,7 @@ object HT_EntityVariable {
     val key: String
 
     def read(nbt: TagComp)(implicit ev: HT_NBTEvidence[A]) =
-      this flatAssign nbt[A](key)(ev)
+      this flatAssign nbt.apply[A](key)(ev)
 
     /**
      * write the value to nbtTag.

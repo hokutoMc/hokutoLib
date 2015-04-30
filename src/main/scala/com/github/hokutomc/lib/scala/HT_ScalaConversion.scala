@@ -119,10 +119,10 @@ object HT_ScalaConversion {
   }
 
   implicit class WrapBlockContainer[T <: TileEntity](val containerBlock: HT_ContainerBlock[_, T]) extends AnyVal {
-    def tileEntity(world: IBlockAccess, pos: BlockPos)(func: T => Unit)(implicit classTag: ClassTag[T]) = {
+    def tileEntity(world: IBlockAccess, pos: BlockPos)(implicit classTag: ClassTag[T]): Option[T] = {
       world.getTileEntity(pos) match {
-        case t: T => func(t)
-        case _=>
+        case t: T => Some(t)
+        case _ => None
       }
     }
   }

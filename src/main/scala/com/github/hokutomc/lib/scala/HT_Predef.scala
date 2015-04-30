@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostIniti
  * Created by user on 2015/04/12.
  */
 object HT_Predef {
-  type JList[A] = java.util.List[A]
+  type JavaList[A] = java.util.List[A]
 
   type Item = net.minecraft.item.Item
   type Block = net.minecraft.block.Block
