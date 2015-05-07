@@ -1,4 +1,4 @@
-package com.github.hokutomc.lib.scala
+package com.github.hokutomc.lib.scala.block
 
 import net.minecraft.util.{BlockPos, EnumFacing, Vec3i}
 

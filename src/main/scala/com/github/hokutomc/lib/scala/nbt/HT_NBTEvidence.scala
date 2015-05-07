@@ -1,9 +1,11 @@
 package com.github.hokutomc.lib.scala.nbt
 
 import com.github.hokutomc.lib.nbt.HT_NBTUtil
+import com.github.hokutomc.lib.scala.HT_Predef._
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.BlockPos
 
 /**
  * Created by user on 2015/04/12.
@@ -94,13 +96,23 @@ object HT_NBTEvidence {
   }
 
   object EvItemStack extends HT_NBTEvidence.Compound[ItemStack] {
-    override def writeComp(tag: NBTTagCompound, value: ItemStack): Unit = {
-      value.wrapped.writeToNBT(tag)
+    override def writeComp(tag: NBTTagCompound, value: ItemStack): Unit = value.wrapped.writeToNBT(tag)
+
+    override def readComp(tag: NBTTagCompound): ItemStack = ItemStack.loadItemStackFromNBT(tag)
+  }
+
+  object EvBlockPos extends HT_NBTEvidence.Compound[BlockPos] {
+    override def writeComp(tag: NBTTagCompound, value: BlockPos): Unit = {
+      tag.update[Int]("x", value.getX)
+      tag.update[Int]("y", value.getY)
+      tag.update[Int]("z", value.getZ)
     }
 
-    override def readComp(tag: NBTTagCompound): ItemStack = {
-      ItemStack.loadItemStackFromNBT(tag)
-    }
+    override def readComp(tag: NBTTagCompound): BlockPos = (for {
+      x <- tag[Int]("x")
+      y <- tag[Int]("y")
+      z <- tag[Int]("z")
+    } yield new BlockPos(x, y, z)) orNull
   }
 
 }

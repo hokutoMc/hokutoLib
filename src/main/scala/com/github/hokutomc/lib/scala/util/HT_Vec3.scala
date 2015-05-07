@@ -1,4 +1,4 @@
-package com.github.hokutomc.lib.scala
+package com.github.hokutomc.lib.scala.util
 
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
 import net.minecraft.util.Vec3

@@ -33,12 +33,12 @@ public class HT_BlockColored<T extends HT_BlockColored<T>> extends HT_Block<T> i
 
     @Override
     public IBlockState getStateFromMeta (int meta) {
-        return this.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.func_176766_a(meta).func_176765_a());
+        return this.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.func_176764_b(meta).func_176765_a());
     }
 
     @Override
     public int getMetaFromState (IBlockState state) {
-        return ((EnumDyeColor) state.getValue(BlockColored.COLOR)).getDyeColorDamage();
+        return ((EnumDyeColor) state.getValue(BlockColored.COLOR)).func_176765_a();
     }
 
     @Override

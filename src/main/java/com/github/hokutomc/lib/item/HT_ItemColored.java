@@ -22,8 +22,8 @@ public class HT_ItemColored<T extends HT_ItemColored<T>> extends HT_Item<T> impl
 
     private String[] toStringArray (EnumDyeColor[] colors) {
         String[] names = new String[colors.length];
-        for (int i = 0; i < colors.length; i++) {
-            names[i] = colors[i].func_176762_d();
+        for (EnumDyeColor color : colors) {
+            names[color.getDyeColorDamage()] = color.func_176762_d();
         }
         return names;
     }

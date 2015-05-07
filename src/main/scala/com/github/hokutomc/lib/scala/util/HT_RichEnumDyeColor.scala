@@ -1,4 +1,4 @@
-package com.github.hokutomc.lib.scala
+package com.github.hokutomc.lib.scala.util
 
 import net.minecraft.item.EnumDyeColor
 

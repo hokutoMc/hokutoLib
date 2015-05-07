@@ -5,6 +5,7 @@ import com.github.hokutomc.lib.scala.entity.HT_DataWatchEvidence
 import com.github.hokutomc.lib.scala.nbt.HT_NBTEvidence.EvItemStackArray
 import com.github.hokutomc.lib.scala.nbt.{HT_NBTEvidence, HT_RichNBTTagCompound}
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.BlockPos
 import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
 
 /**
@@ -39,6 +40,7 @@ object HT_Predef {
   implicit val evFloat: HT_NBTEvidence[Float] = HT_NBTEvidence.EvFloat
   implicit val evDouble: HT_NBTEvidence[Double] = HT_NBTEvidence.EvDouble
   implicit val evItemStack: HT_NBTEvidence[ItemStack] = HT_NBTEvidence.EvItemStack
+  implicit val evBlockPos: HT_NBTEvidence[BlockPos] = HT_NBTEvidence.EvBlockPos
 
   //TODO: should add evidences for blockpos and enums and rotations
 
@@ -55,16 +57,17 @@ object HT_Predef {
 
   def ItemStack(item: Item, size: Int = 1, damage: Int = 0): ItemStack = new ItemStack(item, size, damage)
 
+  def ItemStackB(block: Block, size: Int = 1, damage: Int = 0): ItemStack = new ItemStack(block, size, damage)
+
   type LogManager = org.apache.logging.log4j.LogManager
   type Logger = org.apache.logging.log4j.Logger
 
   def doWileNone[A](functions: (() => Option[A])*): Option[A] = {
     var prev: Option[A] = None
-    for (f <- functions) {
-      prev match {
-        case Some(v) => return Some(v)
-        case _ => prev = f()
-      }
+    var index = 0
+    while (index < functions.length && prev == None) {
+      prev = functions(index).apply()
+      index += 1
     }
     prev
   }

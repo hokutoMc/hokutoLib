@@ -1,16 +1,14 @@
 package com.github.hokutomc.lib.scala
 
-import com.github.hokutomc.lib.block.HT_ContainerBlock
-import com.github.hokutomc.lib.client.gui.HT_GuiAction
 import com.github.hokutomc.lib.item.HT_ItemStackBuilder
-import com.github.hokutomc.lib.item.recipe.{HT_ItemStackBuilder4Recipe, HT_RecipeBuilder}
+import com.github.hokutomc.lib.scala.block.HT_BlockPos
 import com.github.hokutomc.lib.scala.block.states.HT_RichBlockState
 import com.github.hokutomc.lib.scala.entity.{HT_RichDataWatcher, HT_RichEntity, HT_RichPlayer}
 import com.github.hokutomc.lib.scala.item.{HT_RichItemStack, HT_RichItemStackBuilder}
 import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_RichNBTTagList}
+import com.github.hokutomc.lib.scala.util.{HT_RichEnumDyeColor, HT_Vec3}
 import com.github.hokutomc.lib.scala.world.HT_World
 import net.minecraft.block.Block
-import net.minecraft.block.properties.IProperty
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{DataWatcher, Entity}
@@ -19,9 +17,8 @@ import net.minecraft.item.{EnumDyeColor, Item, ItemStack}
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util._
-import net.minecraft.world.{IBlockAccess, World}
+import net.minecraft.world.World
 import net.minecraftforge.event.entity.player.PlayerEvent
-import net.minecraftforge.fml.common.IFuelHandler
 
 import scala.reflect.ClassTag
 
@@ -88,9 +85,12 @@ object HT_ScalaConversion {
   implicit def blockToBuilder(block: Block): HT_ItemStackBuilder.Raw = new HT_ItemStackBuilder.Raw(block)
 
   implicit class BlockToItem (val block: Block) extends AnyVal {
-    def item: Option[Item] = Option(Item.getItemFromBlock(block))
+    def item: Item = Item.getItemFromBlock(block)
 
-    def getItemAs[T <: Item](implicit classTag: ClassTag[T]) = item map { case i: T => Some(i) case _ => None}
+    def getItemAs[T <: Item](implicit classTag: ClassTag[T]) = item match {
+      case i: T => Some(i)
+      case _ => None
+    }
   }
 
   implicit def wrapItemStackBuilder(itemStackBuilder: HT_ItemStackBuilder[_]): HT_RichItemStackBuilder = new HT_RichItemStackBuilder(itemStackBuilder)
@@ -104,38 +104,16 @@ object HT_ScalaConversion {
     def unary_- : World = (+this) worldObj
   }
 
-  implicit def func2GuiAction[T](func: (EntityPlayer, World, Int, Int, Int) => T): HT_GuiAction[T] = {
-    new HT_GuiAction[T] {
-      override def get(player: EntityPlayer, world: World, x: Int, y: Int, z: Int): T = func(player, world, x, y, z)
-    }
-  }
-
-  implicit def func2FuelHandler(func: ItemStack => Int): IFuelHandler = new IFuelHandler {
-    override def getBurnTime(fuel: ItemStack): Int = func(fuel)
-  }
-
   implicit class WrapOption[T] (val option: Option[T]) extends AnyVal {
-    def safe (function: T => Unit) = option match {case Some(v) => function(v) case _ =>}
-  }
-
-  implicit class WrapBlockContainer[T <: TileEntity](val containerBlock: HT_ContainerBlock[_, T]) extends AnyVal {
-    def tileEntity(world: IBlockAccess, pos: BlockPos)(implicit classTag: ClassTag[T]): Option[T] = {
-      world.getTileEntity(pos) match {
-        case t: T => Some(t)
-        case _ => None
-      }
+    def safe(function: T => Any) = option match {
+      case Some(v) => function(v)
+      case _ =>
     }
   }
 
   implicit def wrapBlockState(blockStates: IBlockState): HT_RichBlockState = new HT_RichBlockState(blockStates)
 
   implicit def unwrapBlockState(richBlockState: HT_RichBlockState): IBlockState = richBlockState.blockState
-
-  implicit def endItem[RB <: HT_RecipeBuilder[RB]](itemStackBuilder4Recipe: HT_ItemStackBuilder4Recipe[RB]): RB = itemStackBuilder4Recipe.endItem()
-
-  implicit class HT_IProp(val iProperty: IProperty) {
-    def :=(comparable: Comparable[_])(implicit state: HT_RichBlockState) = state(iProperty) = comparable
-  }
 
   implicit def wrapColor(dyeColor: EnumDyeColor): HT_RichEnumDyeColor = HT_RichEnumDyeColor(dyeColor)
 
