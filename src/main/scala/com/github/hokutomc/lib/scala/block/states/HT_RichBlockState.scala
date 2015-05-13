@@ -17,10 +17,4 @@ class HT_RichBlockState(val blockState: IBlockState) extends AnyVal {
   }
 
   def update (iProperty: IProperty, comparable: Comparable[_]) = blockState.withProperty(iProperty, comparable)
-
-  def apply(function: HT_RichBlockState => Unit) = {
-    function(this)
-    this
-  }
-
 }

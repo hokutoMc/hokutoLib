@@ -117,5 +117,7 @@ object HT_ScalaConversion {
 
   implicit def wrapColor(dyeColor: EnumDyeColor): HT_RichEnumDyeColor = HT_RichEnumDyeColor(dyeColor)
 
+  implicit def unwrapColor(dyeColor: HT_RichEnumDyeColor): EnumDyeColor = dyeColor.dyeColor
+
   implicit def asMessage(string: String): ChatComponentText = new ChatComponentText(string)
 }

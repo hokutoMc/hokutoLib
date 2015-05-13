@@ -10,13 +10,10 @@ import scala.math.ScalaNumber
  */
 class HT_RichString(val string: String) extends AnyVal {
 
-  def localize(array: Any*): String = {
-    if (array isEmpty) {
-      HT_I18nUtil.localize(string)
-    } else {
-      HT_I18nUtil.localize(string, array map unwrapArg: _*)
-    }
-  }
+  def localize: String = HT_I18nUtil.localize(string)
+
+  def localizeF(array: Any*): String = HT_I18nUtil.localize(string, array map unwrapArg: _*)
+
 
   private def unwrapArg(arg: Any): AnyRef = arg match {
     case x: ScalaNumber => x.underlying
@@ -24,9 +21,9 @@ class HT_RichString(val string: String) extends AnyVal {
   }
 
   // operators
-  def unary_-(): String = localize()
+  def unary_-(): String = localize
 
-  def apply (array: Any*) : String = localize(array)
+  def apply(array: Any*): String = localizeF(array)
 
   def +:+(other: String): String = string + ":" + other
 }
