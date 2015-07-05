@@ -1,6 +1,6 @@
 package com.github.hokutomc.lib.block;
 
-import com.github.hokutomc.lib.item.HT_ItemStackBuilder;
+import com.github.hokutomc.lib.item.HT_ItemCondition;
 import com.github.hokutomc.lib.util.HT_I_Colored;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.material.MapColor;
@@ -57,7 +57,7 @@ public class HT_BlockColored<T extends HT_BlockColored<T>> extends HT_Block<T> i
     }
 
     @Override
-    public HT_ItemStackBuilder getItemStackFromColor (EnumDyeColor color) {
-        return new HT_ItemStackBuilder<>(this).size(1).damage(color.func_176765_a());
+    public HT_ItemCondition getItemStackFromColor (EnumDyeColor color) {
+        return HT_ItemCondition.builder(this).checkDamage(color.func_176765_a()).build();
     }
 }

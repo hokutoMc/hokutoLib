@@ -38,14 +38,14 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg> {
     public void HT_registerMulti (Item item, CreativeTabs tab, List<ItemStack> list) {
         this.m_subItems.clear();
         for (int i = 0; i < m_listEntity.size(); i++) {
-            m_subItems.add(new HT_ItemStackBuilder.Raw(this).damage(i));
+            m_subItems.add(HT_ItemCondition.builder(this).checkDamage(i).build());
         }
         super.HT_registerMulti(item, tab, list);
     }
 
     @Override
     public String getItemStackDisplayName (ItemStack itemStack) {
-        return HT_I18nUtil.localize("item.hokutolib.mobEgg.name", HT_I18nUtil.localize("entity." + this.m_listEntity.getNameAt(itemStack.getItemDamage()) + ".name"));
+        return HT_I18nUtil.localize("block.hokutolib.mobEgg.name", HT_I18nUtil.localize("entity." + this.m_listEntity.getNameAt(itemStack.getItemDamage()) + ".name"));
     }
 
     @Override

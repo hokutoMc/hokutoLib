@@ -2,21 +2,25 @@ package com.github.hokutomc.lib.scala
 
 import java.io.File
 
+import com.github.hokutomc.lib.HT_Registries
 import com.github.hokutomc.lib.client.gui.HT_GuiAction
 import com.github.hokutomc.lib.client.render.HT_RenderUtil
 import com.github.hokutomc.lib.common.config.HT_Config
+import com.github.hokutomc.lib.scala.HT_Predef._
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
-import net.minecraft.block.Block
+import com.github.hokutomc.lib.scala.item.HT_ItemOrBlockOrStack
 import net.minecraft.client.renderer.ItemMeshDefinition
 import net.minecraft.client.resources.model.ModelResourceLocation
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.IFuelHandler
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.oredict.{ShapedOreRecipe, ShapelessOreRecipe}
+
+import scala.reflect.ClassTag
 
 /**
  * Created by user on 2015/03/17.
@@ -50,11 +54,14 @@ object HT_ScalaInitUtils {
     }
   }
 
-  def registerFuelHandler(func: ItemStack => Int): Unit = {
+  def registerFuelHandler(pf: PartialFunction[ItemStack, Int]): Unit = {
     GameRegistry.registerFuelHandler(new IFuelHandler {
-      override def getBurnTime(fuel: ItemStack): Int = func(fuel)
+      override def getBurnTime(fuel: ItemStack): Int = if (pf.isDefinedAt(fuel)) pf(fuel) else 0
     })
   }
+
+  def registerTileEntity[A <: TileEntity : ClassTag](name: String) =
+    HT_Registries.registerCommonTileEntity(implicitly[ClassTag[A]].runtimeClass.asSubclass(classOf[TileEntity]), name)
 
   def shapedRecipe(result: ItemStack, grid: String*)(params: (Char, ItemStack)*) =
     GameRegistry.addRecipe(result, grid ++ flattenMap(params): _*)
@@ -62,7 +69,7 @@ object HT_ScalaInitUtils {
   def shapelessRecipe(result: ItemStack)(resources: ItemStack*) =
     GameRegistry.addShapelessRecipe(result, resources: _*)
 
-  def shapedOreRecipe(result: ItemStack, grid: String*)(params: (Char, ItemStack)*)(ores: (Char, String)*) =
+  def shapedOreRecipe(result: ItemStack, grid: String*)(params: (Char, HT_ItemOrBlockOrStack)*)(ores: (Char, String)*) =
     GameRegistry.addRecipe(new ShapedOreRecipe(result, grid ++ flattenMap(params) ++ flattenMap(ores): _*))
 
   def shapelessOreRecipe(result: ItemStack)(resources: ItemStack*)(ores: String*) =
@@ -77,4 +84,10 @@ object HT_ScalaInitUtils {
   def flattenMap[A, B](params: Seq[(A, B)]): Seq[AnyRef] = (for ((a, b) <- params) yield Seq(a, b)).flatten map {
     _.asInstanceOf[Object]
   }
+
+  implicit def eitherItem(item: Item): HT_ItemOrBlockOrStack = HT_ItemOrBlockOrStack.OfItem(item)
+
+  implicit def eitherBlock(block: Block): HT_ItemOrBlockOrStack = HT_ItemOrBlockOrStack.OfBlock(block)
+
+  implicit def eitherItemStack(stack: ItemStack): HT_ItemOrBlockOrStack = HT_ItemOrBlockOrStack.OfItemStack(stack)
 }

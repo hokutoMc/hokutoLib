@@ -5,12 +5,12 @@ import com.github.hokutomc.lib.client.render.HT_RenderUtil;
 import com.github.hokutomc.lib.util.HT_ArrayUtil;
 import com.github.hokutomc.lib.util.HT_GeneralUtil;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +18,8 @@ import java.util.List;
  *
  * 2014/10/09.
  */
-public class HT_Item<T extends HT_Item> extends Item {
+public class HT_Item<T extends HT_Item<T>> extends Item implements HT_I_Item<T> {
+
     public static class Impl extends HT_Item<Impl> {
         public Impl (String modid, String innerName) {
             super(modid, innerName);
@@ -26,7 +27,7 @@ public class HT_Item<T extends HT_Item> extends Item {
     }
 
     private String m_shortName;
-    protected List<HT_ItemStackBuilder.Raw> m_subItems;
+    protected List<HT_ItemBuilder> m_subItems;
     public final String m_modid;
 
     private ImmutableList<String> m_multiNames;
@@ -36,8 +37,12 @@ public class HT_Item<T extends HT_Item> extends Item {
         this.m_shortName = innerName;
         this.m_modid = modid;
         this.setInnerName(modid, innerName);
-        m_subItems = new ArrayList<>();
-        m_subItems.add(new HT_ItemStackBuilder.Raw(this));
+        m_subItems = Lists.<HT_ItemBuilder>newArrayList(HT_ItemCondition.ofItem(this));
+    }
+
+    @Override
+    public String getNameToRegister () {
+        return this.getShortName();
     }
 
     @SuppressWarnings("unchecked")
@@ -50,13 +55,13 @@ public class HT_Item<T extends HT_Item> extends Item {
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         for (int i = 1; i < subNames.length; i++) {
-            m_subItems.add(new HT_ItemStackBuilder.Raw(this).damage(i));
+            m_subItems.add(HT_ItemCondition.builder(this).checkDamage(i).build());
         }
         return cast(this);
     }
 
     public T register () {
-        HT_Registries.registerItem(this);
+        HT_Registries.<HT_Item>registerItem(this);
         return cast(this);
     }
 
@@ -133,8 +138,8 @@ public class HT_Item<T extends HT_Item> extends Item {
     }
 
     protected void HT_registerMulti (Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-        for (HT_ItemStackBuilder b : this.m_subItems) {
-            subItems.add(b.build(1));
+        for (HT_ItemBuilder b : this.m_subItems) {
+            subItems.add(b.createStack());
         }
     }
 

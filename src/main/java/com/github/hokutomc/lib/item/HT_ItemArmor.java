@@ -1,5 +1,6 @@
 package com.github.hokutomc.lib.item;
 
+import com.github.hokutomc.lib.nbt.HT_NBTEvidence;
 import com.github.hokutomc.lib.util.HT_I18nUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -7,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
@@ -27,6 +29,23 @@ public abstract class HT_ItemArmor<T extends HT_ItemArmor<T>> extends HT_ItemDur
     public static final String KEY_PART = "armer_part";
 
 
+    public static final HT_NBTEvidence<Part> EVIDENCE_PART = new HT_NBTEvidence<Part>() {
+        @Override
+        public void write (String key, NBTTagCompound tagCompound, Part value) {
+            tagCompound.setByte(key, (byte) value.ordinal());
+        }
+
+        @Override
+        public Part read (String key, NBTTagCompound tagCompound) {
+            return Part.values()[tagCompound.getByte(key)];
+        }
+
+        @Override
+        public String getTypeString () {
+            return "ArmorPart";
+        }
+    };
+
     public HT_ItemArmor (String modid, String innerName) {
         super(modid, innerName);
         this.m_subItems.clear();
@@ -45,18 +64,18 @@ public abstract class HT_ItemArmor<T extends HT_ItemArmor<T>> extends HT_ItemDur
     }
 
     @Override
-    public HT_ItemStackBuilder.Raw getBuilder (int durability, int meta) {
+    public HT_ItemBuilder getBuilder (int durability, int meta) {
         return super.getBuilder(durability, meta);
     }
 
     @Override
-    public HT_ItemStackBuilder.Raw getBuilder (int meta) {
+    public HT_ItemBuilder getBuilder (int meta) {
         return super.getBuilder(meta);
     }
 
     private void addParts (int damage) {
         for (Part p : Part.values()) {
-            m_subItems.add(new HT_ItemStackBuilder.Raw(this).damage(damage).fullDurability().setPart(p));
+            m_subItems.add(HT_ItemCondition.builder(this).checkDamage(damage).addCondition(KEY_PART, EVIDENCE_PART, p).build());
         }
     }
 
@@ -70,7 +89,7 @@ public abstract class HT_ItemArmor<T extends HT_ItemArmor<T>> extends HT_ItemDur
         if (!itemStack.hasTagCompound()) {
             return null;
         }
-        return Part.values()[itemStack.getTagCompound().getInteger(KEY_PART)];
+        return Part.values()[itemStack.getTagCompound().getByte(KEY_PART)];
     }
 
     protected abstract ItemArmor.ArmorMaterial getArmorMaterial (ItemStack itemStack);

@@ -18,7 +18,7 @@ import java.util.Random;
 
 /**
  * This class is easy way to create slab blocks.
- * This class is the base to create half slab and slab item.
+ * This class is the base to create half slab and slab block.
  * This class contains instances of upper slab and lower slab.
  *
  * 2014/12/21.

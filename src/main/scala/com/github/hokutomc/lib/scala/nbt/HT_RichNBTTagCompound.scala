@@ -7,6 +7,4 @@ import net.minecraft.nbt.NBTTagCompound
  */
 class HT_RichNBTTagCompound(val wrapped: NBTTagCompound) extends AnyVal with HT_T_NBTCompound[HT_RichNBTTagCompound] {
   override def tag: NBTTagCompound = wrapped
-
-  override def a: HT_RichNBTTagCompound = this
 }

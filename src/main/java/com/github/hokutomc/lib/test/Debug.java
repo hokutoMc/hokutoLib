@@ -13,6 +13,7 @@ import com.github.hokutomc.lib.item.HT_ItemArmor;
 import com.github.hokutomc.lib.item.HT_ItemDurable;
 import com.github.hokutomc.lib.item.recipe.HT_CraftingRecipeBuilder;
 import com.github.hokutomc.lib.item.recipe.HT_FurnaceRecipeBuilder;
+import com.github.hokutomc.lib.item.recipe.HT_ShapelessRecipeBuilder;
 import com.github.hokutomc.lib.item.tool.HT_ItemTool;
 import com.github.hokutomc.lib.world.gen.HT_OreGenGen;
 import com.github.hokutomc.lib.world.gen.HT_OreGenerator;
@@ -197,25 +198,31 @@ public class Debug {
 
         HT_Registries.registerEntityRenderer(TestMob.class, new RenderTestEntity(Minecraft.getMinecraft().getRenderManager(), new ModelTestEntity(), 0.5f));
 
-        HT_CraftingRecipeBuilder.create()
-                .param('X', Items.string).endItem()
+        new HT_CraftingRecipeBuilder()
+                .param('X', Items.string)
                 .grid("XXX", "XXX", "XXX")
-                .to(Blocks.wool).endItem()
-        .paramOre('X', "ingotIron")
+                .to(Blocks.wool)
+                .addRecipe()
+                .paramOre('X', "ingotIron")
                 .grid("XXX")
-                .to(Items.diamond).size(2).endItem()
-        .shapeless()
-                .from(Blocks.dirt).size(2).endItem()
+                .to(new ItemStack(Items.diamond, 2))
+                .addRecipe();
+        new HT_ShapelessRecipeBuilder()
+                .from(Blocks.dirt)
                 .andOre("ingotIron")
-                .to(Blocks.iron_block).size(2).endItem();
+                .to(Blocks.iron_block)
+                .addRecipe();
 
         new HT_FurnaceRecipeBuilder()
-                .from(Blocks.dirt).endItem()
+                .from(Blocks.dirt)
                 .withXp(100.0)
-                .to(Blocks.obsidian).endItem()
-                .from(Blocks.snow).endItem()
+                .to(Blocks.obsidian)
+                .addRecipe()
+
+                .from(Blocks.snow)
                 .withXp(1.0)
-                .to(Items.water_bucket).endItem();
+                .to(Items.water_bucket)
+                .addRecipe();
 
     }
 

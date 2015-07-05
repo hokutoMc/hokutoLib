@@ -4,26 +4,16 @@ import com.github.hokutomc.lib.scala.HT_ScalaConversion._
 import com.github.hokutomc.lib.util.HT_ColorUtil
 import net.minecraft.item.EnumDyeColor
 
-object HT_RichEnumDyeColor extends scala.collection.Set[HT_RichEnumDyeColor] {
-  val elems = EnumDyeColor.values().map {
+object HT_RichEnumDyeColor {
+  lazy val elems = EnumDyeColor.values().map {
     new HT_RichEnumDyeColor(_)
   } toSet
 
   def apply(color: EnumDyeColor) = elems.find { a => a.dyeColor == color }.get
 
-  private def newIns(color: EnumDyeColor) = new HT_RichEnumDyeColor(color)
-
   def forItemDamage(damage: Int) = EnumDyeColor.func_176766_a(damage)
 
   def forColoredBlockMeta(meta: Int) = EnumDyeColor.func_176764_b(meta)
-
-  override def contains(elem: HT_RichEnumDyeColor): Boolean = elems contains elem
-
-  override def +(elem: HT_RichEnumDyeColor): collection.Set[HT_RichEnumDyeColor] = elems + elem
-
-  override def -(elem: HT_RichEnumDyeColor): collection.Set[HT_RichEnumDyeColor] = elems - elem
-
-  override def iterator: Iterator[HT_RichEnumDyeColor] = elems iterator
 }
 
 /**

@@ -21,7 +21,7 @@ public class HT_ToolType {
     }
 
     /**
-     * get localized name from unlocalized name "tool.type.().name" with material name as parameter
+     * read localized name from unlocalized name "tool.type.().name" with material name as parameter
      * @param material name to be formatted.
      * @return
      */

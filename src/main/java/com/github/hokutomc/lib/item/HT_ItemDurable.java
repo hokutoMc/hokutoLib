@@ -1,6 +1,7 @@
 package com.github.hokutomc.lib.item;
 
 
+import com.github.hokutomc.lib.nbt.HT_NBTEvidence;
 import com.github.hokutomc.lib.nbt.HT_NBTUtil;
 import com.github.hokutomc.lib.util.HT_StringUtil;
 import net.minecraft.enchantment.Enchantment;
@@ -15,12 +16,14 @@ import net.minecraft.util.StatCollector;
 import java.util.List;
 import java.util.Random;
 
+import static com.github.hokutomc.lib.item.HT_ItemBuilder.WithCondition;
+
 /**
- * This classes adds data of item durability without using damage value.
+ * This classes adds data of block durability without using damage value.
  *
  * 2014/10/11.
  */
-public abstract class HT_ItemDurable<T extends HT_ItemDurable> extends HT_Item<T> {
+public abstract class HT_ItemDurable<T extends HT_ItemDurable<T>> extends HT_Item<T> {
     public static final String KEY_DURABILITY = "durability";
     public static final String KEY_BROKEN = "broken";
     private static Random random = new Random();
@@ -29,30 +32,28 @@ public abstract class HT_ItemDurable<T extends HT_ItemDurable> extends HT_Item<T
         super(modid, innerName);
         this.HT_setMaxStackSize(1);
         this.m_subItems.clear();
-        this.m_subItems.add(new HT_ItemStackBuilder.Raw(this).fullDurability());
+        this.m_subItems.add(HT_ItemCondition.ofItem(this));
     }
 
-    @Override
-    public T multi (String... subNames) {
-        T t = super.multi(subNames);
-        for (HT_ItemStackBuilder.Raw item : this.m_subItems) {
-            item.fullDurability();
-        }
-        return t;
+    public HT_ItemBuilder getBuilder (int durability, int meta) {
+        return HT_ItemCondition.builder(this).checkDamage(meta)
+                .addCondition(KEY_DURABILITY, HT_NBTEvidence.INT, durability)
+                .addCondition(KEY_BROKEN, HT_NBTEvidence.BOOLEAN, false).build();
     }
 
-    public HT_ItemStackBuilder.Raw getBuilder (int durability, int meta) {
-        return new HT_ItemStackBuilder.Raw(this).damage(meta).setInt(KEY_DURABILITY, durability).setBoolean(KEY_BROKEN, false);
-    }
-
-    public HT_ItemStackBuilder.Raw getBuilder (int meta) {
-        return new HT_ItemStackBuilder.Raw(this).damage(meta).fullDurability();
+    public HT_ItemBuilder getBuilder (int meta) {
+        return new WithCondition(HT_ItemCondition.builder(this).checkDamage(meta).build()) {
+            @Override
+            public void manipulateStack (ItemStack itemStack) {
+                HT_ItemDurable.this.updateDurability(itemStack, HT_ItemDurable.this.getMaxDurability(itemStack));
+            }
+        };
     }
 
     @Override
     public void HT_addInformation (ItemStack itemStack, EntityPlayer player, List<String> list, boolean b) {
         if (this.isBroken(itemStack)) {
-            list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("item.hokutolib.status.broken.name").trim());
+            list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("block.hokutolib.status.broken.name").trim());
         } else {
             EnumChatFormatting red = EnumChatFormatting.RESET;
             if (this.getDurability(itemStack) * 20 < this.getMaxDurability(itemStack)) {
@@ -60,7 +61,7 @@ public abstract class HT_ItemDurable<T extends HT_ItemDurable> extends HT_Item<T
             }
             list.add(
                     red
-                            + StatCollector.translateToLocal("item.hokutolib.status.durability.name").trim()
+                            + StatCollector.translateToLocal("block.hokutolib.status.durability.name").trim()
                             + HT_StringUtil.blanks(6)
                             + this.getDurability(itemStack)
                             + "/"
@@ -120,5 +121,4 @@ public abstract class HT_ItemDurable<T extends HT_ItemDurable> extends HT_Item<T
 
 
     protected abstract int getBonusWithEfficency (ItemStack itemStack);
-
 }

@@ -1,11 +1,16 @@
 package com.github.hokutomc.lib.scala
 
-import com.github.hokutomc.lib.item.HT_ItemStackBuilder.Raw
+import com.github.hokutomc.lib.item.{HT_ItemBuilder, HT_ItemCondition}
+import com.github.hokutomc.lib.nbt.HT_NBTEvidence
 import com.github.hokutomc.lib.scala.entity.HT_DataWatchEvidence
-import com.github.hokutomc.lib.scala.nbt.HT_NBTEvidence.EvItemStackArray
-import com.github.hokutomc.lib.scala.nbt.{HT_NBTEvidence, HT_RichNBTTagCompound}
+import com.github.hokutomc.lib.scala.item.HT_ItemOrBlock.{OfBlock, OfItem}
+import com.github.hokutomc.lib.scala.item.{HT_ItemOrBlock, HT_ItemStackPattern}
+import com.github.hokutomc.lib.scala.nbt.HT_ScalaNBTEvidence.EvItemStackArray
+import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_ScalaNBTEvidence}
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.BlockPos
+import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.{AxisAlignedBB, BlockPos}
+import net.minecraftforge.common.config.Property
 import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
 
 /**
@@ -14,10 +19,17 @@ import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostIniti
 object HT_Predef {
   type JavaList[A] = java.util.List[A]
 
+  type ForgeProp = Property
+
   type Item = net.minecraft.item.Item
   type Block = net.minecraft.block.Block
   type ItemStack = net.minecraft.item.ItemStack
   type Entity = net.minecraft.entity.Entity
+
+  type Material = net.minecraft.block.material.Material
+
+  type ItemOrBlock = HT_ItemOrBlock
+  type EntityOrTE = Either[Entity, TileEntity]
 
   type Mod = net.minecraftforge.fml.common.Mod
   type EventHandler = net.minecraftforge.fml.common.Mod.EventHandler
@@ -31,16 +43,20 @@ object HT_Predef {
 
   type RichTagComp = HT_RichNBTTagCompound
 
-  implicit val evBool: HT_NBTEvidence[Boolean] = HT_NBTEvidence.EvBoolean
-  implicit val evByte: HT_NBTEvidence[Byte] = HT_NBTEvidence.EvByte
-  implicit val evByteArr: HT_NBTEvidence[Array[Byte]] = HT_NBTEvidence.EvByteArray
-  implicit val evInt: HT_NBTEvidence[Int] = HT_NBTEvidence.EvInt
-  implicit val evIntArr: HT_NBTEvidence[Array[Int]] = HT_NBTEvidence.EvIntArray
-  implicit val evStr: HT_NBTEvidence[String] = HT_NBTEvidence.EvString
-  implicit val evFloat: HT_NBTEvidence[Float] = HT_NBTEvidence.EvFloat
-  implicit val evDouble: HT_NBTEvidence[Double] = HT_NBTEvidence.EvDouble
-  implicit val evItemStack: HT_NBTEvidence[ItemStack] = HT_NBTEvidence.EvItemStack
-  implicit val evBlockPos: HT_NBTEvidence[BlockPos] = HT_NBTEvidence.EvBlockPos
+  type AABB = AxisAlignedBB
+
+  val ItemPattern = HT_ItemStackPattern
+
+  implicit val evBool: HT_NBTEvidence[Boolean] = HT_ScalaNBTEvidence.EvBoolean
+  implicit val evByte: HT_NBTEvidence[Byte] = HT_ScalaNBTEvidence.EvByte
+  implicit val evByteArr: HT_NBTEvidence[Array[Byte]] = HT_ScalaNBTEvidence.EvByteArray
+  implicit val evInt: HT_NBTEvidence[Int] = HT_ScalaNBTEvidence.EvInt
+  implicit val evIntArr: HT_NBTEvidence[Array[Int]] = HT_ScalaNBTEvidence.EvIntArray
+  implicit val evStr: HT_NBTEvidence[String] = HT_ScalaNBTEvidence.EvString
+  implicit val evFloat: HT_NBTEvidence[Float] = HT_ScalaNBTEvidence.EvFloat
+  implicit val evDouble: HT_NBTEvidence[Double] = HT_ScalaNBTEvidence.EvDouble
+  implicit val evItemStack: HT_NBTEvidence[ItemStack] = HT_ScalaNBTEvidence.EvItemStack
+  implicit val evBlockPos: HT_NBTEvidence[BlockPos] = HT_ScalaNBTEvidence.EvBlockPos
 
   //TODO: should add evidences for blockpos and enums and rotations
 
@@ -53,11 +69,19 @@ object HT_Predef {
   implicit val evDwString: HT_DataWatchEvidence[String] = HT_DataWatchEvidence.EvString
   implicit val evDwItemStack: HT_DataWatchEvidence[ItemStack] = HT_DataWatchEvidence.EvItemStack
 
-  def builder(item: Item, size: Int = 1, damage: Int = 0): Raw = new Raw(item).size(size).damage(damage)
+  def builder(itemOrBlock: ItemOrBlock, damage: Int = 0): HT_ItemCondition = itemOrBlock match {
+    case OfItem(i) => HT_ItemCondition.builder(i).checkDamage(damage).build()
+    case OfBlock(i) => HT_ItemCondition.builder(i).checkDamage(damage).build()
+  }
 
-  def ItemStack(item: Item, size: Int = 1, damage: Int = 0): ItemStack = new ItemStack(item, size, damage)
+  def builder(f: => ItemStack): HT_ItemBuilder = new HT_ItemBuilder {
+    override def createStack(): ItemStack = f
+  }
 
-  def ItemStackB(block: Block, size: Int = 1, damage: Int = 0): ItemStack = new ItemStack(block, size, damage)
+  def ItemStack(itemOrBlock: ItemOrBlock, size: Int = 1, damage: Int = 0): ItemStack = itemOrBlock match {
+    case OfItem(i) => new ItemStack(i, size, damage)
+    case OfBlock(b) => new ItemStack(b, size, damage)
+  }
 
   type LogManager = org.apache.logging.log4j.LogManager
   type Logger = org.apache.logging.log4j.Logger
@@ -71,4 +95,12 @@ object HT_Predef {
     }
     prev
   }
+
+  def mutate[A](a: A)(f: A => Any): A = {
+    f(a); a
+  }
+
+  implicit def eitherBlock(block: Block): ItemOrBlock = OfBlock(block)
+
+  implicit def eitherItem(item: Item): ItemOrBlock = OfItem(item)
 }

@@ -1,8 +1,8 @@
 package com.github.hokutomc.lib.scala.entity
 
+import com.github.hokutomc.lib.nbt.HT_NBTEvidence
 import com.github.hokutomc.lib.scala.HT_Predef._
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
-import com.github.hokutomc.lib.scala.nbt.HT_NBTEvidence
 
 object HT_EntityVariable {
 

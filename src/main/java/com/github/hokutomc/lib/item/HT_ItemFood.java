@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 /**
  * Created by user on 2015/03/26.
  */
-public abstract class HT_ItemFood<T extends HT_ItemFood> extends HT_Item<T> {
+public abstract class HT_ItemFood<T extends HT_ItemFood<T>> extends HT_Item<T> {
     public static class Impl extends HT_ItemFood<Impl> {
         public Impl (String modid, String innerName, int healAmount, float saturationModifier) {
             super(modid, innerName, healAmount, saturationModifier);
@@ -27,7 +27,7 @@ public abstract class HT_ItemFood<T extends HT_ItemFood> extends HT_Item<T> {
      */
     public final int itemUseDuration;
     /**
-     * The amount this food item heals the player.
+     * The amount this food block heals the player.
      */
     private final int healAmount;
     private final float saturationModifier;

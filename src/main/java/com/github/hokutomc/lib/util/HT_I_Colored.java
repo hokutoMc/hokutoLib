@@ -1,6 +1,6 @@
 package com.github.hokutomc.lib.util;
 
-import com.github.hokutomc.lib.item.HT_ItemStackBuilder;
+import com.github.hokutomc.lib.item.HT_ItemCondition;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 
@@ -10,5 +10,5 @@ import net.minecraft.item.ItemStack;
 public interface HT_I_Colored {
     EnumDyeColor getColor (ItemStack itemStack);
 
-    HT_ItemStackBuilder getItemStackFromColor (EnumDyeColor color);
+    HT_ItemCondition getItemStackFromColor (EnumDyeColor color);
 }

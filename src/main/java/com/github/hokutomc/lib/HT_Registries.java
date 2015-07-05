@@ -1,12 +1,13 @@
 package com.github.hokutomc.lib;
 
 
-import com.github.hokutomc.lib.block.HT_Block;
+import com.github.hokutomc.lib.block.HT_I_Block;
 import com.github.hokutomc.lib.block.HT_MultiItemBlock;
 import com.github.hokutomc.lib.client.render.HT_I_EntityRender;
 import com.github.hokutomc.lib.client.render.HT_I_TileEntityRender;
-import com.github.hokutomc.lib.item.HT_Item;
+import com.github.hokutomc.lib.item.HT_I_Item;
 import com.github.hokutomc.lib.item.recipe.HT_FurnaceRecipeBuilder;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -34,18 +35,22 @@ public final class HT_Registries {
     }
 
 
-    public static <T extends HT_Block> T registerBlock (T block) {
-        GameRegistry.registerBlock(block, block.getShortName());
+    public static <T extends Block & HT_I_Block<T>> T registerBlock (T block) {
+        GameRegistry.registerBlock(block, block.getNameToRegister());
         return block;
     }
 
-    public static <T extends HT_Block> T registerMultiBlock (T block) {
-        GameRegistry.registerBlock(block, HT_MultiItemBlock.class, block.getShortName());
+    public static <T extends Block & HT_I_Block<T>> T registerBlock (T block, Class<? extends ItemBlock> blockClass) {
+        GameRegistry.registerBlock(block, blockClass, block.getNameToRegister());
         return block;
     }
 
-    public static <T extends HT_Item> T registerItem (T item) {
-        GameRegistry.registerItem(item, item.getShortName());
+    public static <T extends Block & HT_I_Block<T>> T registerMultiBlock (T block) {
+        return registerBlock(block, HT_MultiItemBlock.class);
+    }
+
+    public static <T extends Item & HT_I_Item<T>> T registerItem (T item) {
+        GameRegistry.registerItem(item, item.getNameToRegister());
         return item;
     }
 
@@ -80,10 +85,6 @@ public final class HT_Registries {
 
     public static HT_FurnaceRecipeBuilder addSmelting () {
         return new HT_FurnaceRecipeBuilder();
-    }
-
-    public static void registerBlock (HT_Block block, Class<? extends ItemBlock> itemBlockClass) {
-        GameRegistry.registerBlock(block, itemBlockClass, block.getShortName());
     }
 
     public static <E extends Entity, R extends Render & HT_I_EntityRender<E>> void registerEntityRenderer (Class<E> entityClass, R render) {

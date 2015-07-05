@@ -1,9 +1,8 @@
 package com.github.hokutomc.lib.scala.item
 
 import com.github.hokutomc.lib.item.matcher.{HT_ItemMatcher, HT_ItemMatcherItem, HT_ItemMatcherOre}
+import com.github.hokutomc.lib.nbt.HT_NBTEvidence
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
-import com.github.hokutomc.lib.scala.nbt.HT_NBTEvidence
-import net.minecraft.init.Items
 import net.minecraft.item.{Item, ItemStack}
 
 import scala.reflect.ClassTag
@@ -13,18 +12,22 @@ import scala.reflect.ClassTag
  */
 object HT_ItemStackPattern {
 
-  val pattern = HT_ItemStackPattern(Items.apple)
-  val pat2 = HT_ItemStackPattern.ofOre("ore")
+  /**
+   * extract into item and damage
+   * @param itemStack
+   * @return
+   */
+  def unapply(itemStack: ItemStack): Option[(Item, Int)] =
+    if (itemStack isEmpty) None else Some(itemStack.getItem, itemStack.damage)
 
-  def unapply[A <: Item, Op <: HT_ItemStackOp[Op]](itemStack: Op)(implicit classTag: ClassTag[A]): Option[(A, Int)] = itemStack match {
-    case i: HT_RichItemStack if i isEmpty => None
-    case _ => itemStack.damage flatMap { d => itemStack.getItemAs[A] map { i => (i, d) } }
-  }
+  def ofType[I: ClassTag] = new HT_ItemStackPatternType[I]
 
-  def ofType[I](implicit classTag: ClassTag[I]) = new HT_ItemStackPatternType[I]
-
-  def apply[I <: Item](item: I, damage: Option[Int] = None, eqOrMore: Int = 1)(implicit classTag: ClassTag[I]) = {
-    new PatternWrapperItem(damage match { case Some(d) => new HT_ItemMatcherItem(item, d) case _ => new HT_ItemMatcherItem(item) })
+  def apply[I <: Item : ClassTag](item: I, damage: Option[Int] = None, eqOrMore: Int = 1) = {
+    new PatternWrapperItem(damage match {
+      case Some(d) => new HT_ItemMatcherItem(item, d)
+      case _ => new HT_ItemMatcherItem(item)
+    }
+    )
   }
 
   def ofOre(ore: String, eqOrMore: Int = 1) = new PatternWrapperOre(new HT_ItemMatcherOre(ore))
@@ -41,14 +44,14 @@ trait HT_RichItemMatcher {
    * @tparam A
    * @return new instance
    */
-  def andThenNBT[A](key: String, a: Option[A] => Boolean)(implicit ev: HT_NBTEvidence[A]): HT_ItemMatcher =
-    self.andThen(new HT_ItemStackPatternNBT(key, a)(ev))
+  def andThenNBT[A: HT_NBTEvidence](key: String, a: Option[A] => Boolean): HT_ItemMatcher =
+    self.andThen(new HT_ItemStackPatternNBT(key, a))
 
 }
 
-class HT_ItemStackPatternNBT[A](val key: String, val p: Option[A] => Boolean)(implicit val ev: HT_NBTEvidence[A])
+class HT_ItemStackPatternNBT[A: HT_NBTEvidence](val key: String, val p: Option[A] => Boolean)
   extends HT_ItemMatcher with HT_RichItemMatcher {
-  override protected def check(itemStack: ItemStack): Boolean = p(itemStack.apply(key)(ev))
+  override protected def check(itemStack: ItemStack): Boolean = p(itemStack.apply(key))
 
   override val self: HT_ItemMatcher = this
 }
@@ -59,12 +62,12 @@ class HT_ItemStackPatternType[I](implicit val classTag: ClassTag[I]) extends HT_
     case _ => false
   }
 
-  def unapply(itemStack: ItemStack): Option[I] = if (matches(itemStack)) itemStack.getItemAs[I] else None
+  def unapply(itemStack: ItemStack): Option[I] = if (matches(itemStack)) itemStack.isItemInstance[Item with I] else None
 
   override val self: HT_ItemMatcher = this
 }
 
-class PatternWrapperItem[I <: Item](val matcher: HT_ItemMatcherItem)(implicit val classTag: ClassTag[I]) extends HT_RichItemMatcher {
+class PatternWrapperItem[I <: Item : ClassTag](val matcher: HT_ItemMatcherItem) extends HT_RichItemMatcher {
   def unapply(itemStack: ItemStack): Option[(I, Int)] = if (matcher.matches(itemStack)) Some((matcher.item.asInstanceOf[I], matcher.damage)) else None
 
   override val self: HT_ItemMatcher = matcher

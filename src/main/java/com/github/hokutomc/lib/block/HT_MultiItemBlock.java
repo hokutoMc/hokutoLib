@@ -13,6 +13,7 @@ public class HT_MultiItemBlock extends ItemBlock {
     private final int m_variety;
     private List<String> m_subNames;
 
+    @SuppressWarnings("unchecked")
     public HT_MultiItemBlock (Block block) {
         super(block);
         if (block instanceof HT_Block && ((HT_Block) block).getHasSubTypes()) {

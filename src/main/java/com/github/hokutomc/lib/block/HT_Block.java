@@ -2,9 +2,11 @@ package com.github.hokutomc.lib.block;
 
 import com.github.hokutomc.lib.HT_Registries;
 import com.github.hokutomc.lib.client.render.HT_RenderUtil;
-import com.github.hokutomc.lib.item.HT_ItemStackBuilder;
+import com.github.hokutomc.lib.item.HT_ItemBuilder;
+import com.github.hokutomc.lib.item.HT_ItemCondition;
 import com.github.hokutomc.lib.util.HT_GeneralUtil;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -16,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,13 +25,12 @@ import java.util.List;
  * <p/>
  * 2014/09/23.
  */
-public class HT_Block<T extends HT_Block> extends Block {
+public class HT_Block<T extends HT_Block<T>> extends Block implements HT_I_Block<T> {
     private boolean m_hasSubTypes;
     private String m_shortName;
-    private String m_innerName;
     protected boolean m_fallInstantly;
     public String m_modid;
-    protected List<HT_ItemStackBuilder.Raw> m_subItems = new ArrayList<>();
+    protected List<HT_ItemBuilder> m_subItems;
 
     private ImmutableList<String> m_multiNames;
 
@@ -40,9 +40,13 @@ public class HT_Block<T extends HT_Block> extends Block {
         this.m_modid = modid;
         this.m_shortName = innerName;
         this.setInnerName(modid, innerName);
-        m_subItems.add(new HT_ItemStackBuilder.Raw(this));
+        m_subItems = Lists.<HT_ItemBuilder>newArrayList(HT_ItemCondition.ofBlock(this));
     }
 
+    @Override
+    public String getNameToRegister () {
+        return this.getShortName();
+    }
 
     private T setInnerName (String modid, String innerName) {
         this.m_shortName = innerName;
@@ -58,14 +62,14 @@ public class HT_Block<T extends HT_Block> extends Block {
         this.m_multiNames = ImmutableList.copyOf(subNames);
         this.setHasSubTypes(true);
         for (int i = 1; i < m_multiNames.size(); i++) {
-            m_subItems.add(new HT_ItemStackBuilder.Raw(this).damage(i));
+            m_subItems.add(HT_ItemCondition.builder(this).checkDamage(i).build());
         }
         return cast(this);
     }
 
     public T register () {
-        if (this.m_hasSubTypes) HT_Registries.registerMultiBlock(this);
-        else HT_Registries.registerBlock(this);
+        if (this.m_hasSubTypes) HT_Registries.<HT_Block>registerMultiBlock(this);
+        else HT_Registries.<HT_Block>registerBlock(this);
         return cast(this);
     }
 
@@ -155,8 +159,8 @@ public class HT_Block<T extends HT_Block> extends Block {
     }
 
     public void HT_registerMulti (Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-        for (HT_ItemStackBuilder.Raw b : this.m_subItems) {
-            subItems.add(b.build(1));
+        for (HT_ItemBuilder b : this.m_subItems) {
+            subItems.add(b.createStack());
         }
     }
 

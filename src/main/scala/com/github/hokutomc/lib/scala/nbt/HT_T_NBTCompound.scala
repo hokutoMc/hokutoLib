@@ -1,5 +1,6 @@
 package com.github.hokutomc.lib.scala.nbt
 
+import com.github.hokutomc.lib.nbt.HT_NBTEvidence
 import com.github.hokutomc.lib.scala.nbt.HT_RichNBTTagList.{ListCompound, ListDouble, ListFloat, ListString}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.common.util.Constants.NBT._
@@ -8,21 +9,19 @@ import net.minecraftforge.common.util.Constants.NBT._
  * Created by user on 2015/03/18.
  */
 trait HT_T_NBTCompound[A] extends Any {
+  this: A =>
   def tag: NBTTagCompound
-
-  def a: A
 
   def isNull = tag eq null
 
-  def update[T](key: String, t: T)(implicit ev: HT_NBTEvidence[T]): Unit = {
-    if (!isNull) ev.write(key, tag, t)
+  def update[T: HT_NBTEvidence](key: String, t: T): Unit = {
+    if (!isNull) implicitly[HT_NBTEvidence[T]].write(key, tag, t)
   }
 
-  def apply[T](key: String)(implicit ev: HT_NBTEvidence[T]) = {
+  def apply[T: HT_NBTEvidence](key: String) = {
     if (isNull || !tag.hasKey(key)) None
-    else Some(ev.read(key, tag))
+    else Some(implicitly[HT_NBTEvidence[T]].read(key, tag))
   }
-
 
   def doubleList(key: String) = if (isNull) None else Some(new ListDouble(tag.getTagList(key, TAG_DOUBLE)))
 

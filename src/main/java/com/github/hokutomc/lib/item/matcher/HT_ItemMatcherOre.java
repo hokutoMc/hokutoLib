@@ -1,6 +1,6 @@
 package com.github.hokutomc.lib.item.matcher;
 
-import com.github.hokutomc.lib.oredict.HT_OreDictPlus;
+import com.github.hokutomc.lib.util.HT_OreUtil;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -15,6 +15,6 @@ public class HT_ItemMatcherOre extends HT_ItemMatcher {
 
     @Override
     protected boolean check (ItemStack itemStack) {
-        return HT_OreDictPlus.hasName(itemStack, oreName);
+        return HT_OreUtil.hasName(itemStack, oreName);
     }
 }

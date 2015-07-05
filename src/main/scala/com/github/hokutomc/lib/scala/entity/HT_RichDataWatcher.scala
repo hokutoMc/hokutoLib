@@ -6,9 +6,9 @@ import net.minecraft.entity.DataWatcher
  * Created by user on 2015/04/13.
  */
 class HT_RichDataWatcher(val wrapped: DataWatcher) {
-  def init[A](id: Int, default: A)(implicit ev: HT_DataWatchEvidence[A]) = ev.init(wrapped, id, default)
+  def init[A: HT_DataWatchEvidence](id: Int, default: A) = implicitly[HT_DataWatchEvidence[A]].init(wrapped, id, default)
 
-  def apply[A](id: Int)(implicit ev: HT_DataWatchEvidence[A]): A = ev.get(wrapped, id)
+  def apply[A: HT_DataWatchEvidence](id: Int): A = implicitly[HT_DataWatchEvidence[A]].get(wrapped, id)
 
-  def update[A](id: Int, a: A)(implicit ev: HT_DataWatchEvidence[A]): Unit = ev.set(wrapped, id, a)
+  def update[A: HT_DataWatchEvidence](id: Int, a: A): Unit = implicitly[HT_DataWatchEvidence[A]].set(wrapped, id, a)
 }

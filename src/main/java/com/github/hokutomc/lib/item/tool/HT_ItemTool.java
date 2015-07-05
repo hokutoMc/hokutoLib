@@ -47,14 +47,14 @@ public abstract class HT_ItemTool<T extends HT_ItemTool<T>> extends HT_ItemDurab
 //    @Override
 //    public void HT_addInformation (ItemStack itemStack, EntityPlayer player, List<String> list, boolean b) {
 //        super.HT_addInformation(itemStack, player, list, b);
-//        list.add(EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted("item.hokutolib.status.attack.name", Math.round(this.getMaxAttackDamage(itemStack))));
+//        list.add(EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted("block.hokutolib.status.attack.name", Math.round(this.getMaxAttackDamage(itemStack))));
 //    }
 
 
     @Override
     public void HT_addInformation (ItemStack itemStack, EntityPlayer player, List<String> list, boolean b) {
         super.HT_addInformation(itemStack, player, list, b);
-        list.add(EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted("item.hokutolib.status.attack.name", Math.round(this.getMaxAttackDamage(itemStack))));
+        list.add(EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted("block.hokutolib.status.attack.name", Math.round(this.getMaxAttackDamage(itemStack))));
     }
 
     @Override

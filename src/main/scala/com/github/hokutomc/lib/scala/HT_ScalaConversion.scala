@@ -1,10 +1,9 @@
 package com.github.hokutomc.lib.scala
 
-import com.github.hokutomc.lib.item.HT_ItemStackBuilder
 import com.github.hokutomc.lib.scala.block.HT_BlockPos
 import com.github.hokutomc.lib.scala.block.states.HT_RichBlockState
 import com.github.hokutomc.lib.scala.entity.{HT_RichDataWatcher, HT_RichEntity, HT_RichPlayer}
-import com.github.hokutomc.lib.scala.item.{HT_RichItemStack, HT_RichItemStackBuilder}
+import com.github.hokutomc.lib.scala.item.HT_RichItemStack
 import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_RichNBTTagList}
 import com.github.hokutomc.lib.scala.util.{HT_RichEnumDyeColor, HT_Vec3}
 import com.github.hokutomc.lib.scala.world.HT_World
@@ -26,9 +25,7 @@ import scala.reflect.ClassTag
  * Created by user on 2015/02/26.
  */
 object HT_ScalaConversion {
-  implicit def wrapItemStack(stack: ItemStack): HT_RichItemStack = {
-    if (stack == null || stack.stackSize == 0) HT_RichItemStack.NullStack else new HT_RichItemStack(stack)
-  }
+  implicit def wrapItemStack(stack: ItemStack): HT_RichItemStack = HT_RichItemStack(stack)
 
   /**
    *
@@ -80,10 +77,6 @@ object HT_ScalaConversion {
 
   implicit def wrapWorld(world: World): HT_World = new HT_World(world)
 
-  implicit def itemToBuilder(item: Item): HT_ItemStackBuilder.Raw = new HT_ItemStackBuilder.Raw(item)
-
-  implicit def blockToBuilder(block: Block): HT_ItemStackBuilder.Raw = new HT_ItemStackBuilder.Raw(block)
-
   implicit class BlockToItem (val block: Block) extends AnyVal {
     def item: Item = Item.getItemFromBlock(block)
 
@@ -92,9 +85,6 @@ object HT_ScalaConversion {
       case _ => None
     }
   }
-
-  implicit def wrapItemStackBuilder(itemStackBuilder: HT_ItemStackBuilder[_]): HT_RichItemStackBuilder = new HT_RichItemStackBuilder(itemStackBuilder)
-
 
   implicit class WrapPlayerEvent (val event: PlayerEvent) extends AnyVal {
     def unary_+ : HT_RichPlayer = event entityPlayer

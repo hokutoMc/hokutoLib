@@ -34,7 +34,7 @@ public class HT_ItemColored<T extends HT_ItemColored<T>> extends HT_Item<T> impl
     }
 
     @Override
-    public HT_ItemStackBuilder getItemStackFromColor (EnumDyeColor color) {
-        return new HT_ItemStackBuilder(this).size(1).damage(color.getDyeColorDamage());
+    public HT_ItemCondition getItemStackFromColor (EnumDyeColor color) {
+        return HT_ItemCondition.builder(this).checkDamage(color.getDyeColorDamage()).build();
     }
 }
