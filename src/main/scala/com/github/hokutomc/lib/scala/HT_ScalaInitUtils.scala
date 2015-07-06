@@ -93,9 +93,9 @@ object HT_ScalaInitUtils {
     _.asInstanceOf[Object]
   }
 
-  implicit def eitherItem(item: Item): HT_ItemOrBlockOrStack = HT_ItemOrBlockOrStack.OfItem(item)
+  implicit def either3Item(item: Item): HT_ItemOrBlockOrStack = HT_ItemOrBlockOrStack.OfItem(item)
 
-  implicit def eitherBlock(block: Block): HT_ItemOrBlockOrStack = HT_ItemOrBlockOrStack.OfBlock(block)
+  implicit def either3Block(block: Block): HT_ItemOrBlockOrStack = HT_ItemOrBlockOrStack.OfBlock(block)
 
-  implicit def eitherItemStack(stack: ItemStack): HT_ItemOrBlockOrStack = HT_ItemOrBlockOrStack.OfItemStack(stack)
+  implicit def either3ItemStack(stack: ItemStack): HT_ItemOrBlockOrStack = HT_ItemOrBlockOrStack.OfItemStack(stack)
 }
