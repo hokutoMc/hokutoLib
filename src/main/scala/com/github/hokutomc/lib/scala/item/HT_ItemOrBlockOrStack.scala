@@ -16,5 +16,5 @@ object HT_ItemOrBlockOrStack {
 }
 
 trait HT_ItemOrBlockOrStack {
-  def any: Any
+  def any: AnyRef
 }

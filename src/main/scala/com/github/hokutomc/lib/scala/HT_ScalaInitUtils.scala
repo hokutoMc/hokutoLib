@@ -75,13 +75,14 @@ object HT_ScalaInitUtils {
     GameRegistry.addRecipe(result, grid ++ flattenMap(params): _*)
 
   def shapelessRecipe(result: ItemStack)(resources: HT_ItemOrBlockOrStack*) =
-    GameRegistry.addShapelessRecipe(result, resources: _*)
+    GameRegistry.addShapelessRecipe(result, resources.map { case r: HT_ItemOrBlockOrStack => r.any case r => r.asInstanceOf[AnyRef] }: _*)
 
   def shapedOreRecipe(result: ItemStack, grid: String*)(params: (Char, HT_ItemOrBlockOrStack)*)(ores: (Char, String)*) =
     GameRegistry.addRecipe(new ShapedOreRecipe(result, grid ++ flattenMap(params) ++ flattenMap(ores): _*))
 
   def shapelessOreRecipe(result: ItemStack)(resources: HT_ItemOrBlockOrStack*)(ores: String*) =
-    GameRegistry.addRecipe(new ShapelessOreRecipe(result, resources ++ ores: _*))
+    GameRegistry.addRecipe(new ShapelessOreRecipe(result,
+      resources.map { case r: HT_ItemOrBlockOrStack => r.any case r => r.asInstanceOf[AnyRef] } ++ ores: _*))
 
   implicit def itemAsStack(item: Item): ItemStack = new ItemStack(item)
 
