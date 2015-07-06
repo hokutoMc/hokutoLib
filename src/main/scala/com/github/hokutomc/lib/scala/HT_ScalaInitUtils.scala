@@ -16,7 +16,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.IFuelHandler
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
 import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.oredict.{ShapedOreRecipe, ShapelessOreRecipe}
 
@@ -26,6 +26,14 @@ import scala.reflect.ClassTag
  * Created by user on 2015/03/17.
  */
 object HT_ScalaInitUtils {
+  type Mod = net.minecraftforge.fml.common.Mod
+  type EventHandler = net.minecraftforge.fml.common.Mod.EventHandler
+  type ModInstance = net.minecraftforge.fml.common.Mod.Instance
+
+  type PreInit = FMLPreInitializationEvent
+  type Init = FMLInitializationEvent
+  type PostInit = FMLPostInitializationEvent
+
   def creativeTab(modid: String, name: String, item: => Item) = new CreativeTabs(modid + "." + name) {
     override def getTabIconItem: Item = item
   }
@@ -61,18 +69,18 @@ object HT_ScalaInitUtils {
   }
 
   def registerTileEntity[A <: TileEntity : ClassTag](name: String) =
-    HT_Registries.registerCommonTileEntity(implicitly[ClassTag[A]].runtimeClass.asSubclass(classOf[TileEntity]), name)
+    HT_Registries.registerCommonTileEntity(HT_Predef.classFromTag[A], name)
 
-  def shapedRecipe(result: ItemStack, grid: String*)(params: (Char, ItemStack)*) =
+  def shapedRecipe(result: ItemStack, grid: String*)(params: (Char, HT_ItemOrBlockOrStack)*) =
     GameRegistry.addRecipe(result, grid ++ flattenMap(params): _*)
 
-  def shapelessRecipe(result: ItemStack)(resources: ItemStack*) =
+  def shapelessRecipe(result: ItemStack)(resources: HT_ItemOrBlockOrStack*) =
     GameRegistry.addShapelessRecipe(result, resources: _*)
 
   def shapedOreRecipe(result: ItemStack, grid: String*)(params: (Char, HT_ItemOrBlockOrStack)*)(ores: (Char, String)*) =
     GameRegistry.addRecipe(new ShapedOreRecipe(result, grid ++ flattenMap(params) ++ flattenMap(ores): _*))
 
-  def shapelessOreRecipe(result: ItemStack)(resources: ItemStack*)(ores: String*) =
+  def shapelessOreRecipe(result: ItemStack)(resources: HT_ItemOrBlockOrStack*)(ores: String*) =
     GameRegistry.addRecipe(new ShapelessOreRecipe(result, resources ++ ores: _*))
 
   implicit def itemAsStack(item: Item): ItemStack = new ItemStack(item)

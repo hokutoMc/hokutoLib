@@ -2,16 +2,19 @@ package com.github.hokutomc.lib.scala
 
 import com.github.hokutomc.lib.item.{HT_ItemBuilder, HT_ItemCondition}
 import com.github.hokutomc.lib.nbt.HT_NBTEvidence
+import com.github.hokutomc.lib.scala.block.HT_BlockPos
 import com.github.hokutomc.lib.scala.entity.HT_DataWatchEvidence
 import com.github.hokutomc.lib.scala.item.HT_ItemOrBlock.{OfBlock, OfItem}
 import com.github.hokutomc.lib.scala.item.{HT_ItemOrBlock, HT_ItemStackPattern}
 import com.github.hokutomc.lib.scala.nbt.HT_ScalaNBTEvidence.EvItemStackArray
 import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_ScalaNBTEvidence}
+import com.github.hokutomc.lib.scala.util.HT_Vec3
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.{AxisAlignedBB, BlockPos}
 import net.minecraftforge.common.config.Property
-import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
+
+import scala.reflect.ClassTag
 
 /**
  * Created by user on 2015/04/12.
@@ -31,14 +34,6 @@ object HT_Predef {
   type ItemOrBlock = HT_ItemOrBlock
   type EntityOrTE = Either[Entity, TileEntity]
 
-  type Mod = net.minecraftforge.fml.common.Mod
-  type EventHandler = net.minecraftforge.fml.common.Mod.EventHandler
-  type ModInstance = net.minecraftforge.fml.common.Mod.Instance
-
-  type PreInit = FMLPreInitializationEvent
-  type Init = FMLInitializationEvent
-  type PostInit = FMLPostInitializationEvent
-
   type TagComp = NBTTagCompound
 
   type RichTagComp = HT_RichNBTTagCompound
@@ -46,6 +41,8 @@ object HT_Predef {
   type AABB = AxisAlignedBB
 
   val ItemPattern = HT_ItemStackPattern
+  val Vec3 = HT_Vec3
+  val BlockPos = HT_BlockPos
 
   implicit val evBool: HT_NBTEvidence[Boolean] = HT_ScalaNBTEvidence.EvBoolean
   implicit val evByte: HT_NBTEvidence[Byte] = HT_ScalaNBTEvidence.EvByte
@@ -103,4 +100,6 @@ object HT_Predef {
   implicit def eitherBlock(block: Block): ItemOrBlock = OfBlock(block)
 
   implicit def eitherItem(item: Item): ItemOrBlock = OfItem(item)
+
+  def classFromTag[A: ClassTag]: Class[A] = implicitly[ClassTag[A]].runtimeClass.asInstanceOf[Class[A]]
 }

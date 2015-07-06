@@ -36,11 +36,11 @@ apply plugin: 'ht.mod'
 
 ht_mod {
 	completeId = 'hokutomc.lib'
-	prefix = 'beta'
-	major = '2'
-	minor = '3'
-	revision = '9'
-	build = '47'
+	prefix = 'alpha'
+	major = '3'
+	minor = '0'
+	revision = '0'
+	build = '0'
 }
 
 
