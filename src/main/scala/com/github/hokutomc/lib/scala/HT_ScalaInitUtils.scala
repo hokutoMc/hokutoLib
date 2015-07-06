@@ -89,7 +89,9 @@ object HT_ScalaInitUtils {
 
   implicit def blockAsItem(block: Block): Item = block.item
 
-  def flattenMap[A, B](params: Seq[(A, B)]): Seq[AnyRef] = (for ((a, b) <- params) yield Seq(a, b)).flatten map {
+  def flattenMap[A, B](params: Seq[(A, B)]): Seq[AnyRef] = (for ((a, b) <- params) yield {
+    Seq(a, b match { case b: HT_ItemOrBlockOrStack => b.any case x => x })
+  }).flatten map {
     _.asInstanceOf[Object]
   }
 
