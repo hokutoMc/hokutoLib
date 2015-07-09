@@ -6,8 +6,8 @@ import com.github.hokutomc.lib.scala.block.HT_BlockPos
 import com.github.hokutomc.lib.scala.entity.HT_DataWatchEvidence
 import com.github.hokutomc.lib.scala.item.HT_ItemOrBlock.{OfBlock, OfItem}
 import com.github.hokutomc.lib.scala.item.{HT_ItemOrBlock, HT_ItemStackPattern}
+import com.github.hokutomc.lib.scala.nbt.HT_ScalaNBTEvidence
 import com.github.hokutomc.lib.scala.nbt.HT_ScalaNBTEvidence.EvItemStackArray
-import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_ScalaNBTEvidence}
 import com.github.hokutomc.lib.scala.util.HT_Vec3
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
@@ -19,7 +19,9 @@ import scala.reflect.ClassTag
 /**
  * Created by user on 2015/04/12.
  */
-object HT_Predef {
+object HT_Predef extends HT_Predef
+
+trait HT_Predef {
   type JavaList[A] = java.util.List[A]
 
   type ForgeProp = Property
@@ -36,11 +38,10 @@ object HT_Predef {
 
   type TagComp = NBTTagCompound
 
-  type RichTagComp = HT_RichNBTTagCompound
-
   type AABB = AxisAlignedBB
 
   val ItemPattern = HT_ItemStackPattern
+  val ItemBlock = ItemPattern.PatternItemBlock
   val Vec3 = HT_Vec3
   val BlockPos = HT_BlockPos
 

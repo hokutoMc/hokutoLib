@@ -1,30 +1,30 @@
 package com.github.hokutomc.lib.scala
 
-import com.github.hokutomc.lib.scala.block.HT_BlockPos
 import com.github.hokutomc.lib.scala.block.states.HT_RichBlockState
+import com.github.hokutomc.lib.scala.block.{HT_BlockPos, HT_RichBlock}
 import com.github.hokutomc.lib.scala.entity.{HT_RichDataWatcher, HT_RichEntity, HT_RichPlayer}
+import com.github.hokutomc.lib.scala.event.HT_RichPlayerEvent
 import com.github.hokutomc.lib.scala.item.HT_RichItemStack
 import com.github.hokutomc.lib.scala.nbt.{HT_RichNBTTagCompound, HT_RichNBTTagList}
 import com.github.hokutomc.lib.scala.util.{HT_RichEnumDyeColor, HT_Vec3}
 import com.github.hokutomc.lib.scala.world.HT_World
-import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.DataWatcher
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.{DataWatcher, Entity}
 import net.minecraft.inventory.IInventory
-import net.minecraft.item.{EnumDyeColor, Item, ItemStack}
+import net.minecraft.item.EnumDyeColor
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util._
 import net.minecraft.world.World
 import net.minecraftforge.event.entity.player.PlayerEvent
 
-import scala.reflect.ClassTag
-
 /**
  * Created by user on 2015/02/26.
  */
-object HT_ScalaConversion {
+object HT_ScalaConversion extends HT_ScalaConversion
+
+trait HT_ScalaConversion {
   implicit def wrapItemStack(stack: ItemStack): HT_RichItemStack = HT_RichItemStack(stack)
 
   /**
@@ -77,29 +77,9 @@ object HT_ScalaConversion {
 
   implicit def wrapWorld(world: World): HT_World = new HT_World(world)
 
-  implicit class BlockToItem (val block: Block) extends AnyVal {
-    def item: Item = Item.getItemFromBlock(block)
+  implicit def wrapBlock(block: Block): HT_RichBlock = new HT_RichBlock(block)
 
-    def getItemAs[T <: Item](implicit classTag: ClassTag[T]) = item match {
-      case i: T => Some(i)
-      case _ => None
-    }
-  }
-
-  implicit class WrapPlayerEvent (val event: PlayerEvent) extends AnyVal {
-    def unary_+ : HT_RichPlayer = event entityPlayer
-
-    def unary_~ : HT_RichItemStack = ~(+this)
-
-    def unary_- : World = (+this) worldObj
-  }
-
-  implicit class WrapOption[T] (val option: Option[T]) extends AnyVal {
-    def safe(function: T => Any) = option match {
-      case Some(v) => function(v)
-      case _ =>
-    }
-  }
+  implicit def wrapBlockEvent(event: PlayerEvent): HT_RichPlayerEvent = new HT_RichPlayerEvent(event)
 
   implicit def wrapBlockState(blockStates: IBlockState): HT_RichBlockState = new HT_RichBlockState(blockStates)
 

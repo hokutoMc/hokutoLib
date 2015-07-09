@@ -1,8 +1,7 @@
-package com.github.hokutomc.lib.scala.item
+package com.github.hokutomc.lib.scala
+package item
 
 import com.github.hokutomc.lib.scala.nbt.HT_T_NBTCompound
-import net.minecraft.item.{Item, ItemStack}
-import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.oredict.OreDictionary
 
 import scala.reflect.ClassTag
@@ -25,13 +24,13 @@ object HT_RichItemStack {
 
     override def size: Int = 0
 
-    override def tag: NBTTagCompound = null
+    override def tag: TagComp = null
 
     override def damage_=(d: Int): Unit = throw new UnsupportedOperationException
 
     override def size_=(s: Int): Unit = throw new UnsupportedOperationException
 
-    override def tag_=(t: NBTTagCompound): Unit = throw new UnsupportedOperationException
+    override def tag_=(t: TagComp): Unit = throw new UnsupportedOperationException
 
     override def createTag(): Unit = throw new UnsupportedOperationException
 
@@ -76,7 +75,7 @@ trait HT_RichItemStack extends Any with HT_T_NBTCompound[HT_RichItemStack] {
 
   def isEmpty: Boolean = stackOp.isEmpty
 
-  def writeToNBT(nbtTagCompound: NBTTagCompound) = {
+  def writeToNBT(nbtTagCompound: TagComp) = {
     forStack(_.writeToNBT(nbtTagCompound)); this
   }
 
@@ -93,15 +92,21 @@ trait HT_RichItemStack extends Any with HT_T_NBTCompound[HT_RichItemStack] {
 
   def size: Int = mapStack(_.stackSize).getOrElse(0)
 
-  def tag: NBTTagCompound = mapStack(_.getTagCompound).orNull
+  def tag: TagComp = mapStack(_.getTagCompound).orNull
+
+  def tagCreated: TagComp = mapStack(_.getTagCompound).getOrElse {
+    val t = new TagComp
+    tag = t
+    t
+  }
 
   def damage_=(d: Int): Unit = forStack(_.setItemDamage(if (d < 0) 0 else d))
 
   def size_=(s: Int): Unit = forStack(_.stackSize = if (s < 0) 0 else s)
 
-  def tag_=(t: NBTTagCompound): Unit = forStack(_.setTagCompound(t))
+  def tag_=(t: TagComp): Unit = forStack(_.setTagCompound(t))
 
-  def createTag(): Unit = this.tag = new NBTTagCompound
+  def createTag(): Unit = this.tag = new TagComp
 
   def sameItem[A <: Item : ClassTag](a: A): Option[A] = stackOp flatMap {
     case HT_ItemStackPattern(i: A, _) if i == a => Some(i)
@@ -128,4 +133,9 @@ trait HT_RichItemStack extends Any with HT_T_NBTCompound[HT_RichItemStack] {
   def matches(other: HT_RichItemStack): Boolean = OreDictionary.itemMatches(this.unwrap, other.unwrap, false)
 
   def matchesStrict(other: HT_RichItemStack): Boolean = OreDictionary.itemMatches(this.unwrap, other.unwrap, true)
+
+  def apply(f: HT_RichItemStack => Any): HT_RichItemStack = {
+    f(this);
+    this
+  }
 }

@@ -1,9 +1,8 @@
-package com.github.hokutomc.lib.scala.nbt
+package com.github.hokutomc.lib.scala
+package nbt
 
 import com.github.hokutomc.lib.nbt.{HT_NBTEvidence, HT_NBTUtil}
-import com.github.hokutomc.lib.scala.HT_Predef._
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
-import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.BlockPos
 
@@ -119,7 +118,7 @@ object HT_ScalaNBTEvidence {
   object EvItemStack extends HT_ScalaNBTEvidence.Compound[ItemStack] {
     override def writeComp(tag: NBTTagCompound, value: ItemStack): Unit = value.writeToNBT(tag)
 
-    override def readComp(tag: NBTTagCompound): ItemStack = ItemStack.loadItemStackFromNBT(tag)
+    override def readComp(tag: NBTTagCompound): ItemStack = net.minecraft.item.ItemStack.loadItemStackFromNBT(tag)
 
     override def getTypeString: String = "ItemStack"
   }

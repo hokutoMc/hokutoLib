@@ -32,7 +32,7 @@ public abstract class HT_ItemDurable<T extends HT_ItemDurable<T>> extends HT_Ite
         super(modid, innerName);
         this.HT_setMaxStackSize(1);
         this.m_subItems.clear();
-        this.m_subItems.add(HT_ItemCondition.ofItem(this));
+        this.m_subItems.add(getBuilder(0));
     }
 
     public HT_ItemBuilder getBuilder (int durability, int meta) {
@@ -45,6 +45,7 @@ public abstract class HT_ItemDurable<T extends HT_ItemDurable<T>> extends HT_Ite
         return new WithCondition(HT_ItemCondition.builder(this).checkDamage(meta).build()) {
             @Override
             public void manipulateStack (ItemStack itemStack) {
+                HT_ItemStackUtil.ensureHasTagCompound(itemStack);
                 HT_ItemDurable.this.updateDurability(itemStack, HT_ItemDurable.this.getMaxDurability(itemStack));
             }
         };
@@ -53,7 +54,7 @@ public abstract class HT_ItemDurable<T extends HT_ItemDurable<T>> extends HT_Ite
     @Override
     public void HT_addInformation (ItemStack itemStack, EntityPlayer player, List<String> list, boolean b) {
         if (this.isBroken(itemStack)) {
-            list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("block.hokutolib.status.broken.name").trim());
+            list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("item.hokutolib.status.broken.name").trim());
         } else {
             EnumChatFormatting red = EnumChatFormatting.RESET;
             if (this.getDurability(itemStack) * 20 < this.getMaxDurability(itemStack)) {
@@ -61,7 +62,7 @@ public abstract class HT_ItemDurable<T extends HT_ItemDurable<T>> extends HT_Ite
             }
             list.add(
                     red
-                            + StatCollector.translateToLocal("block.hokutolib.status.durability.name").trim()
+                            + StatCollector.translateToLocal("item.hokutolib.status.durability.name").trim()
                             + HT_StringUtil.blanks(6)
                             + this.getDurability(itemStack)
                             + "/"

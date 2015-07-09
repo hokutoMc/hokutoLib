@@ -1,7 +1,6 @@
 package com.github.hokutomc.lib.scala
 
 import net.minecraft.inventory.IInventory
-import net.minecraft.item.ItemStack
 
 import scala.collection.mutable
 

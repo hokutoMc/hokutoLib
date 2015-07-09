@@ -1,9 +1,9 @@
-package com.github.hokutomc.lib.scala.item
+package com.github.hokutomc.lib.scala
+package item
 
 import com.github.hokutomc.lib.item.matcher.{HT_ItemMatcher, HT_ItemMatcherItem, HT_ItemMatcherOre}
 import com.github.hokutomc.lib.nbt.HT_NBTEvidence
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
-import net.minecraft.item.{Item, ItemStack}
 
 import scala.reflect.ClassTag
 
@@ -19,6 +19,12 @@ object HT_ItemStackPattern {
    */
   def unapply(itemStack: ItemStack): Option[(Item, Int)] =
     if (itemStack isEmpty) None else Some(itemStack.getItem, itemStack.damage)
+
+  def unapply(itemStack: HT_RichItemStack): Option[(Item, Int)] = unapply(itemStack.unwrap)
+
+  object PatternItemBlock {
+    def unapply(item: Item): Option[Block] = Option(net.minecraft.block.Block.getBlockFromItem(item))
+  }
 
   def ofType[I: ClassTag] = new HT_ItemStackPatternType[I]
 
@@ -51,7 +57,7 @@ trait HT_RichItemMatcher {
 
 class HT_ItemStackPatternNBT[A: HT_NBTEvidence](val key: String, val p: Option[A] => Boolean)
   extends HT_ItemMatcher with HT_RichItemMatcher {
-  override protected def check(itemStack: ItemStack): Boolean = p(itemStack.apply(key))
+  override protected def check(itemStack: ItemStack): Boolean = p(itemStack.apply[A](key))
 
   override val self: HT_ItemMatcher = this
 }

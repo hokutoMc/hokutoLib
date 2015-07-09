@@ -1,6 +1,6 @@
-package com.github.hokutomc.lib.scala.item
+package com.github.hokutomc.lib.scala
+package item
 
-import com.github.hokutomc.lib.scala.HT_Predef._
 
 /**
  * Created by user on 2015/07/01.

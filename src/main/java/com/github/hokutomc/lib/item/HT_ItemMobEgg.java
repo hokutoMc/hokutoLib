@@ -45,7 +45,7 @@ public class HT_ItemMobEgg extends HT_Item<HT_ItemMobEgg> {
 
     @Override
     public String getItemStackDisplayName (ItemStack itemStack) {
-        return HT_I18nUtil.localize("block.hokutolib.mobEgg.name", HT_I18nUtil.localize("entity." + this.m_listEntity.getNameAt(itemStack.getItemDamage()) + ".name"));
+        return HT_I18nUtil.localize("item.hokutolib.mobEgg.name", HT_I18nUtil.localize("entity." + this.m_listEntity.getNameAt(itemStack.getItemDamage()) + ".name"));
     }
 
     @Override

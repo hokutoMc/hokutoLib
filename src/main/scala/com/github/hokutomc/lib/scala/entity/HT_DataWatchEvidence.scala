@@ -1,7 +1,7 @@
-package com.github.hokutomc.lib.scala.entity
+package com.github.hokutomc.lib.scala
+package entity
 
 import net.minecraft.entity.DataWatcher
-import net.minecraft.item.ItemStack
 
 object HT_DataWatchEvidence {
 

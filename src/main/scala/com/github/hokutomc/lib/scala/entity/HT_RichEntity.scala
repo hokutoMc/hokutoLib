@@ -1,6 +1,6 @@
-package com.github.hokutomc.lib.scala.entity
+package com.github.hokutomc.lib.scala
+package entity
 
-import net.minecraft.entity.Entity
 import net.minecraft.util.Vec3
 
 

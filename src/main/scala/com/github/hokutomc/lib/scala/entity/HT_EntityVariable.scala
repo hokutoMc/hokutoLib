@@ -1,7 +1,7 @@
-package com.github.hokutomc.lib.scala.entity
+package com.github.hokutomc.lib.scala
+package entity
 
 import com.github.hokutomc.lib.nbt.HT_NBTEvidence
-import com.github.hokutomc.lib.scala.HT_Predef._
 import com.github.hokutomc.lib.scala.HT_ScalaConversion._
 
 object HT_EntityVariable {
@@ -36,7 +36,7 @@ object HT_EntityVariable {
     
     def initialize(): Unit = initial foreach { a => evD.init(entity.getDataWatcher, id, a) }
 
-    override def flatAssign(oA: Option[A]): Unit = oA safe { a => entity.getDataWatcher.update(id, a)(evD) }
+    override def flatAssign(oA: Option[A]): Unit = oA foreach { a => entity.getDataWatcher.update(id, a)(evD) }
 
     override def getOption: Option[A] = Some(entity.getDataWatcher.apply(id)(evD))
   }

@@ -63,19 +63,20 @@ public abstract class HT_ItemArmor<T extends HT_ItemArmor<T>> extends HT_ItemDur
         return (T) this;
     }
 
-    @Override
-    public HT_ItemBuilder getBuilder (int durability, int meta) {
-        return super.getBuilder(durability, meta);
-    }
-
-    @Override
-    public HT_ItemBuilder getBuilder (int meta) {
-        return super.getBuilder(meta);
+    public HT_ItemBuilder part (final Part part, final HT_ItemBuilder builder) {
+        return new HT_ItemBuilder() {
+            @Override
+            public ItemStack createStack () {
+                ItemStack s = builder.createStack();
+                EVIDENCE_PART.write(KEY_PART, s.getTagCompound(), part);
+                return s;
+            }
+        };
     }
 
     private void addParts (int damage) {
         for (Part p : Part.values()) {
-            m_subItems.add(HT_ItemCondition.builder(this).checkDamage(damage).addCondition(KEY_PART, EVIDENCE_PART, p).build());
+            m_subItems.add(part(p, this.getBuilder(damage)));
         }
     }
 
