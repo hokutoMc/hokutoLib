@@ -30,10 +30,10 @@ class HT_RichEnumDyeColor(val dyeColor: EnumDyeColor) {
 
   val colorValue = dyeColor.func_176768_e().colorValue
 
-  val colorFloat: (Double, Double, Double) = {
-    val v = colorValue
-    (((v >> 4) & 0xff) / 255.0, ((v >> 2) & 0xff) / 255.0, (v & 0xff) / 255.0)
-  }
+  val colorFloat: (Double, Double, Double) = (
+    ((colorValue >> 4) & 0xff) / 255.0,
+    ((colorValue >> 2) & 0xff) / 255.0,
+    (colorValue & 0xff) / 255.0)
 
   val unlocalizedName = HT_ColorUtil.getUnlocalizedColorName(dyeColor)
 

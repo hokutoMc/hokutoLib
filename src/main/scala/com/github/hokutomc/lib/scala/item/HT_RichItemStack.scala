@@ -2,7 +2,6 @@ package com.github.hokutomc.lib.scala
 package item
 
 import com.github.hokutomc.lib.nbt.HT_NBTEvidence
-import com.github.hokutomc.lib.scala.nbt.HT_T_NBTCompound
 import net.minecraftforge.oredict.OreDictionary
 
 import scala.reflect.ClassTag
@@ -25,8 +24,6 @@ object HT_RichItemStack {
 
     override def size: Int = 0
 
-    override def delegate: TagComp = null
-
     override def damage_=(d: Int): Unit = throw new UnsupportedOperationException
 
     override def size_=(s: Int): Unit = throw new UnsupportedOperationException
@@ -35,8 +32,10 @@ object HT_RichItemStack {
 
     override def createTag(): Unit = throw new UnsupportedOperationException
 
+    @deprecated
     override def sameItem[A <: Item : ClassTag](a: A): Option[A] = None
 
+    @deprecated
     override def isItemInstance[A: ClassTag] = None
 
     override def unary_+ : HT_RichItemStack = throw new UnsupportedOperationException
@@ -50,6 +49,10 @@ object HT_RichItemStack {
     override def matches(other: HT_RichItemStack): Boolean = OreDictionary.itemMatches(null, other.unwrap, false)
 
     override def matchesStrict(other: HT_RichItemStack): Boolean = OreDictionary.itemMatches(null, other.unwrap, true)
+
+    override def apply[T: HT_NBTEvidence](key: String): Option[T] = None
+
+    override def update[T: HT_NBTEvidence](key: String, t: T): Unit = {}
   }
 
   class Impl(val wrapped: ItemStack) extends AnyVal with HT_RichItemStack {
@@ -62,7 +65,7 @@ object HT_RichItemStack {
 /**
  * Created by user on 2015/02/26.
  */
-trait HT_RichItemStack extends Any with HT_T_NBTCompound[HT_RichItemStack] {
+trait HT_RichItemStack extends Any {
   protected def stackOp: Option[ItemStack]
 
   def unwrap: ItemStack = stackOp.orNull
@@ -93,19 +96,16 @@ trait HT_RichItemStack extends Any with HT_T_NBTCompound[HT_RichItemStack] {
 
   def size: Int = mapStack(_.stackSize).getOrElse(0)
 
-  def delegate: TagComp = tagCreated
 
   def tag: TagComp = mapStack(_.getTagCompound).orNull
 
   def tagCreated: TagComp = mapStack(_.getTagCompound).getOrElse {
-    tag = new TagComp
+    createTag()
     tag
   }
 
 
-  override def apply[T: HT_NBTEvidence](key: String): Option[T] =
-    if (isEmpty || !stackOp.exists(_.hasTagCompound) || isNull || !delegate.hasKey(key)) None
-    else Some(implicitly[HT_NBTEvidence[T]].read(key, delegate))
+
 
   def damage_=(d: Int): Unit = forStack(_.setItemDamage(if (d < 0) 0 else d))
 
@@ -115,11 +115,13 @@ trait HT_RichItemStack extends Any with HT_T_NBTCompound[HT_RichItemStack] {
 
   def createTag(): Unit = this.tag = new TagComp
 
+  @deprecated
   def sameItem[A <: Item : ClassTag](a: A): Option[A] = stackOp flatMap {
     case HT_ItemStackPattern(i: A, _) if i == a => Some(i)
     case _ => None
   }
 
+  @deprecated
   def isItemInstance[A: ClassTag]: Option[Item with A] = stackOp flatMap {
     case HT_ItemStackPattern(i: A, _) => Some(i)
     case _ => None
@@ -145,4 +147,12 @@ trait HT_RichItemStack extends Any with HT_T_NBTCompound[HT_RichItemStack] {
     f(this)
     this
   }
+
+  //delegation to nbt tag
+  def apply[T: HT_NBTEvidence](key: String): Option[T] =
+    if (isEmpty || !stackOp.exists(_.hasTagCompound) || !tag.hasKey(key)) None
+    else Some(implicitly[HT_NBTEvidence[T]].read(key, tag))
+
+  def update[T: HT_NBTEvidence](key: String, t: T): Unit =
+    HT_ScalaConversion.wrapNBTTagComp(tagCreated).update(key, t)
 }
