@@ -1,6 +1,7 @@
 package com.github.hokutomc.lib.scala
 package item
 
+import com.github.hokutomc.lib.nbt.HT_NBTEvidence
 import com.github.hokutomc.lib.scala.nbt.HT_T_NBTCompound
 import net.minecraftforge.oredict.OreDictionary
 
@@ -24,7 +25,7 @@ object HT_RichItemStack {
 
     override def size: Int = 0
 
-    override def tag: TagComp = null
+    override def delegate: TagComp = null
 
     override def damage_=(d: Int): Unit = throw new UnsupportedOperationException
 
@@ -92,13 +93,19 @@ trait HT_RichItemStack extends Any with HT_T_NBTCompound[HT_RichItemStack] {
 
   def size: Int = mapStack(_.stackSize).getOrElse(0)
 
+  def delegate: TagComp = tagCreated
+
   def tag: TagComp = mapStack(_.getTagCompound).orNull
 
   def tagCreated: TagComp = mapStack(_.getTagCompound).getOrElse {
-    val t = new TagComp
-    tag = t
-    t
+    tag = new TagComp
+    tag
   }
+
+
+  override def apply[T: HT_NBTEvidence](key: String): Option[T] =
+    if (isEmpty || !stackOp.exists(_.hasTagCompound) || isNull || !delegate.hasKey(key)) None
+    else Some(implicitly[HT_NBTEvidence[T]].read(key, delegate))
 
   def damage_=(d: Int): Unit = forStack(_.setItemDamage(if (d < 0) 0 else d))
 
@@ -135,7 +142,7 @@ trait HT_RichItemStack extends Any with HT_T_NBTCompound[HT_RichItemStack] {
   def matchesStrict(other: HT_RichItemStack): Boolean = OreDictionary.itemMatches(this.unwrap, other.unwrap, true)
 
   def apply(f: HT_RichItemStack => Any): HT_RichItemStack = {
-    f(this);
+    f(this)
     this
   }
 }
