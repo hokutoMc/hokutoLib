@@ -1,14 +1,14 @@
 package com.github.hokutomc.lib.client.gui;
 
 import com.github.hokutomc.lib.HT_Registries;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * This class contains list of GUI-creation actions.
@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class HT_GuiHandler implements IGuiHandler {
 
-    private ArrayList<HT_GuiRegistration> m_listGuiRegistration = Lists.newArrayList();
+    private Map<Integer, HT_GuiRegistration> m_mapGuiRegistration = Maps.newHashMap();
 
 
     public HT_GuiHandler register (Object mod) {
@@ -26,28 +26,20 @@ public class HT_GuiHandler implements IGuiHandler {
     }
 
     public HT_GuiHandler addGui (int id, HT_GuiAction<? extends Container> serverAction, HT_GuiAction<? extends Gui> clientAction) {
-        this.m_listGuiRegistration.add(new HT_GuiRegistration(id, serverAction, clientAction));
+        this.m_mapGuiRegistration.put(id, new HT_GuiRegistration(id, serverAction, clientAction));
         return this;
     }
 
     @Override
     public Object getServerGuiElement (int ID, EntityPlayer player, World world, int x, int y, int z) {
-        for (HT_GuiRegistration e : m_listGuiRegistration) {
-            if (ID == e.id | e.container != null) {
-                return e.actionServer(player, world, x, y, z);
-            }
-        }
-        return null;
+        HT_GuiRegistration r = m_mapGuiRegistration.get(ID);
+        return r != null ? r.actionServer(player, world, x, y, z) : null;
     }
 
     @Override
     public Object getClientGuiElement (int ID, EntityPlayer player, World world, int x, int y, int z) {
-        for (HT_GuiRegistration e : m_listGuiRegistration) {
-            if (ID == e.id | e.gui != null) {
-                return e.actionClient(player, world, x, y, z);
-            }
-        }
-        return null;
+        HT_GuiRegistration r = m_mapGuiRegistration.get(ID);
+        return r != null ? r.actionClient(player, world, x, y, z) : null;
     }
 
     public class HT_GuiRegistration {

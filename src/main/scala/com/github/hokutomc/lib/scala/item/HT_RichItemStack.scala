@@ -99,13 +99,14 @@ trait HT_RichItemStack extends Any {
 
   def tag: TagComp = mapStack(_.getTagCompound).orNull
 
-  def tagCreated: TagComp = mapStack(_.getTagCompound).getOrElse {
-    createTag()
-    tag
-  }
-
-
-
+  def ensureTagCreated(): TagComp =
+    mapStack { i =>
+      if (!i.hasTagCompound) {
+        createTag()
+      }
+      tag
+    }.orNull
+  
 
   def damage_=(d: Int): Unit = forStack(_.setItemDamage(if (d < 0) 0 else d))
 
@@ -151,8 +152,9 @@ trait HT_RichItemStack extends Any {
   //delegation to nbt tag
   def apply[T: HT_NBTEvidence](key: String): Option[T] =
     if (isEmpty || !stackOp.exists(_.hasTagCompound) || !tag.hasKey(key)) None
-    else Some(implicitly[HT_NBTEvidence[T]].read(key, tag))
+    else HT_ScalaConversion.wrapNBTTagComp(tag).apply[T](key)
 
-  def update[T: HT_NBTEvidence](key: String, t: T): Unit =
-    HT_ScalaConversion.wrapNBTTagComp(tagCreated).update(key, t)
+  def update[T: HT_NBTEvidence](key: String, t: T): Unit = {
+    HT_ScalaConversion.wrapNBTTagComp(ensureTagCreated()).update(key, t)
+  }
 }
