@@ -98,7 +98,7 @@ public class HT_SensitiveOreDict {
     }
 
     @SubscribeEvent
-    private void oreRegisterHook (OreDictionary.OreRegisterEvent event) {
+    public void oreRegisterHook (OreDictionary.OreRegisterEvent event) {
         registerSensitiveOre(event.Name, HT_ItemCondition.ofItemStack(event.Ore));
     }
 }
