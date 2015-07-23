@@ -137,7 +137,8 @@ trait HT_RichItemStack extends Any {
   }
 
   def -(a: Int): HT_RichItemStack = {
-    size += a; this
+    size -= a;
+    this
   }
 
   def matches(other: HT_RichItemStack): Boolean = OreDictionary.itemMatches(this.unwrap, other.unwrap, false)
